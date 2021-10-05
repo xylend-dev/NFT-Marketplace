@@ -1,8 +1,10 @@
 import React from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-import SendIcon from '@mui/icons-material/Send';
-import Button from "@material-ui/core/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import SendIcon from "@mui/icons-material/Send";
+import Button from "@mui/material/Button";
+
+import Routes from "./routes";
 
 const theme = createTheme({
   palette: {
@@ -18,6 +20,7 @@ function App() {
     <React.Fragment>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <Routes />
         <Button variant="contained" endIcon={<SendIcon />}>
           Send
         </Button>
