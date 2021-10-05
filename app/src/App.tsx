@@ -3,6 +3,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import SendIcon from "@mui/icons-material/Send";
 import Button from "@mui/material/Button";
+import Navbar from "./components/Navbar";
 
 import Routes from "./routes";
 
@@ -20,10 +21,8 @@ function App() {
     <React.Fragment>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <Navbar />
         <Routes />
-        <Button variant="contained" endIcon={<SendIcon />}>
-          Send
-        </Button>
       </ThemeProvider>
     </React.Fragment>
   );
