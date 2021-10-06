@@ -9,10 +9,10 @@ import Typography from "@mui/material/Typography";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { Link } from "react-router-dom";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import SearchIcon from "@mui/icons-material/Search";
 import { NavLink, useLocation } from "react-router-dom";
 import LogoImage from "../../assets/img/logo.svg";
+import { WalletMultiButton } from "../../wallet/WalletMultiButton";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -149,9 +149,7 @@ export default function Navbar() {
               />
             </Search>
           </Box>
-          <Button variant="contained" startIcon={<AccountBalanceWalletIcon />}>
-            Conectar carteira
-          </Button>
+          <WalletMultiButton />
         </Toolbar>
       </AppBar>
     </Box>

@@ -1,11 +1,24 @@
-import React from "react";
-import CssBaseline from "@mui/material/CssBaseline";
+import React, { useMemo } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import SendIcon from "@mui/icons-material/Send";
-import Button from "@mui/material/Button";
+import {
+  ConnectionProvider,
+  WalletProvider,
+} from "@solana/wallet-adapter-react";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import {
+  getLedgerWallet,
+  getPhantomWallet,
+  getSlopeWallet,
+  getSolflareWallet,
+  getSolletExtensionWallet,
+  getSolletWallet,
+  getTorusWallet,
+} from "@solana/wallet-adapter-wallets";
+import { WalletDialogProvider } from "./wallet/WalletDialogProvider";
 import Navbar from "./components/Navbar";
-
 import Routes from "./routes";
+import CssBaseline from "@mui/material/CssBaseline";
+import { clusterApiUrl } from "@solana/web3.js";
 
 const theme = createTheme({
   palette: {
@@ -16,16 +29,36 @@ const theme = createTheme({
   },
 });
 
-function App() {
+export default function App() {
+  const network = WalletAdapterNetwork.Devnet;
+  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+
+  const wallets = useMemo(
+    () => [
+      getPhantomWallet(),
+      getSlopeWallet(),
+      getSolflareWallet(),
+      getTorusWallet({
+        options: { clientId: "Get a client ID @ https://developer.tor.us" },
+      }),
+      getLedgerWallet(),
+      getSolletWallet({ network }),
+      getSolletExtensionWallet({ network }),
+    ],
+    [network]
+  );
+
   return (
-    <React.Fragment>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Navbar />
-        <Routes />
-      </ThemeProvider>
-    </React.Fragment>
+    <ThemeProvider theme={theme}>
+      <ConnectionProvider endpoint={endpoint}>
+        <WalletProvider wallets={wallets} autoConnect>
+          <WalletDialogProvider>
+            <CssBaseline />
+            <Navbar />
+            <Routes />
+          </WalletDialogProvider>
+        </WalletProvider>
+      </ConnectionProvider>
+    </ThemeProvider>
   );
 }
-
-export default App;
