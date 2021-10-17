@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import { NavLink, useLocation } from "react-router-dom";
 import LogoImage from "../../assets/img/logo.svg";
-import { WalletMultiButton } from "../../wallet/WalletMultiButton";
+import { WalletMultiButton } from "../../utils/wallet/WalletMultiButton";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",

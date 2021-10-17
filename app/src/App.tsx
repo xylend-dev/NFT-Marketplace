@@ -14,7 +14,7 @@ import {
   getSolletWallet,
   getTorusWallet,
 } from "@solana/wallet-adapter-wallets";
-import { WalletDialogProvider } from "./wallet/WalletDialogProvider";
+import { WalletDialogProvider } from "./utils/wallet/WalletDialogProvider";
 import Navbar from "./components/Navbar";
 import Routes from "./routes";
 import CssBaseline from "@mui/material/CssBaseline";
