@@ -74,7 +74,7 @@ export const WalletMultiButton: FC<ButtonProps> = ({
         sx={{
           "& .MuiMenuItem-root": {
             "&:hover": {
-              backgroundColor: "secondary.main",
+              backgroundColor: (theme) => `${theme.palette.primary.main}55`,
             },
           },
         }}

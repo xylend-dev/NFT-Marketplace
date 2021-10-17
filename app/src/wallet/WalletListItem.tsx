@@ -25,7 +25,7 @@ export const WalletListItem: FC<WalletListItemProps> = ({
         paddingRight: 0,
         "& .MuiButton-root": {
           "&:hover": {
-            backgroundColor: "secondary.main",
+            backgroundColor: (theme) => `${theme.palette.primary.main}55`,
           },
         },
       }}

@@ -1,16 +1,16 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
-import { useStyles } from "./styles";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 export default function AllowedProducts() {
-  const classes = useStyles();
+  const { publicKey } = useWallet();
 
   return (
     <Container component="main">
-      <Box m={2} className={classes.example}>
+      <Box m={2}>
         <Typography variant="h5" component="h3" gutterBottom>
-          Criar NFT
+          {JSON.stringify(publicKey?.toBase58())}
         </Typography>
       </Box>
     </Container>
