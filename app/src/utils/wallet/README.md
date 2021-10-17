@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../../assets/img/logo.png" alt="SOLRIGAMI" width="30%"/>
+  <img src="../../assets/img/logo.svg" alt="SOLRIGAMI" height="150px"/>
 </p>
 
 <h1 align="center" style="color:#FB8500">
