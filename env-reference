@@ -1,0 +1,2 @@
+# Application environment mode (development or production)
+REACT_APP_ENV=development

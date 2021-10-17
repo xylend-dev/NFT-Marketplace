@@ -4,7 +4,6 @@ import {
   ConnectionProvider,
   WalletProvider,
 } from "@solana/wallet-adapter-react";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import {
   getLedgerWallet,
   getPhantomWallet,
@@ -18,7 +17,7 @@ import { WalletDialogProvider } from "./utils/wallet/WalletDialogProvider";
 import Navbar from "./components/Navbar";
 import Routes from "./routes";
 import CssBaseline from "@mui/material/CssBaseline";
-import { clusterApiUrl } from "@solana/web3.js";
+import { network, endpoint } from "./config/solanaNetwork";
 
 const theme = createTheme({
   palette: {
@@ -30,9 +29,6 @@ const theme = createTheme({
 });
 
 export default function App() {
-  const network = WalletAdapterNetwork.Devnet;
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
-
   const wallets = useMemo(
     () => [
       getPhantomWallet(),
@@ -45,7 +41,7 @@ export default function App() {
       getSolletWallet({ network }),
       getSolletExtensionWallet({ network }),
     ],
-    [network]
+    []
   );
 
   return (
