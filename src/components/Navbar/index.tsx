@@ -119,8 +119,8 @@ export default function Navbar() {
             />
             <Tab
               component={NavLink}
-              value="/galery"
-              to="/galery"
+              value="/gallery"
+              to="/gallery"
               exact
               label="Galeria"
               sx={{
