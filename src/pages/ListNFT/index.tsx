@@ -1,35 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { connection } from "../../config/solanaNetwork";
-import {
-  Metadata,
-  MetadataData,
-} from "@metaplex-foundation/mpl-token-metadata";
+import { useWalletNftList } from "../../services/hooks/nft";
 
 export default function ListNFT() {
   const { publicKey } = useWallet();
-  const [walletNFT, setWalletNFT] = useState<Array<MetadataData>>([]);
+  const data = useWalletNftList(publicKey);
 
-  useEffect(() => {
-    async function loadWalletNFT() {
-      if (!publicKey) {
-        return [];
-      }
-      const response = await Metadata.findDataByOwner(connection, publicKey);
-
-      setWalletNFT(response);
-    }
-
-    loadWalletNFT();
-  }, [publicKey]);
+  if (!publicKey) {
+    return (
+      <Container component="main">
+        <Box m={2}>
+          <Typography variant="h5" component="h3" gutterBottom>
+            Connect wallet
+          </Typography>
+        </Box>
+      </Container>
+    );
+  }
 
   return (
     <Container component="main">
       <Box m={2}>
         <Typography variant="h5" component="h3" gutterBottom>
-          {JSON.stringify(walletNFT)}
+          {data && JSON.stringify(data[0].name)}
         </Typography>
       </Box>
     </Container>
