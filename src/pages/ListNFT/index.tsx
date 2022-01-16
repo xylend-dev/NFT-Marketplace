@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Skeleton, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletNftList } from "../../services/hooks/nft";
@@ -8,6 +8,7 @@ import GalleryCard from "../../components/GalleryCard";
 export default function ListNFT() {
   const { publicKey } = useWallet();
   const data = useWalletNftList(publicKey);
+  const skeletonArray = Array(4).fill("");
 
   if (!publicKey) {
     return (
@@ -46,9 +47,37 @@ export default function ListNFT() {
         Meus Colecionáveis
       </Typography>
       <Box sx={{ display: "flex" }}>
-        {data && (
-          <Grid container spacing={3}>
-            {data.map((nft, index) => (
+        <Grid container spacing={3}>
+          {!data &&
+            skeletonArray.map((_, index) => (
+              <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                <>
+                  <Skeleton variant="rectangular" width="100%" height={250} />
+                  <Skeleton
+                    variant="rectangular"
+                    width="100%"
+                    height={30}
+                    sx={{ marginTop: (theme) => theme.spacing(2) }}
+                  />
+                  <Skeleton
+                    variant="rectangular"
+                    width="100%"
+                    height={50}
+                    sx={{ marginTop: (theme) => theme.spacing(1) }}
+                  />
+                  <Box display="flex" justifyContent="space-between">
+                    <Skeleton width="45%" height={50}>
+                      <Button />
+                    </Skeleton>
+                    <Skeleton width="45%" height={50}>
+                      <Button />
+                    </Skeleton>
+                  </Box>
+                </>
+              </Grid>
+            ))}
+          {data &&
+            data.map((nft, index) => (
               <Grid key={nft.name} item xs={12} sm={6} md={4} lg={3}>
                 <GalleryCard
                   image={nft.image}
@@ -58,8 +87,7 @@ export default function ListNFT() {
                 />
               </Grid>
             ))}
-          </Grid>
-        )}
+        </Grid>
       </Box>
     </Container>
   );
