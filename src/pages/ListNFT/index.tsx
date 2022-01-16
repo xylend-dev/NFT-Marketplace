@@ -5,11 +5,24 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletNftList } from "../../services/hooks/nft";
 import GalleryCard from "../../components/GalleryCard";
 import NotFoundNFT from "../NotFoundNFT";
+import WalletNotConnected from "../WalletNotConnected";
 
 export default function ListNFT() {
   const { publicKey } = useWallet();
   const data = useWalletNftList(publicKey);
   const skeletonArray = Array(4).fill("");
+
+  if (!publicKey) {
+    return (
+      <Container
+        component="main"
+        maxWidth="xl"
+        sx={{ padding: (theme) => `${theme.spacing(5)} !important` }}
+      >
+        <WalletNotConnected />
+      </Container>
+    );
+  }
 
   return (
     <Container
