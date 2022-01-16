@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Button, Grid, Skeleton, Typography } from "@mui/material";
-import Container from "@mui/material/Container";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletNftList } from "../../services/hooks/nft";
 import GalleryCard from "../../components/GalleryCard";
@@ -13,23 +12,11 @@ export default function ListNFT() {
   const skeletonArray = Array(4).fill("");
 
   if (!publicKey) {
-    return (
-      <Container
-        component="main"
-        maxWidth="xl"
-        sx={{ padding: (theme) => `${theme.spacing(5)} !important` }}
-      >
-        <WalletNotConnected />
-      </Container>
-    );
+    return <WalletNotConnected />;
   }
 
   return (
-    <Container
-      component="main"
-      maxWidth="xl"
-      sx={{ padding: (theme) => `${theme.spacing(5)} !important` }}
-    >
+    <>
       {publicKey && data?.length === 0 && <NotFoundNFT />}
       {publicKey && data?.length !== 0 && (
         <>
@@ -95,6 +82,6 @@ export default function ListNFT() {
           </Box>
         </>
       )}
-    </Container>
+    </>
   );
 }
