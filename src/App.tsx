@@ -18,6 +18,7 @@ import Navbar from "./components/Navbar";
 import Routes from "./routes";
 import CssBaseline from "@mui/material/CssBaseline";
 import { network, endpoint } from "./config/solanaNetwork";
+import { Container } from "@mui/material";
 
 const theme = createTheme({
   palette: {
@@ -51,7 +52,13 @@ export default function App() {
           <WalletDialogProvider>
             <CssBaseline />
             <Navbar />
-            <Routes />
+            <Container
+              component="main"
+              maxWidth="xl"
+              sx={{ padding: (theme) => `${theme.spacing(5)} !important` }}
+            >
+              <Routes />
+            </Container>
           </WalletDialogProvider>
         </WalletProvider>
       </ConnectionProvider>
