@@ -1,6 +1,9 @@
 import React from "react";
 import {
   Box,
+  Card,
+  CardContent,
+  CardMedia,
   FormHelperText,
   Grid,
   Slider,
@@ -80,7 +83,31 @@ export default function AllowedProducts() {
         </ButtonWithTooltip>
       </Grid>
       <Grid container>
-        <Grid item xs={4}></Grid>
+        <Grid item xs={4}>
+          <Card
+            sx={{
+              marginRight: (theme) => theme.spacing(5),
+              position: "sticky",
+              top: 0,
+            }}
+          >
+            <CardMedia
+              component="img"
+              height="300"
+              image="https://www.arweave.net/BSe9kvjgwXVkKxjDriSrMWhqDCGnkrr853fZEU_IqFA?ext=png"
+              alt="Solrigami Bird #03"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                Solrigami Bird #03
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Coleção exclusiva da plataforma Solrigami com a representação de
+                pássaros através de origamis. Solrigami Bird #3.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
         <Grid item xs={8}>
           <Typography
             color="primary"
