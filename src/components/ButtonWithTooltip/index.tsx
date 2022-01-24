@@ -11,12 +11,13 @@ export default function ButtonWithTooltip({
   onClick,
   ...props
 }: ButtonWithTooltipProps) {
+  tooltipText = disabled ? tooltipText : "";
   const adjustedButtonProps = {
     disabled: disabled,
     component: disabled ? "div" : undefined,
     onClick: disabled ? undefined : onClick,
   };
-  console.log(adjustedButtonProps);
+
   return (
     <Tooltip title={tooltipText}>
       <Button
