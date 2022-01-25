@@ -1,5 +1,6 @@
-import { Box, CardMedia, Typography } from "@mui/material";
 import React, { useCallback, useMemo, useEffect, useState } from "react";
+import { Box, CardMedia, Typography } from "@mui/material";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { DropzoneRootProps, useDropzone } from "react-dropzone";
 import DropzoneIcon from "../../assets/img/dropzone-icon.svg";
 
@@ -14,7 +15,7 @@ const dropzoneContainerStyle = {
   borderRadius: 4,
   borderColor: "#58E997",
   borderStyle: "dashed",
-  backgroundColor: "#fff",
+  backgroundColor: "#FFFFFF",
   textAlign: "center",
   outline: "none",
   transition: "border .24s ease-in-out",
@@ -83,25 +84,46 @@ export default function ImageDropzone() {
     [isDragActive, isDragReject, isDragAccept]
   );
 
+  const removeImage = () => {
+    setImage(undefined);
+  };
+
   return (
     <>
       {image && (
-        <CardMedia
-          component="img"
-          image={image.preview}
-          alt={image.filename}
-          sx={{
-            padding: (theme) => theme.spacing(2),
-            paddingBottom: 0,
-          }}
-        />
+        <Box>
+          <CardMedia
+            component="img"
+            image={image.preview}
+            alt={image.filename}
+            sx={{
+              padding: (theme) => theme.spacing(2),
+              paddingBottom: 0,
+            }}
+          />
+          <div onClick={() => removeImage()}>
+            <HighlightOffIcon
+              sx={{
+                position: "absolute",
+                backgroundColor: "white",
+                borderRadius: "50%",
+                cursor: "pointer",
+                fill: (theme) => theme.palette.primary.main,
+                top: (theme) => theme.spacing(1),
+                right: (theme) => theme.spacing(1),
+                zIndex: 2,
+              }}
+              fontSize="large"
+            />
+          </div>
+        </Box>
       )}
       {!image && (
         <Box {...getRootProps({ style })}>
           <input {...getInputProps()} />
           <img
             src={DropzoneIcon}
-            alt="Arraste e solte imagens"
+            alt="Arraste e solte a imagem NFT"
             height="48px"
             style={{ marginBottom: "1rem" }}
           />

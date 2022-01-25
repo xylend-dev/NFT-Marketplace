@@ -3,7 +3,6 @@ import {
   Box,
   Card,
   CardContent,
-  CardMedia,
   FormHelperText,
   Grid,
   Slider,
@@ -15,6 +14,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { useWallet } from "@solana/wallet-adapter-react";
 import ButtonWithTooltip from "../../components/ButtonWithTooltip";
 import Title from "../../components/Title";
+import ImageDropzone from "../../components/ImageDropzone";
 
 const royaltiesMarks = [
   {
@@ -91,12 +91,7 @@ export default function AllowedProducts() {
               top: 0,
             }}
           >
-            <CardMedia
-              component="img"
-              height="300"
-              image="https://www.arweave.net/BSe9kvjgwXVkKxjDriSrMWhqDCGnkrr853fZEU_IqFA?ext=png"
-              alt="Solrigami Bird #03"
-            />
+            <ImageDropzone />
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
                 Solrigami Bird #03
@@ -203,7 +198,6 @@ export default function AllowedProducts() {
             <Grid item xs={6}>
               <TextField
                 id="nft-collection-name"
-                required
                 label="Grupo do colecionável"
                 variant="outlined"
                 helperText="Nome do grupo de uma coleção de ativos correlatos"
