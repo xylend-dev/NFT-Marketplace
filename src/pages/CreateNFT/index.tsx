@@ -2,8 +2,6 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import { useSnackbar } from "notistack";
 import {
   Box,
-  Card,
-  CardContent,
   FormHelperText,
   Grid,
   Slider,
@@ -16,7 +14,7 @@ import { MetadataJson } from "@metaplex/js";
 import { useWallet } from "@solana/wallet-adapter-react";
 import ButtonWithTooltip from "../../components/ButtonWithTooltip";
 import Title from "../../components/Title";
-import ImageDropzone from "../../components/ImageDropzone";
+import CreateNFTCard from "../../components/CreateNFTCard";
 
 const royaltiesMarks = [
   {
@@ -161,24 +159,10 @@ export default function CreateNFT() {
       <form id="nft-create" autoComplete="off" onSubmit={handleSubmit}>
         <Grid container>
           <Grid item xs={4}>
-            <Card
-              sx={{
-                marginRight: (theme) => theme.spacing(5),
-                position: "sticky",
-                top: 0,
-              }}
-            >
-              <ImageDropzone />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  Solrigami Bird #03
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Coleção exclusiva da plataforma Solrigami com a representação
-                  de pássaros através de origamis. Solrigami Bird #3.
-                </Typography>
-              </CardContent>
-            </Card>
+            <CreateNFTCard
+              name={nftMetadata.name}
+              description={nftMetadata.description}
+            />
           </Grid>
           <Grid item xs={8}>
             <Typography

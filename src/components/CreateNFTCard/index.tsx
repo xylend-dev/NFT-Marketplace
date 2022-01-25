@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useEffect, useState } from "react";
-import { Box, CardMedia, Typography } from "@mui/material";
+import { useSnackbar } from "notistack";
+import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { DropzoneRootProps, useDropzone } from "react-dropzone";
 import DropzoneIcon from "../../assets/img/dropzone-icon.svg";
@@ -34,26 +35,38 @@ const rejectStyle = {
   borderColor: "#E10050",
 };
 
-export interface ImageDropzoneProps {
+export interface CreateNFTCardProps {
+  name: string;
+  description: string;
+}
+
+export interface ImageProps {
   preview: string;
   filename: string;
 }
 
-export default function ImageDropzone() {
-  const [image, setImage] = useState<ImageDropzoneProps>();
+export default function CreateNFTCard(props: CreateNFTCardProps) {
+  const [image, setImage] = useState<ImageProps>();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const onDropAccepted = useCallback((acceptedFiles: any) => {
-    if (acceptedFiles.length !== 1) {
-      console.log("Não foi possível carregar a imagem!");
-    }
-    const file = acceptedFiles[0];
-    setImage(
-      Object.assign(file, {
-        preview: URL.createObjectURL(file),
-        filename: file.name,
-      })
-    );
-  }, []);
+  const onDropAccepted = useCallback(
+    (acceptedFiles: any) => {
+      if (acceptedFiles.length !== 1) {
+        enqueueSnackbar("Não foi possível carregar a imagem!", {
+          variant: "error",
+        });
+        return;
+      }
+      const file = acceptedFiles[0];
+      setImage(
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+          filename: file.name,
+        })
+      );
+    },
+    [enqueueSnackbar]
+  );
 
   useEffect(() => {
     if (image) {
@@ -89,7 +102,13 @@ export default function ImageDropzone() {
   };
 
   return (
-    <>
+    <Card
+      sx={{
+        marginRight: (theme) => theme.spacing(5),
+        position: "sticky",
+        top: 0,
+      }}
+    >
       {image && (
         <Box>
           <CardMedia
@@ -136,6 +155,16 @@ export default function ImageDropzone() {
           {isDragReject && <Typography>Arquivo não suportado</Typography>}
         </Box>
       )}
-    </>
+      {props.name && (
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {props.name}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {props.description}
+          </Typography>
+        </CardContent>
+      )}
+    </Card>
   );
 }
