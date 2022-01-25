@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import {
   Box,
   Card,
@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-// import { MetadataJson } from "@metaplex/js";
+import { MetadataJson } from "@metaplex/js";
 import { useWallet } from "@solana/wallet-adapter-react";
 import ButtonWithTooltip from "../../components/ButtonWithTooltip";
 import Title from "../../components/Title";
@@ -68,9 +68,70 @@ const PrettoSlider = styled(Slider)({
 
 export default function CreateNFT() {
   const { publicKey } = useWallet();
+  const [nftMetadata, setNftMetadata] = useState<MetadataJson>({
+    name: "",
+    symbol: "",
+    description: "",
+    seller_fee_basis_points: 0,
+    image: "",
+    external_url: "",
+    collection: {
+      family: "",
+      name: "",
+    },
+    properties: {
+      files: [],
+      category: "image",
+      creators: [],
+    },
+  });
 
   const handleSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
+  };
+
+  const handleChangeTextField = (
+    evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { value, name } = evt.target;
+
+    let newNftAttribute = {};
+    if (name === "collection_name") {
+      newNftAttribute = {
+        collection: {
+          name: value,
+          family: nftMetadata.collection?.family,
+        },
+      };
+    } else if (name === "collection_family") {
+      newNftAttribute = {
+        collection: {
+          name: nftMetadata.collection?.name,
+          family: value,
+        },
+      };
+    } else {
+      newNftAttribute = {
+        [name]: value,
+      };
+    }
+    const newNftMetadata = { ...nftMetadata, ...newNftAttribute };
+    setNftMetadata(newNftMetadata);
+  };
+
+  const handleSliderChange = (_: Event, value: number | number[]) => {
+    console.log(value);
+    let sellerFeeBasisPoints = 0;
+    if (value instanceof Array && value.length > 0) {
+      sellerFeeBasisPoints = value[0];
+    } else if (!(value instanceof Array)) {
+      sellerFeeBasisPoints = value;
+    }
+
+    setNftMetadata({
+      ...nftMetadata,
+      seller_fee_basis_points: sellerFeeBasisPoints,
+    });
   };
 
   return (
@@ -129,9 +190,12 @@ export default function CreateNFT() {
               <Grid item xs={8}>
                 <TextField
                   id="nft-name"
+                  name="name"
                   required
                   label="Nome"
                   variant="outlined"
+                  value={nftMetadata.name}
+                  onChange={handleChangeTextField}
                   helperText="Nome do colecionável"
                   fullWidth
                 />
@@ -139,8 +203,11 @@ export default function CreateNFT() {
               <Grid item xs={4}>
                 <TextField
                   id="nft-symbol"
+                  name="symbol"
                   label="Símbolo"
                   variant="outlined"
+                  value={nftMetadata.symbol}
+                  onChange={handleChangeTextField}
                   helperText="Símbolo do colecionável (ex.: BAYC)"
                   fullWidth
                 />
@@ -148,10 +215,13 @@ export default function CreateNFT() {
             </Grid>
             <TextField
               id="nft-description"
+              name="description"
               label="Descrição"
               variant="outlined"
               multiline
               rows={2}
+              value={nftMetadata.description}
+              onChange={handleChangeTextField}
               helperText="Descrição do colecionável"
               fullWidth
               sx={{ marginTop: (theme) => theme.spacing(3) }}
@@ -174,8 +244,11 @@ export default function CreateNFT() {
               <Grid item xs={6}>
                 <TextField
                   id="nft-external-url"
+                  name="external_url"
                   label="URL externa"
                   variant="outlined"
+                  value={nftMetadata.external_url}
+                  onChange={handleChangeTextField}
                   helperText="URL externa extra em que será possível visualizar o ativo"
                   fullWidth
                 />
@@ -183,6 +256,13 @@ export default function CreateNFT() {
               <Grid item xs={6}>
                 <Box>
                   <PrettoSlider
+                    value={
+                      typeof nftMetadata.seller_fee_basis_points === "number"
+                        ? nftMetadata.seller_fee_basis_points
+                        : 0
+                    }
+                    onChange={handleSliderChange}
+                    aria-labelledby="input-slider"
                     aria-label="Royalties to NFT author"
                     defaultValue={0}
                     step={1}
@@ -207,8 +287,11 @@ export default function CreateNFT() {
               <Grid item xs={6}>
                 <TextField
                   id="nft-collection-name"
+                  name="collection_family"
                   label="Grupo do colecionável"
                   variant="outlined"
+                  value={nftMetadata.collection?.family}
+                  onChange={handleChangeTextField}
                   helperText="Nome do grupo de uma coleção de ativos correlatos"
                   fullWidth
                 />
@@ -216,8 +299,11 @@ export default function CreateNFT() {
               <Grid item xs={6}>
                 <TextField
                   id="nft-collection-item"
+                  name="collection_name"
                   label="Nome identificador"
                   variant="outlined"
+                  value={nftMetadata.collection?.name}
+                  onChange={handleChangeTextField}
                   helperText="Nome que identifica unicamente o ativo na coleção"
                   fullWidth
                 />
@@ -232,24 +318,24 @@ export default function CreateNFT() {
                 marginTop: (theme) => theme.spacing(2),
               }}
             >
-              Propriedades
+              Atributos
             </Typography>
             <Grid container spacing={4}>
               <Grid item xs={6}>
                 <TextField
                   id="nft-property-name"
-                  label="Nome da propriedade"
+                  label="Nome do atributo"
                   variant="outlined"
-                  helperText="Nome da propriedade relacionada ao ativo (ex.: cor)"
+                  helperText="Nome da atributo relacionada ao ativo (ex.: cor)"
                   fullWidth
                 />
               </Grid>
               <Grid item xs={6}>
                 <TextField
                   id="nft-property-value"
-                  label="Valor da propriedade"
+                  label="Valor da atributo"
                   variant="outlined"
-                  helperText="Valor da propriedade nomeada (ex.: azul)"
+                  helperText="Valor da atributo nomeado (ex.: azul)"
                   fullWidth
                 />
               </Grid>
