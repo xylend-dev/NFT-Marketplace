@@ -1,4 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
+import { useSnackbar } from "notistack";
 import {
   Box,
   Card,
@@ -68,6 +69,8 @@ const PrettoSlider = styled(Slider)({
 
 export default function CreateNFT() {
   const { publicKey } = useWallet();
+  const { enqueueSnackbar } = useSnackbar();
+
   const [nftMetadata, setNftMetadata] = useState<MetadataJson>({
     name: "",
     symbol: "",
@@ -88,6 +91,11 @@ export default function CreateNFT() {
 
   const handleSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
+    if (!nftMetadata.image) {
+      enqueueSnackbar("Erro ao fazer o upload do NFT!", {
+        variant: "error",
+      });
+    }
   };
 
   const handleChangeTextField = (
