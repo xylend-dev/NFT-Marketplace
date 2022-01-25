@@ -10,22 +10,15 @@ import {
   Typography,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { MetadataJson } from "@metaplex/js";
+import {
+  MetadataJson,
+  MetadataJsonCreator,
+  MetadataJsonProperties,
+} from "@metaplex/js";
 import { useWallet } from "@solana/wallet-adapter-react";
 import ButtonWithTooltip from "../../components/ButtonWithTooltip";
 import Title from "../../components/Title";
 import CreateNFTCard from "../../components/CreateNFTCard";
-
-const royaltiesMarks = [
-  {
-    value: 50,
-    label: "50%",
-  },
-];
-
-function getRoyaltiesText(value: number) {
-  return value + "%";
-}
 
 const PrettoSlider = styled(Slider)({
   height: 8,
@@ -65,6 +58,17 @@ const PrettoSlider = styled(Slider)({
   },
 });
 
+const royaltiesMarks = [
+  {
+    value: 50 * 100,
+    label: "50%",
+  },
+];
+
+function getRoyaltiesText(value: number) {
+  return value / 100 + "%";
+}
+
 export default function CreateNFT() {
   const { publicKey } = useWallet();
   const { enqueueSnackbar } = useSnackbar();
@@ -89,11 +93,80 @@ export default function CreateNFT() {
 
   const handleSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
-    if (!nftMetadata.image) {
-      enqueueSnackbar("Erro ao fazer o upload do NFT!", {
-        variant: "error",
-      });
+
+    if (!publicKey) {
+      enqueueSnackbar(
+        "Não foi possível recuperar a chave pública da carteira digital",
+        {
+          variant: "error",
+        }
+      );
+      return;
     }
+
+    if (!nftMetadata.image) {
+      // enqueueSnackbar("Não foi possível fazer o upload do NFT", {
+      //   variant: "error",
+      // });
+      // return;
+    }
+
+    if (
+      (nftMetadata.collection?.name && !nftMetadata.collection?.family) ||
+      (!nftMetadata.collection?.name && nftMetadata.collection?.family)
+    ) {
+      enqueueSnackbar(
+        "As informações do grupo do colecionável estão inconsistentes",
+        {
+          variant: "error",
+        }
+      );
+      return;
+    }
+
+    const userWalletAddress = publicKey.toBase58();
+    const creator: MetadataJsonCreator = {
+      address: userWalletAddress,
+      verified: true,
+      share: 100,
+    };
+
+    const properties: MetadataJsonProperties = {
+      creators: [creator],
+      category: "image",
+      files: [{ uri: nftMetadata.image, type: "image/png" }] /* Change it */,
+    };
+
+    let finalNftMetadata: MetadataJson = {
+      name: nftMetadata.name,
+      symbol: nftMetadata.symbol,
+      description: nftMetadata.description,
+      seller_fee_basis_points: nftMetadata.seller_fee_basis_points,
+      image: nftMetadata.image,
+      ...(nftMetadata.external_url && {
+        external_url: nftMetadata.external_url,
+      }),
+      ...(nftMetadata.attributes &&
+        nftMetadata.attributes.length > 0 && {
+          attributes: nftMetadata.attributes.map((attribute) => {
+            return {
+              trait_type: attribute.trait_type,
+              value: attribute.value,
+            };
+          }),
+        }),
+      ...(nftMetadata.collection &&
+        nftMetadata.collection.name &&
+        nftMetadata.collection.family && {
+          collection: {
+            name: nftMetadata.collection.name,
+            family: nftMetadata.collection.family,
+          },
+        }),
+      properties: properties,
+    };
+
+    setNftMetadata(finalNftMetadata);
   };
 
   const handleChangeTextField = (
@@ -126,7 +199,6 @@ export default function CreateNFT() {
   };
 
   const handleSliderChange = (_: Event, value: number | number[]) => {
-    console.log(value);
     let sellerFeeBasisPoints = 0;
     if (value instanceof Array && value.length > 0) {
       sellerFeeBasisPoints = value[0];
@@ -257,9 +329,9 @@ export default function CreateNFT() {
                     aria-labelledby="input-slider"
                     aria-label="Royalties to NFT author"
                     defaultValue={0}
-                    step={1}
+                    step={1 * 100}
                     marks={royaltiesMarks}
-                    max={50}
+                    max={50 * 100}
                     valueLabelDisplay="on"
                     getAriaValueText={getRoyaltiesText}
                     valueLabelFormat={getRoyaltiesText}
