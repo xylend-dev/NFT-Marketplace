@@ -247,8 +247,8 @@ export default function CreateNFT() {
       ...(nftMetadata.external_url && {
         external_url: nftMetadata.external_url,
       }),
-      ...(nftMetadata.attributes &&
-        nftMetadata.attributes.length > 0 && {
+      ...(attributes &&
+        attributes.length > 0 && {
           attributes: attributes,
         }),
       ...(nftMetadata.collection &&
