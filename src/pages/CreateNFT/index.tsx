@@ -2,6 +2,7 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import { useSnackbar } from "notistack";
 import {
   Box,
+  Button,
   FormHelperText,
   Grid,
   Slider,
@@ -19,6 +20,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import ButtonWithTooltip from "../../components/ButtonWithTooltip";
 import Title from "../../components/Title";
 import CreateNFTCard from "../../components/CreateNFTCard";
+import { Add, Delete } from "@mui/icons-material";
 
 const PrettoSlider = styled(Slider)({
   height: 8,
@@ -58,6 +60,7 @@ const PrettoSlider = styled(Slider)({
   },
 });
 
+const MAX_ATTRIBUTE_FIELDS = 15;
 const royaltiesMarks = [
   {
     value: 50 * 100,
@@ -80,6 +83,12 @@ export default function CreateNFT() {
     seller_fee_basis_points: 0,
     image: "",
     external_url: "",
+    attributes: [
+      {
+        trait_type: "",
+        value: "",
+      },
+    ],
     collection: {
       family: "",
       name: "",
@@ -90,6 +99,63 @@ export default function CreateNFT() {
       creators: [],
     },
   });
+
+  const handleRemoveAttribute = () => {
+    if (!nftMetadata.attributes || nftMetadata.attributes.length <= 1) {
+      return;
+    }
+
+    const attributes = nftMetadata.attributes;
+    attributes.pop();
+
+    setNftMetadata({
+      ...nftMetadata,
+      attributes,
+    });
+  };
+
+  const handleAddAttribute = () => {
+    if (
+      !nftMetadata.attributes ||
+      nftMetadata.attributes.length > MAX_ATTRIBUTE_FIELDS
+    ) {
+      return;
+    }
+
+    const attributes = [
+      ...nftMetadata.attributes,
+      {
+        trait_type: "",
+        value: "",
+      },
+    ];
+
+    setNftMetadata({
+      ...nftMetadata,
+      attributes,
+    });
+  };
+
+  const handleChangeAttributes = (
+    evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    index: number
+  ) => {
+    if (!nftMetadata.attributes || nftMetadata.attributes.length < index + 1) {
+      return;
+    }
+
+    const { value, name } = evt.target;
+    const attributes = [...nftMetadata.attributes];
+    attributes[index] = {
+      ...attributes[index],
+      [name]: value,
+    };
+
+    setNftMetadata({
+      ...nftMetadata,
+      attributes,
+    });
+  };
 
   const handleSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
@@ -378,32 +444,74 @@ export default function CreateNFT() {
               variant="h6"
               component="h2"
               sx={{
-                marginBottom: (theme) => theme.spacing(2),
                 marginTop: (theme) => theme.spacing(2),
+                marginBottom: (theme) => theme.spacing(2),
               }}
             >
               Atributos
             </Typography>
-            <Grid container spacing={4}>
-              <Grid item xs={6}>
-                <TextField
-                  id="nft-property-name"
-                  label="Nome do atributo"
-                  variant="outlined"
-                  helperText="Nome da atributo relacionada ao ativo (ex.: cor)"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="nft-property-value"
-                  label="Valor da atributo"
-                  variant="outlined"
-                  helperText="Valor da atributo nomeado (ex.: azul)"
-                  fullWidth
-                />
-              </Grid>
-            </Grid>
+            <Box>
+              {nftMetadata.attributes &&
+                nftMetadata.attributes.map((attribute, index) => {
+                  return (
+                    <Grid
+                      container
+                      spacing={4}
+                      sx={{
+                        marginBottom: (theme) => theme.spacing(2),
+                      }}
+                    >
+                      <Grid item xs={6}>
+                        <TextField
+                          id="nft-property-name"
+                          name="trait_type"
+                          label="Nome do atributo"
+                          variant="outlined"
+                          value={attribute.trait_type}
+                          onChange={(evt) => handleChangeAttributes(evt, index)}
+                          helperText="Nome da atributo relacionada ao ativo (ex.: cor)"
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          id="nft-property-value"
+                          name="value"
+                          label="Valor do atributo"
+                          variant="outlined"
+                          value={attribute.value}
+                          onChange={(evt) => handleChangeAttributes(evt, index)}
+                          helperText="Valor do atributo nomeado (ex.: azul)"
+                          fullWidth
+                        />
+                      </Grid>
+                    </Grid>
+                  );
+                })}
+
+              <Box margin={2} marginLeft={0}>
+                {nftMetadata.attributes &&
+                  nftMetadata.attributes.length <= MAX_ATTRIBUTE_FIELDS && (
+                    <Button
+                      startIcon={<Add />}
+                      variant="outlined"
+                      onClick={() => handleAddAttribute()}
+                    >
+                      Adicionar atributo
+                    </Button>
+                  )}
+                {nftMetadata.attributes && nftMetadata.attributes.length > 1 && (
+                  <Button
+                    startIcon={<Delete />}
+                    variant="outlined"
+                    onClick={() => handleRemoveAttribute()}
+                    sx={{ marginLeft: (theme) => theme.spacing(2) }}
+                  >
+                    Remover último
+                  </Button>
+                )}
+              </Box>
+            </Box>
           </Grid>
         </Grid>
       </form>
