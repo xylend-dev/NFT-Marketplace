@@ -190,6 +190,41 @@ export default function CreateNFT() {
       return;
     }
 
+    const attributes = [];
+    if (nftMetadata.attributes && nftMetadata.attributes.length > 0) {
+      let hasAttributeMisuse = false;
+      for (let attribute of nftMetadata.attributes) {
+        if (attribute.trait_type === "" && attribute.value !== "") {
+          enqueueSnackbar(
+            `O atributo de valor '${attribute.value}' está sem nome`,
+            {
+              variant: "error",
+            }
+          );
+          hasAttributeMisuse = true;
+        }
+        if (attribute.trait_type !== "" && attribute.value === "") {
+          enqueueSnackbar(
+            `O atributo de nome '${attribute.trait_type}' está sem valor`,
+            {
+              variant: "error",
+            }
+          );
+          hasAttributeMisuse = true;
+        }
+
+        if (attribute.trait_type !== "" && attribute.value !== "") {
+          attributes.push({
+            trait_type: attribute.trait_type,
+            value: attribute.value,
+          });
+        }
+      }
+      if (hasAttributeMisuse) {
+        return;
+      }
+    }
+
     const userWalletAddress = publicKey.toBase58();
     const creator: MetadataJsonCreator = {
       address: userWalletAddress,
@@ -214,12 +249,7 @@ export default function CreateNFT() {
       }),
       ...(nftMetadata.attributes &&
         nftMetadata.attributes.length > 0 && {
-          attributes: nftMetadata.attributes.map((attribute) => {
-            return {
-              trait_type: attribute.trait_type,
-              value: attribute.value,
-            };
-          }),
+          attributes: attributes,
         }),
       ...(nftMetadata.collection &&
         nftMetadata.collection.name &&
