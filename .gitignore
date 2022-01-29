@@ -24,3 +24,4 @@ yarn-error.log*
 
 # Hide secrets
 .env
+src/assets/keys/
