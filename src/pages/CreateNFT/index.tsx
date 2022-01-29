@@ -21,6 +21,7 @@ import ButtonWithTooltip from "../../components/ButtonWithTooltip";
 import Title from "../../components/Title";
 import CreateNFTCard from "../../components/CreateNFTCard";
 import { Add, Delete } from "@mui/icons-material";
+import { uploadData } from "../../utils/arweave/uploadData";
 
 const PrettoSlider = styled(Slider)({
   height: 8,
@@ -261,6 +262,13 @@ export default function CreateNFT() {
         }),
       properties: properties,
     };
+
+    const manifestTx = await uploadData(
+      JSON.stringify(finalNftMetadata),
+      "application/json"
+    );
+    const manifestUri = `http://localhost:1984/${manifestTx.id}`;
+    console.log(manifestUri);
 
     setNftMetadata(finalNftMetadata);
   };
