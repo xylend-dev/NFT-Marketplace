@@ -19,9 +19,12 @@ import {
 import { useWallet } from "@solana/wallet-adapter-react";
 import ButtonWithTooltip from "../../components/ButtonWithTooltip";
 import Title from "../../components/Title";
-import CreateNFTCard from "../../components/CreateNFTCard";
+import CreateNFTCard, {
+  CreateNFTCardImageProps,
+} from "../../components/CreateNFTCard";
 import { Add, Delete } from "@mui/icons-material";
 import { uploadData } from "../../utils/arweave/uploadData";
+import { arweaveEndpoint } from "../../config/arweaveNetwork";
 
 const PrettoSlider = styled(Slider)({
   height: 8,
@@ -76,6 +79,7 @@ function getRoyaltiesText(value: number) {
 export default function CreateNFT() {
   const { publicKey } = useWallet();
   const { enqueueSnackbar } = useSnackbar();
+  const [image, setImage] = useState<CreateNFTCardImageProps>();
 
   const [nftMetadata, setNftMetadata] = useState<MetadataJson>({
     name: "",
@@ -162,12 +166,16 @@ export default function CreateNFT() {
     evt.preventDefault();
 
     if (!publicKey) {
-      enqueueSnackbar(
-        "Não foi possível recuperar a chave pública da carteira digital",
-        {
-          variant: "error",
-        }
-      );
+      enqueueSnackbar("Conecte-se a sua carteira digital", {
+        variant: "error",
+      });
+      return;
+    }
+
+    if (!image) {
+      enqueueSnackbar("Escolha uma imagem para criar o NFT", {
+        variant: "error",
+      });
       return;
     }
 
@@ -236,7 +244,7 @@ export default function CreateNFT() {
     const properties: MetadataJsonProperties = {
       creators: [creator],
       category: "image",
-      files: [{ uri: nftMetadata.image, type: "image/png" }] /* Change it */,
+      files: [{ uri: nftMetadata.image, type: image.type }],
     };
 
     let finalNftMetadata: MetadataJson = {
@@ -267,7 +275,7 @@ export default function CreateNFT() {
       JSON.stringify(finalNftMetadata),
       "application/json"
     );
-    const manifestUri = `http://localhost:1984/${manifestTx.id}`;
+    const manifestUri = `${arweaveEndpoint}/${manifestTx.id}`;
     console.log(manifestUri);
 
     setNftMetadata(finalNftMetadata);
@@ -338,6 +346,8 @@ export default function CreateNFT() {
             <CreateNFTCard
               name={nftMetadata.name}
               description={nftMetadata.description}
+              image={image}
+              setImage={setImage}
             />
           </Grid>
           <Grid item xs={8}>

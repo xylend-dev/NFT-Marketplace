@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useEffect, useState } from "react";
+import React, { useCallback, useMemo, useEffect } from "react";
 import { useSnackbar } from "notistack";
 import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -35,18 +35,24 @@ const rejectStyle = {
   borderColor: "#E10050",
 };
 
+export interface CreateNFTCardImageProps {
+  preview: string;
+  filename: string;
+  size: number;
+  type: string;
+  image: File;
+}
+
 export interface CreateNFTCardProps {
   name: string;
   description: string;
-}
-
-export interface ImageProps {
-  preview: string;
-  filename: string;
+  image?: CreateNFTCardImageProps;
+  setImage: React.Dispatch<
+    React.SetStateAction<CreateNFTCardImageProps | undefined>
+  >;
 }
 
 export default function CreateNFTCard(props: CreateNFTCardProps) {
-  const [image, setImage] = useState<ImageProps>();
   const { enqueueSnackbar } = useSnackbar();
 
   const onDropAccepted = useCallback(
@@ -58,21 +64,25 @@ export default function CreateNFTCard(props: CreateNFTCardProps) {
         return;
       }
       const file = acceptedFiles[0];
-      setImage(
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-          filename: file.name,
-        })
-      );
+
+      props.setImage({
+        preview: URL.createObjectURL(file),
+        filename: file.name,
+        size: file.size,
+        type: file.type,
+        image: file,
+      });
+
+      console.log(props.image);
     },
-    [enqueueSnackbar]
+    [enqueueSnackbar, props]
   );
 
   useEffect(() => {
-    if (image) {
-      URL.revokeObjectURL(image.preview);
+    if (props.image) {
+      URL.revokeObjectURL(props.image.preview);
     }
-  }, [image]);
+  }, [props.image]);
 
   const {
     getRootProps,
@@ -82,7 +92,7 @@ export default function CreateNFTCard(props: CreateNFTCardProps) {
     isDragReject,
   } = useDropzone({
     accept: "image/*",
-    maxSize: 2000000,
+    maxSize: 5 * 1024 * 1024,
     onDropAccepted: onDropAccepted,
     multiple: false,
   });
@@ -98,7 +108,7 @@ export default function CreateNFTCard(props: CreateNFTCardProps) {
   );
 
   const removeImage = () => {
-    setImage(undefined);
+    props.setImage(undefined);
   };
 
   return (
@@ -109,12 +119,12 @@ export default function CreateNFTCard(props: CreateNFTCardProps) {
         top: 0,
       }}
     >
-      {image && (
+      {props.image && (
         <Box>
           <CardMedia
             component="img"
-            image={image.preview}
-            alt={image.filename}
+            image={props.image.preview}
+            alt={props.image.filename}
             sx={{
               padding: (theme) => theme.spacing(2),
               paddingBottom: 0,
@@ -137,7 +147,7 @@ export default function CreateNFTCard(props: CreateNFTCardProps) {
           </div>
         </Box>
       )}
-      {!image && (
+      {!props.image && (
         <Box {...getRootProps({ style })}>
           <input {...getInputProps()} />
           <img
