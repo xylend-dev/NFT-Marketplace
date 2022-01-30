@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import {
+  actions,
   MetadataJson,
   MetadataJsonCreator,
   MetadataJsonProperties,
@@ -25,6 +26,7 @@ import CreateNFTCard, {
 import { Add, Delete } from "@mui/icons-material";
 import { uploadData } from "../../utils/arweave/uploadData";
 import { arweaveEndpoint } from "../../config/arweaveNetwork";
+import { connection } from "../../config/solanaNetwork";
 
 const PrettoSlider = styled(Slider)({
   height: 8,
@@ -77,7 +79,7 @@ function getRoyaltiesText(value: number) {
 }
 
 export default function CreateNFT() {
-  const { publicKey } = useWallet();
+  const { publicKey, signTransaction, signAllTransactions } = useWallet();
   const { enqueueSnackbar } = useSnackbar();
   const [image, setImage] = useState<CreateNFTCardImageProps>();
 
@@ -165,7 +167,7 @@ export default function CreateNFT() {
   const handleSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
 
-    if (!publicKey) {
+    if (!publicKey || !signTransaction || !signAllTransactions) {
       enqueueSnackbar("Conecte-se a sua carteira digital", {
         variant: "error",
       });
@@ -273,6 +275,18 @@ export default function CreateNFT() {
     );
     const metadataTransactionUri = `${arweaveEndpoint}/${metadataTransaction.id}`;
     console.log(metadataTransactionUri);
+
+    const nft = await actions.mintNFT({
+      connection: connection,
+      wallet: {
+        publicKey,
+        signTransaction,
+        signAllTransactions,
+      },
+      uri: metadataTransactionUri,
+      maxSupply: 1,
+    });
+    console.log(nft);
 
     setNftMetadata(finalNftMetadata);
   };
