@@ -79,8 +79,6 @@ export default function CreateNFTCard(props: CreateNFTCardProps) {
           image: imageArrayBuffer,
         });
       };
-
-      console.log(props.image);
     },
     [enqueueSnackbar, props]
   );

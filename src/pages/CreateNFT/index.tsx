@@ -156,6 +156,7 @@ export default function CreateNFT() {
       enqueueSnackbar("Erro ao realizar o upload da imagem do NFT", {
         variant: "error",
       });
+      setIsUploadingNFT(false);
       return;
     }
     const imageUri = `${arweaveEndpoint}/${imageTransaction.id}`;
@@ -200,11 +201,13 @@ export default function CreateNFT() {
       enqueueSnackbar("Erro ao realizar o upload dos metadados do NFT", {
         variant: "error",
       });
+      setIsUploadingNFT(false);
       return;
     }
     const metadataTransactionUri = `${arweaveEndpoint}/${metadataTransaction.id}`;
 
     setNftMetadata(finalNftMetadata);
+    setImage(undefined);
 
     let nft;
     try {
@@ -222,6 +225,7 @@ export default function CreateNFT() {
       enqueueSnackbar("Erro ao realizar a criação do NFT na blockchain Solana", {
         variant: "error",
       });
+      setIsUploadingNFT(false);
       return;
     }
 
