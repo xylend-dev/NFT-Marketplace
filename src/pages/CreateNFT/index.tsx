@@ -1,6 +1,11 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import Lottie from "react-lottie";
-import { useSnackbar } from "notistack";
+import {
+  actions,
+  MetadataJson,
+  MetadataJsonCreator,
+  MetadataJsonProperties,
+} from "@metaplex/js";
 import {
   Box,
   Button,
@@ -9,27 +14,21 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import {
-  actions,
-  MetadataJson,
-  MetadataJsonCreator,
-  MetadataJsonProperties,
-} from "@metaplex/js";
+import { Add, Delete } from "@mui/icons-material";
+import { useSnackbar } from "notistack";
 import { useWallet } from "@solana/wallet-adapter-react";
 import ButtonWithTooltip from "../../components/ButtonWithTooltip";
 import Title from "../../components/Title";
 import CreateNFTCard, {
   CreateNFTCardImageProps,
 } from "../../components/CreateNFTCard";
-import { Add, Delete } from "@mui/icons-material";
 import LoadingAnimation from "../../assets/animation/loading.json";
-import { cacheCreatedNft } from "../../utils/cache";
-import { uploadData } from "../../utils/arweave/uploadData";
 import { arweaveEndpoint } from "../../config/arweaveNetwork";
 import { connection } from "../../config/solanaNetwork";
 import { PrettoSlider } from "./styles";
 import { defaultAnimationOptions } from "../../utils/lottie";
+import { uploadData } from "../../utils/arweave/uploadData";
+import { cacheCreatedNft } from "../../utils/cache";
 import { defaultNftMetadata } from "../../utils/nft";
 import { validateNftAttributes } from "../../utils/validation";
 
@@ -286,7 +285,7 @@ export default function CreateNFT() {
           tooltipText="Conecte-se a sua carteira digital"
           disabled={!publicKey || isUploadingNFT ? true : false}
           variant="contained"
-          startIcon={<AddIcon />}
+          startIcon={<Add />}
           size="large"
         >
           Criar NFT
