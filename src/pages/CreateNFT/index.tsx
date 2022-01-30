@@ -1,4 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
+import Lottie from "react-lottie";
 import { useSnackbar } from "notistack";
 import {
   Box,
@@ -24,6 +25,7 @@ import CreateNFTCard, {
   CreateNFTCardImageProps,
 } from "../../components/CreateNFTCard";
 import { Add, Delete } from "@mui/icons-material";
+import LoadingAnimation from "../../assets/animation/loading.json";
 import { uploadData } from "../../utils/arweave/uploadData";
 import { arweaveEndpoint } from "../../config/arweaveNetwork";
 import { connection } from "../../config/solanaNetwork";
@@ -82,6 +84,15 @@ export default function CreateNFT() {
   const { publicKey, signTransaction, signAllTransactions } = useWallet();
   const { enqueueSnackbar } = useSnackbar();
   const [image, setImage] = useState<CreateNFTCardImageProps>();
+  const [isUploadingNFT, setIsUploadingNFT] = useState(false);
+
+  const defaultAnimationOptions = {
+    loop: true,
+    autoplay: true,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   const [nftMetadata, setNftMetadata] = useState<MetadataJson>({
     name: "",
@@ -166,11 +177,13 @@ export default function CreateNFT() {
 
   const handleSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
+    setIsUploadingNFT(true);
 
     if (!publicKey || !signTransaction || !signAllTransactions) {
       enqueueSnackbar("Conecte-se a sua carteira digital", {
         variant: "error",
       });
+      setIsUploadingNFT(false);
       return;
     }
 
@@ -178,6 +191,7 @@ export default function CreateNFT() {
       enqueueSnackbar("Escolha uma imagem para criar o NFT", {
         variant: "error",
       });
+      setIsUploadingNFT(false);
       return;
     }
 
@@ -191,6 +205,7 @@ export default function CreateNFT() {
           variant: "error",
         }
       );
+      setIsUploadingNFT(false);
       return;
     }
 
@@ -225,6 +240,7 @@ export default function CreateNFT() {
         }
       }
       if (hasAttributeMisuse) {
+        setIsUploadingNFT(false);
         return;
       }
     }
@@ -289,6 +305,7 @@ export default function CreateNFT() {
     console.log(nft);
 
     setNftMetadata(finalNftMetadata);
+    setIsUploadingNFT(false);
   };
 
   const handleChangeTextField = (
@@ -342,7 +359,7 @@ export default function CreateNFT() {
           form="nft-create"
           type="submit"
           tooltipText="Conecte-se a sua carteira digital"
-          disabled={publicKey ? false : true}
+          disabled={!publicKey || isUploadingNFT ? true : false}
           variant="contained"
           startIcon={<AddIcon />}
           size="large"
@@ -350,229 +367,264 @@ export default function CreateNFT() {
           Criar NFT
         </ButtonWithTooltip>
       </Grid>
-      <form id="nft-create" autoComplete="off" onSubmit={handleSubmit}>
-        <Grid container>
-          <Grid item xs={4}>
-            <CreateNFTCard
-              name={nftMetadata.name}
-              description={nftMetadata.description}
-              image={image}
-              setImage={setImage}
-            />
-          </Grid>
-          <Grid item xs={8}>
-            <Typography
-              color="primary"
-              variant="h5"
-              component="h2"
-              gutterBottom
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "500",
-                marginBottom: (theme) => theme.spacing(2),
-              }}
-            >
-              Informações básicas
-            </Typography>
-            <Grid container spacing={4}>
-              <Grid item xs={8}>
-                <TextField
-                  id="nft-name"
-                  name="name"
-                  required
-                  label="Nome"
-                  variant="outlined"
-                  value={nftMetadata.name}
-                  onChange={handleChangeTextField}
-                  helperText="Nome do colecionável"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  id="nft-symbol"
-                  name="symbol"
-                  label="Símbolo"
-                  variant="outlined"
-                  value={nftMetadata.symbol}
-                  onChange={handleChangeTextField}
-                  helperText="Símbolo do colecionável (ex.: BAYC)"
-                  fullWidth
-                />
-              </Grid>
+      {isUploadingNFT && (
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Lottie
+            options={{
+              ...defaultAnimationOptions,
+              animationData: LoadingAnimation,
+            }}
+            height={200}
+            width={200}
+          />
+          <Typography
+            color="primary"
+            variant="h5"
+            component="h2"
+            gutterBottom
+            align="center"
+            sx={{
+              maxWidth: "600px",
+            }}
+          >
+            Carregando imagens e criando o NFT...
+          </Typography>
+        </Box>
+      )}
+      {!isUploadingNFT && (
+        <form id="nft-create" autoComplete="off" onSubmit={handleSubmit}>
+          <Grid container>
+            <Grid item xs={4}>
+              <CreateNFTCard
+                name={nftMetadata.name}
+                description={nftMetadata.description}
+                image={image}
+                setImage={setImage}
+              />
             </Grid>
-            <TextField
-              id="nft-description"
-              name="description"
-              label="Descrição"
-              variant="outlined"
-              multiline
-              rows={2}
-              value={nftMetadata.description}
-              onChange={handleChangeTextField}
-              helperText="Descrição do colecionável"
-              fullWidth
-              sx={{ marginTop: (theme) => theme.spacing(3) }}
-            />
-            <Typography
-              color="primary"
-              variant="h5"
-              component="h2"
-              gutterBottom
-              sx={{
-                textTransform: "uppercase",
-                fontWeight: "500",
-                marginBottom: (theme) => theme.spacing(2),
-                marginTop: (theme) => theme.spacing(2),
-              }}
-            >
-              Informações avançadas
-            </Typography>
-            <Grid container spacing={4}>
-              <Grid item xs={6}>
-                <TextField
-                  id="nft-external-url"
-                  name="external_url"
-                  label="URL externa"
-                  variant="outlined"
-                  value={nftMetadata.external_url}
-                  onChange={handleChangeTextField}
-                  helperText="URL externa extra em que será possível visualizar o ativo"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Box>
-                  <PrettoSlider
-                    value={
-                      typeof nftMetadata.seller_fee_basis_points === "number"
-                        ? nftMetadata.seller_fee_basis_points
-                        : 0
-                    }
-                    onChange={handleSliderChange}
-                    aria-labelledby="input-slider"
-                    aria-label="Royalties to NFT author"
-                    defaultValue={0}
-                    step={1 * 100}
-                    marks={royaltiesMarks}
-                    max={50 * 100}
-                    valueLabelDisplay="on"
-                    getAriaValueText={getRoyaltiesText}
-                    valueLabelFormat={getRoyaltiesText}
+            <Grid item xs={8}>
+              <Typography
+                color="primary"
+                variant="h5"
+                component="h2"
+                gutterBottom
+                sx={{
+                  textTransform: "uppercase",
+                  fontWeight: "500",
+                  marginBottom: (theme) => theme.spacing(2),
+                }}
+              >
+                Informações básicas
+              </Typography>
+              <Grid container spacing={4}>
+                <Grid item xs={8}>
+                  <TextField
+                    id="nft-name"
+                    name="name"
+                    required
+                    label="Nome"
+                    variant="outlined"
+                    value={nftMetadata.name}
+                    onChange={handleChangeTextField}
+                    helperText="Nome do colecionável"
+                    fullWidth
                   />
-                  <FormHelperText sx={{ marginTop: "-2.0px" }}>
-                    Porcentagem de royalties paga ao criador a cada venda do
-                    ativo
-                  </FormHelperText>
-                </Box>
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    id="nft-symbol"
+                    name="symbol"
+                    label="Símbolo"
+                    variant="outlined"
+                    value={nftMetadata.symbol}
+                    onChange={handleChangeTextField}
+                    helperText="Símbolo do colecionável (ex.: BAYC)"
+                    fullWidth
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid
-              container
-              columnSpacing={4}
-              sx={{ marginTop: (theme) => theme.spacing(3) }}
-            >
-              <Grid item xs={6}>
-                <TextField
-                  id="nft-collection-name"
-                  name="collection_family"
-                  label="Grupo do colecionável"
-                  variant="outlined"
-                  value={nftMetadata.collection?.family}
-                  onChange={handleChangeTextField}
-                  helperText="Nome do grupo de uma coleção de ativos correlatos"
-                  fullWidth
-                />
+              <TextField
+                id="nft-description"
+                name="description"
+                label="Descrição"
+                variant="outlined"
+                multiline
+                rows={2}
+                value={nftMetadata.description}
+                onChange={handleChangeTextField}
+                helperText="Descrição do colecionável"
+                fullWidth
+                sx={{ marginTop: (theme) => theme.spacing(3) }}
+              />
+              <Typography
+                color="primary"
+                variant="h5"
+                component="h2"
+                gutterBottom
+                sx={{
+                  textTransform: "uppercase",
+                  fontWeight: "500",
+                  marginBottom: (theme) => theme.spacing(2),
+                  marginTop: (theme) => theme.spacing(2),
+                }}
+              >
+                Informações avançadas
+              </Typography>
+              <Grid container spacing={4}>
+                <Grid item xs={6}>
+                  <TextField
+                    id="nft-external-url"
+                    name="external_url"
+                    label="URL externa"
+                    variant="outlined"
+                    value={nftMetadata.external_url}
+                    onChange={handleChangeTextField}
+                    helperText="URL externa extra em que será possível visualizar o ativo"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <Box>
+                    <PrettoSlider
+                      value={
+                        typeof nftMetadata.seller_fee_basis_points === "number"
+                          ? nftMetadata.seller_fee_basis_points
+                          : 0
+                      }
+                      onChange={handleSliderChange}
+                      aria-labelledby="input-slider"
+                      aria-label="Royalties to NFT author"
+                      defaultValue={0}
+                      step={1 * 100}
+                      marks={royaltiesMarks}
+                      max={50 * 100}
+                      valueLabelDisplay="on"
+                      getAriaValueText={getRoyaltiesText}
+                      valueLabelFormat={getRoyaltiesText}
+                    />
+                    <FormHelperText sx={{ marginTop: "-2.0px" }}>
+                      Porcentagem de royalties paga ao criador a cada venda do
+                      ativo
+                    </FormHelperText>
+                  </Box>
+                </Grid>
               </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="nft-collection-item"
-                  name="collection_name"
-                  label="Nome identificador"
-                  variant="outlined"
-                  value={nftMetadata.collection?.name}
-                  onChange={handleChangeTextField}
-                  helperText="Nome que identifica unicamente o ativo na coleção"
-                  fullWidth
-                />
+              <Grid
+                container
+                columnSpacing={4}
+                sx={{ marginTop: (theme) => theme.spacing(3) }}
+              >
+                <Grid item xs={6}>
+                  <TextField
+                    id="nft-collection-name"
+                    name="collection_family"
+                    label="Grupo do colecionável"
+                    variant="outlined"
+                    value={nftMetadata.collection?.family}
+                    onChange={handleChangeTextField}
+                    helperText="Nome do grupo de uma coleção de ativos correlatos"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    id="nft-collection-item"
+                    name="collection_name"
+                    label="Nome identificador"
+                    variant="outlined"
+                    value={nftMetadata.collection?.name}
+                    onChange={handleChangeTextField}
+                    helperText="Nome que identifica unicamente o ativo na coleção"
+                    fullWidth
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-            <Typography
-              color="primary"
-              variant="h6"
-              component="h2"
-              sx={{
-                marginTop: (theme) => theme.spacing(2),
-                marginBottom: (theme) => theme.spacing(2),
-              }}
-            >
-              Atributos
-            </Typography>
-            <Box>
-              {nftMetadata.attributes &&
-                nftMetadata.attributes.map((attribute, index) => {
-                  return (
-                    <Grid
-                      container
-                      spacing={4}
-                      sx={{
-                        marginBottom: (theme) => theme.spacing(2),
-                      }}
-                    >
-                      <Grid item xs={6}>
-                        <TextField
-                          id="nft-property-name"
-                          name="trait_type"
-                          label="Nome do atributo"
-                          variant="outlined"
-                          value={attribute.trait_type}
-                          onChange={(evt) => handleChangeAttributes(evt, index)}
-                          helperText="Nome da atributo relacionada ao ativo (ex.: cor)"
-                          fullWidth
-                        />
-                      </Grid>
-                      <Grid item xs={6}>
-                        <TextField
-                          id="nft-property-value"
-                          name="value"
-                          label="Valor do atributo"
-                          variant="outlined"
-                          value={attribute.value}
-                          onChange={(evt) => handleChangeAttributes(evt, index)}
-                          helperText="Valor do atributo nomeado (ex.: azul)"
-                          fullWidth
-                        />
-                      </Grid>
-                    </Grid>
-                  );
-                })}
-
-              <Box margin={2} marginLeft={0}>
+              <Typography
+                color="primary"
+                variant="h6"
+                component="h2"
+                sx={{
+                  marginTop: (theme) => theme.spacing(2),
+                  marginBottom: (theme) => theme.spacing(2),
+                }}
+              >
+                Atributos
+              </Typography>
+              <Box>
                 {nftMetadata.attributes &&
-                  nftMetadata.attributes.length <= MAX_ATTRIBUTE_FIELDS && (
+                  nftMetadata.attributes.map((attribute, index) => {
+                    return (
+                      <Grid
+                        container
+                        spacing={4}
+                        sx={{
+                          marginBottom: (theme) => theme.spacing(2),
+                        }}
+                      >
+                        <Grid item xs={6}>
+                          <TextField
+                            id="nft-property-name"
+                            name="trait_type"
+                            label="Nome do atributo"
+                            variant="outlined"
+                            value={attribute.trait_type}
+                            onChange={(evt) =>
+                              handleChangeAttributes(evt, index)
+                            }
+                            helperText="Nome da atributo relacionada ao ativo (ex.: cor)"
+                            fullWidth
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="nft-property-value"
+                            name="value"
+                            label="Valor do atributo"
+                            variant="outlined"
+                            value={attribute.value}
+                            onChange={(evt) =>
+                              handleChangeAttributes(evt, index)
+                            }
+                            helperText="Valor do atributo nomeado (ex.: azul)"
+                            fullWidth
+                          />
+                        </Grid>
+                      </Grid>
+                    );
+                  })}
+
+                <Box margin={2} marginLeft={0}>
+                  {nftMetadata.attributes &&
+                    nftMetadata.attributes.length <= MAX_ATTRIBUTE_FIELDS && (
+                      <Button
+                        startIcon={<Add />}
+                        variant="outlined"
+                        onClick={() => handleAddAttribute()}
+                      >
+                        Adicionar atributo
+                      </Button>
+                    )}
+                  {nftMetadata.attributes && nftMetadata.attributes.length > 1 && (
                     <Button
-                      startIcon={<Add />}
+                      startIcon={<Delete />}
                       variant="outlined"
-                      onClick={() => handleAddAttribute()}
+                      onClick={() => handleRemoveAttribute()}
+                      sx={{ marginLeft: (theme) => theme.spacing(2) }}
                     >
-                      Adicionar atributo
+                      Remover último
                     </Button>
                   )}
-                {nftMetadata.attributes && nftMetadata.attributes.length > 1 && (
-                  <Button
-                    startIcon={<Delete />}
-                    variant="outlined"
-                    onClick={() => handleRemoveAttribute()}
-                    sx={{ marginLeft: (theme) => theme.spacing(2) }}
-                  >
-                    Remover último
-                  </Button>
-                )}
+                </Box>
               </Box>
-            </Box>
+            </Grid>
           </Grid>
-        </Grid>
-      </form>
+        </form>
+      )}
     </>
   );
 }
