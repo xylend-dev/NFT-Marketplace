@@ -40,7 +40,7 @@ export interface CreateNFTCardImageProps {
   filename: string;
   size: number;
   type: string;
-  image: File;
+  image: ArrayBuffer;
 }
 
 export interface CreateNFTCardProps {
@@ -56,7 +56,7 @@ export default function CreateNFTCard(props: CreateNFTCardProps) {
   const { enqueueSnackbar } = useSnackbar();
 
   const onDropAccepted = useCallback(
-    (acceptedFiles: any) => {
+    (acceptedFiles: Array<File>) => {
       if (acceptedFiles.length !== 1) {
         enqueueSnackbar("Não foi possível carregar a imagem!", {
           variant: "error",
@@ -65,13 +65,20 @@ export default function CreateNFTCard(props: CreateNFTCardProps) {
       }
       const file = acceptedFiles[0];
 
-      props.setImage({
-        preview: URL.createObjectURL(file),
-        filename: file.name,
-        size: file.size,
-        type: file.type,
-        image: file,
-      });
+      let reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+
+      reader.onload = function () {
+        const imageArrayBuffer = reader.result as ArrayBuffer;
+
+        props.setImage({
+          preview: URL.createObjectURL(file),
+          filename: file.name,
+          size: file.size,
+          type: file.type,
+          image: imageArrayBuffer,
+        });
+      };
 
       console.log(props.image);
     },

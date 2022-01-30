@@ -2,22 +2,25 @@ import Transaction from "arweave/node/lib/transaction";
 import { arweave, arweaveJWK } from "../../config/arweaveNetwork";
 
 export const uploadData = async (
-  data: Buffer | string,
+  data: ArrayBuffer | Buffer | string,
   fileType: string,
   isUploadByChunk = false
 ): Promise<Transaction> => {
-  const tx = await arweave.createTransaction({ data: data }, arweaveJWK);
-  tx.addTag("Content-Type", fileType);
-  await arweave.transactions.sign(tx, arweaveJWK);
+  const transaction = await arweave.createTransaction(
+    { data: data },
+    arweaveJWK
+  );
+  transaction.addTag("Content-Type", fileType);
+  await arweave.transactions.sign(transaction, arweaveJWK);
 
   if (isUploadByChunk) {
-    const uploader = await arweave.transactions.getUploader(tx);
+    const uploader = await arweave.transactions.getUploader(transaction);
     while (!uploader.isComplete) {
       await uploader.uploadChunk();
     }
   }
 
-  await arweave.transactions.post(tx);
+  await arweave.transactions.post(transaction);
 
-  return tx;
+  return transaction;
 };

@@ -179,13 +179,6 @@ export default function CreateNFT() {
       return;
     }
 
-    if (!nftMetadata.image) {
-      // enqueueSnackbar("Não foi possível fazer o upload do NFT", {
-      //   variant: "error",
-      // });
-      // return;
-    }
-
     if (
       (nftMetadata.collection?.name && !nftMetadata.collection?.family) ||
       (!nftMetadata.collection?.name && nftMetadata.collection?.family)
@@ -247,12 +240,15 @@ export default function CreateNFT() {
       files: [{ uri: nftMetadata.image, type: image.type }],
     };
 
+    const imageTransaction = await uploadData(image.image, image.type, true);
+    const imageUri = `${arweaveEndpoint}/${imageTransaction.id}`;
+
     let finalNftMetadata: MetadataJson = {
       name: nftMetadata.name,
       symbol: nftMetadata.symbol,
       description: nftMetadata.description,
       seller_fee_basis_points: nftMetadata.seller_fee_basis_points,
-      image: nftMetadata.image,
+      image: imageUri,
       ...(nftMetadata.external_url && {
         external_url: nftMetadata.external_url,
       }),
@@ -271,12 +267,12 @@ export default function CreateNFT() {
       properties: properties,
     };
 
-    const manifestTx = await uploadData(
+    const metadataTransaction = await uploadData(
       JSON.stringify(finalNftMetadata),
       "application/json"
     );
-    const manifestUri = `${arweaveEndpoint}/${manifestTx.id}`;
-    console.log(manifestUri);
+    const metadataTransactionUri = `${arweaveEndpoint}/${metadataTransaction.id}`;
+    console.log(metadataTransactionUri);
 
     setNftMetadata(finalNftMetadata);
   };
