@@ -6,8 +6,6 @@ import {
   Button,
   FormHelperText,
   Grid,
-  Slider,
-  styled,
   TextField,
   Typography,
 } from "@mui/material";
@@ -30,44 +28,9 @@ import { cacheCreatedNft } from "../../utils/cache";
 import { uploadData } from "../../utils/arweave/uploadData";
 import { arweaveEndpoint } from "../../config/arweaveNetwork";
 import { connection } from "../../config/solanaNetwork";
-
-const PrettoSlider = styled(Slider)({
-  height: 8,
-  "& .MuiSlider-track": {
-    border: "none",
-  },
-  "& .MuiSlider-thumb": {
-    height: 24,
-    width: 24,
-    backgroundColor: "#FFFFFF",
-    border: "2px solid currentColor",
-    "&:focus, &:hover, &.Mui-active, &.Mui-focusVisible": {
-      boxShadow: "inherit",
-    },
-    "&:before": {
-      display: "none",
-    },
-  },
-  "& .MuiSlider-valueLabel": {
-    lineHeight: 1.2,
-    fontSize: 12,
-    background: "unset",
-    padding: 0,
-    width: 32,
-    height: 32,
-    borderRadius: "50% 50% 50% 0",
-    backgroundColor: "#FB8500",
-    transformOrigin: "bottom left",
-    transform: "translate(50%, -100%) rotate(-45deg) scale(0)",
-    "&:before": { display: "none" },
-    "&.MuiSlider-valueLabelOpen": {
-      transform: "translate(50%, -100%) rotate(-45deg) scale(1)",
-    },
-    "& > *": {
-      transform: "rotate(45deg)",
-    },
-  },
-});
+import { PrettoSlider } from "./styles";
+import { defaultAnimationOptions } from "../../utils/lottie";
+import { defaultNftMetadata } from "../../utils/nft";
 
 const MAX_ATTRIBUTE_FIELDS = 15;
 const royaltiesMarks = [
@@ -87,51 +50,8 @@ export default function CreateNFT() {
   const [image, setImage] = useState<CreateNFTCardImageProps>();
   const [isUploadingNFT, setIsUploadingNFT] = useState(false);
 
-  const defaultAnimationOptions = {
-    loop: true,
-    autoplay: true,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-
-  const [nftMetadata, setNftMetadata] = useState<MetadataJson>({
-    name: "",
-    symbol: "",
-    description: "",
-    seller_fee_basis_points: 0,
-    image: "",
-    external_url: "",
-    attributes: [
-      {
-        trait_type: "",
-        value: "",
-      },
-    ],
-    collection: {
-      family: "",
-      name: "",
-    },
-    properties: {
-      files: [],
-      category: "image",
-      creators: [],
-    },
-  });
-
-  const handleRemoveAttribute = () => {
-    if (!nftMetadata.attributes || nftMetadata.attributes.length <= 1) {
-      return;
-    }
-
-    const attributes = nftMetadata.attributes;
-    attributes.pop();
-
-    setNftMetadata({
-      ...nftMetadata,
-      attributes,
-    });
-  };
+  const [nftMetadata, setNftMetadata] =
+    useState<MetadataJson>(defaultNftMetadata);
 
   const handleAddAttribute = () => {
     if (
@@ -169,6 +89,20 @@ export default function CreateNFT() {
       ...attributes[index],
       [name]: value,
     };
+
+    setNftMetadata({
+      ...nftMetadata,
+      attributes,
+    });
+  };
+
+  const handleRemoveAttribute = () => {
+    if (!nftMetadata.attributes || nftMetadata.attributes.length <= 1) {
+      return;
+    }
+
+    const attributes = nftMetadata.attributes;
+    attributes.pop();
 
     setNftMetadata({
       ...nftMetadata,
