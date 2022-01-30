@@ -26,6 +26,7 @@ import CreateNFTCard, {
 } from "../../components/CreateNFTCard";
 import { Add, Delete } from "@mui/icons-material";
 import LoadingAnimation from "../../assets/animation/loading.json";
+import { cacheCreatedNft } from "../../utils/cache";
 import { uploadData } from "../../utils/arweave/uploadData";
 import { arweaveEndpoint } from "../../config/arweaveNetwork";
 import { connection } from "../../config/solanaNetwork";
@@ -306,6 +307,10 @@ export default function CreateNFT() {
 
     setNftMetadata(finalNftMetadata);
     setIsUploadingNFT(false);
+    cacheCreatedNft(metadataTransactionUri, nft.mint.toString());
+    enqueueSnackbar(`NFT ${finalNftMetadata.name} criado com sucesso!`, {
+      variant: "success",
+    });
   };
 
   const handleChangeTextField = (
