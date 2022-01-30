@@ -49,7 +49,6 @@ export default function CreateNFT() {
   const { enqueueSnackbar } = useSnackbar();
   const [image, setImage] = useState<CreateNFTCardImageProps>();
   const [isUploadingNFT, setIsUploadingNFT] = useState(false);
-
   const [nftMetadata, setNftMetadata] =
     useState<MetadataJson>(defaultNftMetadata);
 
@@ -205,6 +204,8 @@ export default function CreateNFT() {
     }
     const metadataTransactionUri = `${arweaveEndpoint}/${metadataTransaction.id}`;
 
+    setNftMetadata(finalNftMetadata);
+
     let nft;
     try {
       nft = await actions.mintNFT({
@@ -218,13 +219,12 @@ export default function CreateNFT() {
         maxSupply: 1,
       });
     } catch (e) {
-      enqueueSnackbar("Erro ao realizar a criação do NFT na blockchain", {
+      enqueueSnackbar("Erro ao realizar a criação do NFT na blockchain Solana", {
         variant: "error",
       });
       return;
     }
 
-    setNftMetadata(finalNftMetadata);
     setIsUploadingNFT(false);
     cacheCreatedNft(metadataTransactionUri, nft.mint.toString());
     enqueueSnackbar(`NFT ${finalNftMetadata.name} criado com sucesso!`, {
@@ -297,6 +297,9 @@ export default function CreateNFT() {
           flexDirection="column"
           alignItems="center"
           justifyContent="center"
+          sx={{
+            marginTop: "10vh"
+          }}
         >
           <Lottie
             options={{
@@ -316,7 +319,7 @@ export default function CreateNFT() {
               maxWidth: "600px",
             }}
           >
-            Carregando imagens e criando o NFT...
+            Carregando imagem e criando o NFT...
           </Typography>
         </Box>
       )}

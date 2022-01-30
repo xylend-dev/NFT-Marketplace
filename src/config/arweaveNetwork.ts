@@ -1,17 +1,17 @@
 import Arweave from "arweave";
 import { JWKInterface } from "arweave/node/lib/wallet";
 import TestWeave from "testweave-sdk";
-import arweaveJWKFile from "../assets/keys/arweave-jwk.json";
 
 const environment = process.env.REACT_APP_ENV;
 
 const arweaveOptions = {
-  host: process.env.REACT_APP_ARWEAVE_HOST,
-  port: Number(process.env.REACT_APP_ARWEAVE_PORT),
-  protocol: process.env.REACT_APP_ARWEAVE_PROTOCOL,
+  host: process.env.REACT_APP_ARWEAVE_HOST || "arweave.net",
+  port: Number(process.env.REACT_APP_ARWEAVE_PORT || "443"),
+  protocol: process.env.REACT_APP_ARWEAVE_PROTOCOL || "https",
   timeout: 20000,
   logging: false,
 };
+
 const arweave = Arweave.init(arweaveOptions);
 
 const arweaveEndpoint =
@@ -21,7 +21,9 @@ const arweaveEndpoint =
   ":" +
   arweaveOptions.port;
 
-let arweaveJWK: JWKInterface = arweaveJWKFile;
+const arweaveJWKRaw = process.env.REACT_APP_ARWEAVE_KEY;
+let arweaveJWK: JWKInterface = JSON.parse(arweaveJWKRaw || "{}");
+
 let testWeave: TestWeave;
 if (environment !== "production") {
   (async () => {
@@ -33,6 +35,12 @@ if (environment !== "production") {
       await testWeave!.mine();
     }, BLOCK_TIMER);
   })();
+} else {
+  if (Object.keys(arweaveJWK).length === 0) {
+    throw Error(
+      "Running in production mode without arweave key configured. Check your .env file."
+    );
+  }
 }
 
 export { arweave, testWeave, arweaveOptions, arweaveJWK, arweaveEndpoint };
