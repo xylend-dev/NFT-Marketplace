@@ -151,7 +151,15 @@ export default function CreateNFT() {
       share: 100,
     };
 
-    const imageTransaction = await uploadData(image.image, image.type, true);
+    let imageTransaction;
+    try {
+      imageTransaction = await uploadData(image.image, image.type, true);
+    } catch (e) {
+      enqueueSnackbar("Erro ao realizar o upload da imagem do NFT", {
+        variant: "error",
+      });
+      return;
+    }
     const imageUri = `${arweaveEndpoint}/${imageTransaction.id}`;
 
     const properties: MetadataJsonProperties = {
@@ -184,22 +192,38 @@ export default function CreateNFT() {
       properties: properties,
     };
 
-    const metadataTransaction = await uploadData(
-      JSON.stringify(finalNftMetadata),
-      "application/json"
-    );
+    let metadataTransaction;
+    try {
+      metadataTransaction = await uploadData(
+        JSON.stringify(finalNftMetadata),
+        "application/json"
+      );
+    } catch (e) {
+      enqueueSnackbar("Erro ao realizar o upload dos metadados do NFT", {
+        variant: "error",
+      });
+      return;
+    }
     const metadataTransactionUri = `${arweaveEndpoint}/${metadataTransaction.id}`;
 
-    const nft = await actions.mintNFT({
-      connection: connection,
-      wallet: {
-        publicKey,
-        signTransaction,
-        signAllTransactions,
-      },
-      uri: metadataTransactionUri,
-      maxSupply: 1,
-    });
+    let nft;
+    try {
+      nft = await actions.mintNFT({
+        connection: connection,
+        wallet: {
+          publicKey,
+          signTransaction,
+          signAllTransactions,
+        },
+        uri: metadataTransactionUri,
+        maxSupply: 1,
+      });
+    } catch (e) {
+      enqueueSnackbar("Erro ao realizar a criação do NFT na blockchain", {
+        variant: "error",
+      });
+      return;
+    }
 
     setNftMetadata(finalNftMetadata);
     setIsUploadingNFT(false);
