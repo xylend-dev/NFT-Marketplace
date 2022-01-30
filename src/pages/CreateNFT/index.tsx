@@ -31,6 +31,7 @@ import { connection } from "../../config/solanaNetwork";
 import { PrettoSlider } from "./styles";
 import { defaultAnimationOptions } from "../../utils/lottie";
 import { defaultNftMetadata } from "../../utils/nft";
+import { validateNftAttributes } from "../../utils/validation";
 
 const MAX_ATTRIBUTE_FIELDS = 15;
 const royaltiesMarks = [
@@ -63,16 +64,10 @@ export default function CreateNFT() {
 
     const attributes = [
       ...nftMetadata.attributes,
-      {
-        trait_type: "",
-        value: "",
-      },
+      { trait_type: "", value: "" },
     ];
 
-    setNftMetadata({
-      ...nftMetadata,
-      attributes,
-    });
+    setNftMetadata({ ...nftMetadata, attributes });
   };
 
   const handleChangeAttributes = (
@@ -90,10 +85,7 @@ export default function CreateNFT() {
       [name]: value,
     };
 
-    setNftMetadata({
-      ...nftMetadata,
-      attributes,
-    });
+    setNftMetadata({ ...nftMetadata, attributes });
   };
 
   const handleRemoveAttribute = () => {
@@ -104,10 +96,7 @@ export default function CreateNFT() {
     const attributes = nftMetadata.attributes;
     attributes.pop();
 
-    setNftMetadata({
-      ...nftMetadata,
-      attributes,
-    });
+    setNftMetadata({ ...nftMetadata, attributes });
   };
 
   const handleSubmit = async (evt: FormEvent) => {
@@ -144,40 +133,15 @@ export default function CreateNFT() {
       return;
     }
 
-    const attributes = [];
-    if (nftMetadata.attributes && nftMetadata.attributes.length > 0) {
-      let hasAttributeMisuse = false;
-      for (let attribute of nftMetadata.attributes) {
-        if (attribute.trait_type === "" && attribute.value !== "") {
-          enqueueSnackbar(
-            `O atributo de valor '${attribute.value}' está sem nome`,
-            {
-              variant: "error",
-            }
-          );
-          hasAttributeMisuse = true;
-        }
-        if (attribute.trait_type !== "" && attribute.value === "") {
-          enqueueSnackbar(
-            `O atributo de nome '${attribute.trait_type}' está sem valor`,
-            {
-              variant: "error",
-            }
-          );
-          hasAttributeMisuse = true;
-        }
-
-        if (attribute.trait_type !== "" && attribute.value !== "") {
-          attributes.push({
-            trait_type: attribute.trait_type,
-            value: attribute.value,
-          });
-        }
+    const { finalAttributes, errors } = validateNftAttributes(
+      nftMetadata.attributes
+    );
+    if (errors) {
+      for (let error in errors) {
+        enqueueSnackbar(error, { variant: "error" });
       }
-      if (hasAttributeMisuse) {
-        setIsUploadingNFT(false);
-        return;
-      }
+      setIsUploadingNFT(false);
+      return;
     }
 
     const userWalletAddress = publicKey.toBase58();
@@ -205,9 +169,9 @@ export default function CreateNFT() {
       ...(nftMetadata.external_url && {
         external_url: nftMetadata.external_url,
       }),
-      ...(attributes &&
-        attributes.length > 0 && {
-          attributes: attributes,
+      ...(finalAttributes &&
+        finalAttributes.length > 0 && {
+          attributes: finalAttributes,
         }),
       ...(nftMetadata.collection &&
         nftMetadata.collection.name &&
@@ -225,7 +189,6 @@ export default function CreateNFT() {
       "application/json"
     );
     const metadataTransactionUri = `${arweaveEndpoint}/${metadataTransaction.id}`;
-    console.log(metadataTransactionUri);
 
     const nft = await actions.mintNFT({
       connection: connection,
@@ -237,7 +200,6 @@ export default function CreateNFT() {
       uri: metadataTransactionUri,
       maxSupply: 1,
     });
-    console.log(nft);
 
     setNftMetadata(finalNftMetadata);
     setIsUploadingNFT(false);
