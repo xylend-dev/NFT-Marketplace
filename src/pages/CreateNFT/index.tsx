@@ -134,8 +134,8 @@ export default function CreateNFT() {
     const { finalAttributes, errors } = validateNftAttributes(
       nftMetadata.attributes
     );
-    if (errors) {
-      for (let error in errors) {
+    if (errors.length !== 0) {
+      for (let error of errors) {
         enqueueSnackbar(error, { variant: "error" });
       }
       setIsUploadingNFT(false);

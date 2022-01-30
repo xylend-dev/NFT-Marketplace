@@ -13,7 +13,12 @@ export function cacheCreatedNft(arweaveUri: string, mint: string) {
   let createdNftsRaw = localStorage.getItem(CREATED_NFT_KEY);
   let createdNfts: cacheCreatedNftProps = {};
   if (createdNftsRaw) {
-    createdNfts = JSON.parse(createdNftsRaw);
+    try {
+      createdNfts = JSON.parse(createdNftsRaw);
+    } catch (e) {
+      console.log("Unexpected error while trying to parse created NFTs");
+      return;
+    }
   }
 
   if (!(mint in createdNfts)) {
@@ -23,6 +28,12 @@ export function cacheCreatedNft(arweaveUri: string, mint: string) {
     };
   }
 
-  createdNftsRaw = JSON.stringify(createdNfts);
-  localStorage.setItem(CREATED_NFT_KEY, createdNftsRaw);
+  console.log("Minted NFT data: ", createdNfts[mint]);
+  try {
+    createdNftsRaw = JSON.stringify(createdNfts);
+    localStorage.setItem(CREATED_NFT_KEY, createdNftsRaw);
+  } catch (e) {
+    console.log("Missing storage to cache the metadata of the created NFT");
+    return;
+  }
 }
