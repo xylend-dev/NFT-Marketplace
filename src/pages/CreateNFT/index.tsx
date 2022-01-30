@@ -234,14 +234,14 @@ export default function CreateNFT() {
       share: 100,
     };
 
+    const imageTransaction = await uploadData(image.image, image.type, true);
+    const imageUri = `${arweaveEndpoint}/${imageTransaction.id}`;
+
     const properties: MetadataJsonProperties = {
       creators: [creator],
       category: "image",
-      files: [{ uri: nftMetadata.image, type: image.type }],
+      files: [{ uri: imageUri, type: image.type }],
     };
-
-    const imageTransaction = await uploadData(image.image, image.type, true);
-    const imageUri = `${arweaveEndpoint}/${imageTransaction.id}`;
 
     let finalNftMetadata: MetadataJson = {
       name: nftMetadata.name,
