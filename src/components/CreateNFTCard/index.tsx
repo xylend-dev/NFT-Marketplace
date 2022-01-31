@@ -142,7 +142,7 @@ export default function CreateNFTCard(props: CreateNFTCardProps) {
                 backgroundColor: "white",
                 borderRadius: "50%",
                 cursor: "pointer",
-                fill: (theme) => theme.palette.primary.main,
+                fill: "#FB8500",
                 top: (theme) => theme.spacing(1),
                 right: (theme) => theme.spacing(1),
                 zIndex: 2,
