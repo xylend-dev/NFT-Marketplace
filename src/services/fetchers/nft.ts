@@ -1,11 +1,11 @@
-import { connection } from "../../config/solanaNetwork";
 import { Metadata } from "@metaplex-foundation/mpl-token-metadata";
+import { MetadataJson } from "@metaplex/js";
+import { connection } from "../../config/solanaNetwork";
 import api from "../api";
-import { Nft } from "../../types/types";
 import { PublicKey } from "@solana/web3.js";
 
 export const getNftMetadata = async (arweaveUri: string) => {
-  const nftMetadata = await api.get<Nft>(arweaveUri);
+  const nftMetadata = await api.get<MetadataJson>(arweaveUri);
   return nftMetadata.data;
 };
 
