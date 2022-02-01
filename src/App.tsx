@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { SnackbarProvider } from "notistack";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
   ConnectionProvider,
@@ -50,15 +51,17 @@ export default function App() {
       <ConnectionProvider endpoint={endpoint}>
         <WalletProvider wallets={wallets} autoConnect>
           <WalletDialogProvider>
-            <CssBaseline />
-            <Navbar />
-            <Container
-              component="main"
-              maxWidth="xl"
-              sx={{ padding: (theme) => `${theme.spacing(5)} !important` }}
-            >
-              <Routes />
-            </Container>
+            <SnackbarProvider>
+              <CssBaseline />
+              <Navbar />
+              <Container
+                component="main"
+                maxWidth="xl"
+                sx={{ padding: (theme) => `${theme.spacing(5)} !important` }}
+              >
+                <Routes />
+              </Container>
+            </SnackbarProvider>
           </WalletDialogProvider>
         </WalletProvider>
       </ConnectionProvider>
