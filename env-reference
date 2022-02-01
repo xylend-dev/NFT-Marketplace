@@ -8,5 +8,6 @@ REACT_APP_API_BASE_URL=your api url
 # Arweave Wallet Key is used to upload image and metadata of the NFT.
 # The key is a json file that MUST be stringified. To get this string,
 # press F12 to open DevTools, go to "Console",
-# set a = <paste your json file content> and then run JSON.stringify(a)
+# set a = <paste your json file content>, run JSON.stringify(a)
+# and get the string without the single quotes around
 REACT_APP_ARWEAVE_KEY=your stringified key
