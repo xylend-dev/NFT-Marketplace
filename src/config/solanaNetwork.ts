@@ -9,6 +9,6 @@ if (environment === "production") {
 }
 
 const endpoint = clusterApiUrl(network);
-const connection = new Connection(endpoint, "processed");
+const connection = new Connection(endpoint, "finalized");
 
 export { network, endpoint, connection };
