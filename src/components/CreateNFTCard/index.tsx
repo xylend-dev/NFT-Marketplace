@@ -97,7 +97,7 @@ export default function CreateNFTCard(props: CreateNFTCardProps) {
     isDragReject,
   } = useDropzone({
     accept: "image/*",
-    maxSize: 5 * 1024 * 1024,
+    maxSize: 26 * 1000 * 1000,
     onDropAccepted: onDropAccepted,
     multiple: false,
   });

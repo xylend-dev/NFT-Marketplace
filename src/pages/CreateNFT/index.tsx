@@ -206,7 +206,18 @@ export default function CreateNFT() {
     }
     const metadataTransactionUri = `${arweaveEndpoint}/${metadataTransaction.id}`;
 
-    setNftMetadata(finalNftMetadata);
+    setNftMetadata({
+      ...finalNftMetadata,
+      ...(finalAttributes &&
+        finalAttributes.length === 0 && {
+          attributes: [
+            {
+              trait_type: "",
+              value: "",
+            },
+          ],
+        }),
+    });
     setImage(undefined);
 
     let nft;
@@ -222,9 +233,12 @@ export default function CreateNFT() {
         maxSupply: 1,
       });
     } catch (e) {
-      enqueueSnackbar("Erro ao realizar a criação do NFT na blockchain Solana", {
-        variant: "error",
-      });
+      enqueueSnackbar(
+        "Erro ao realizar a criação do NFT na blockchain Solana",
+        {
+          variant: "error",
+        }
+      );
       setIsUploadingNFT(false);
       return;
     }
@@ -302,7 +316,7 @@ export default function CreateNFT() {
           alignItems="center"
           justifyContent="center"
           sx={{
-            marginTop: "10vh"
+            marginTop: "10vh",
           }}
         >
           <Lottie
@@ -330,7 +344,7 @@ export default function CreateNFT() {
       {!isUploadingNFT && (
         <form id="nft-create" autoComplete="off" onSubmit={handleSubmit}>
           <Grid container>
-            <Grid item xs={4}>
+            <Grid item key="image" xs={4}>
               <CreateNFTCard
                 name={nftMetadata.name}
                 description={nftMetadata.description}
@@ -338,7 +352,7 @@ export default function CreateNFT() {
                 setImage={setImage}
               />
             </Grid>
-            <Grid item xs={8}>
+            <Grid item key="title" xs={8}>
               <Typography
                 color="primary"
                 variant="h5"
@@ -353,7 +367,7 @@ export default function CreateNFT() {
                 Informações básicas
               </Typography>
               <Grid container spacing={4}>
-                <Grid item xs={8}>
+                <Grid item key="name" xs={8}>
                   <TextField
                     id="nft-name"
                     name="name"
@@ -366,7 +380,7 @@ export default function CreateNFT() {
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item key="symbol" xs={4}>
                   <TextField
                     id="nft-symbol"
                     name="symbol"
@@ -407,7 +421,7 @@ export default function CreateNFT() {
                 Informações avançadas
               </Typography>
               <Grid container spacing={4}>
-                <Grid item xs={6}>
+                <Grid item key="external_url" xs={6}>
                   <TextField
                     id="nft-external-url"
                     name="external_url"
@@ -419,7 +433,7 @@ export default function CreateNFT() {
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item key="seller_fee_basis_points" xs={6}>
                   <Box>
                     <PrettoSlider
                       value={
@@ -450,7 +464,7 @@ export default function CreateNFT() {
                 columnSpacing={4}
                 sx={{ marginTop: (theme) => theme.spacing(3) }}
               >
-                <Grid item xs={6}>
+                <Grid item key="collection_family" xs={6}>
                   <TextField
                     id="nft-collection-name"
                     name="collection_family"
@@ -462,7 +476,7 @@ export default function CreateNFT() {
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item key="collection_name" xs={6}>
                   <TextField
                     id="nft-collection-item"
                     name="collection_name"
@@ -496,8 +510,9 @@ export default function CreateNFT() {
                         sx={{
                           marginBottom: (theme) => theme.spacing(2),
                         }}
+                        key={`attribute_${index}`}
                       >
-                        <Grid item xs={6}>
+                        <Grid item key={`trait_type_${index}`} xs={6}>
                           <TextField
                             id="nft-property-name"
                             name="trait_type"
@@ -511,7 +526,7 @@ export default function CreateNFT() {
                             fullWidth
                           />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item key={`value_${index}`} xs={6}>
                           <TextField
                             id="nft-property-value"
                             name="value"
@@ -528,7 +543,6 @@ export default function CreateNFT() {
                       </Grid>
                     );
                   })}
-
                 <Box margin={2} marginLeft={0}>
                   {nftMetadata.attributes &&
                     nftMetadata.attributes.length <= MAX_ATTRIBUTE_FIELDS && (
