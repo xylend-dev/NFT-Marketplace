@@ -2,28 +2,28 @@
   <img src="./src/assets/img/logo.svg" alt="SOLRIGAMI" height="150px"/>
 </p>
 
-
 # Solrigami
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/59548d5f-da99-4bd7-b4df-2f9cf7e0539a/deploy-status)](https://www.solrigami.com/)
 
+Solrigami is an open source web application for creating, viewing and trading digital arts in non-fungible token (NFT) form. The project uses the [Solana](https://solana.com/) and [Arweave](https://www.arweave.org/) blockchain networks to enable low-cost and fast transactions. The application is built based on [Metaplex protocol](https://github.com/metaplex-foundation/metaplex), which guides the standards adopted for handling NFTs.
 
-Solrigami é uma aplicação web de código aberto para a criação, visualização e comercialização de artes digitais na forma de token não-fungível (NFT). O projeto utiliza as redes blockchains [Solana](https://solana.com/) e [Arweave](https://www.arweave.org/) para possibilitar transações de baixo custo e de alta velocidade. A aplicação é construída sobre o [protocolo Metaplex](https://github.com/metaplex-foundation/metaplex), que subsidia os padrões adotados quanto à manipulação dos NFTs.
+## Run the application
 
-## Rode a aplicação
+Proceed with the instructions:
 
-Para rodar a aplicação, proceda com as instruções:
+1. Clone the repository;
+2. Access the project folder;
+3. Create a `.env` file according to the instructions in the `env-reference` file;
+4. Install the dependencies: `yarn install`;
+5. Start the application: `yarn start`.
 
-1. Clone o repositório;
-2. Acesse a pasta do projeto;
-3. Crie um arquivo `.env` de acordo com as instruções do arquivo `env-reference`;
-4. Instale as dependências: `yarn install`;
-5. Inicie a aplicação: `yarn start`.
+The application will be available at `http://localhost:3000/`.
 
-## Contribuições
+## Contributing
 
-Caso deseje fazer sugestões, reportar problemas ou propor mudanças na aplicação, fique à vontade para abrir uma [issue](https://github.com/solrigami/app/issues) ou [pull request](https://github.com/solrigami/app/pulls).
+If you would like to make suggestions, report issues or propose changes to the application, please feel free to open an [issue](https://github.com/solrigami/app/issues) or [pull request](https://github.com /solrigami/app/pulls).
 
-## Licença
+## License
 
-O projeto adota a licença [GNU GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.pt-br.html).
+The project adopts the license [GNU GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.html).
