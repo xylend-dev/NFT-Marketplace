@@ -39,11 +39,11 @@ export default function WalletNotConnected() {
         gutterBottom
         align="center"
         sx={{
-          maxWidth: "400px",
+          maxWidth: "500px",
           marginTop: (theme) => theme.spacing(4),
         }}
       >
-        Conecte-se a sua carteira digital para visualizar os seus NFTs
+        Conecte-se a sua carteira de criptomoedas para visualizar os seus NFTs
       </Typography>
       <Button
         component={Link}

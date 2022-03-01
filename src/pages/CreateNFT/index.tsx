@@ -102,7 +102,7 @@ export default function CreateNFT() {
     setIsUploadingNFT(true);
 
     if (!publicKey || !signTransaction || !signAllTransactions) {
-      enqueueSnackbar("Conecte-se a sua carteira digital", {
+      enqueueSnackbar("Conecte-se a sua carteira de criptomoedas", {
         variant: "error",
       });
       setIsUploadingNFT(false);
@@ -300,8 +300,8 @@ export default function CreateNFT() {
         <ButtonWithTooltip
           form="nft-create"
           type="submit"
-          tooltipText="Conecte-se a sua carteira digital"
-          disabled={!publicKey || isUploadingNFT ? true : false}
+          tooltipText="Conecte-se a sua carteira de de criptomoedas"
+          disabled={true}
           variant="contained"
           startIcon={<Add />}
           size="large"
@@ -309,7 +309,7 @@ export default function CreateNFT() {
           Criar NFT
         </ButtonWithTooltip>
       </Grid>
-      {isUploadingNFT && (
+      {(
         <Box
           display="flex"
           flexDirection="column"
@@ -341,7 +341,7 @@ export default function CreateNFT() {
           </Typography>
         </Box>
       )}
-      {!isUploadingNFT && (
+      {/* {!isUploadingNFT && (
         <form id="nft-create" autoComplete="off" onSubmit={handleSubmit}>
           <Grid container>
             <Grid item key="image" xs={4}>
@@ -569,7 +569,7 @@ export default function CreateNFT() {
             </Grid>
           </Grid>
         </form>
-      )}
+      )} */}
     </>
   );
 }
