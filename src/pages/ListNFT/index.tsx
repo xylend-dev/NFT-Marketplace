@@ -1,10 +1,11 @@
 import React from "react";
-import { Box, Button, Grid, Skeleton, Typography } from "@mui/material";
+import { Box, Button, Grid, Skeleton } from "@mui/material";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletNftList } from "../../services/hooks/nft";
 import GalleryCard from "../../components/GalleryCard";
 import NotFoundNFT from "../NotFoundNFT";
 import WalletNotConnected from "../WalletNotConnected";
+import Title from "../../components/Title";
 
 export default function ListNFT() {
   const { publicKey } = useWallet();
@@ -20,19 +21,7 @@ export default function ListNFT() {
       {publicKey && nfts?.length === 0 && <NotFoundNFT />}
       {publicKey && nfts?.length !== 0 && (
         <>
-          <Typography
-            color="primary"
-            variant="h4"
-            component="h2"
-            gutterBottom
-            sx={{
-              textTransform: "uppercase",
-              fontWeight: "500",
-              marginBottom: (theme) => theme.spacing(4),
-            }}
-          >
-            Meus Colecionáveis
-          </Typography>
+          <Title title="Meus colecionáveis" />
           <Box sx={{ display: "flex" }}>
             <Grid container spacing={3}>
               {!nfts &&
