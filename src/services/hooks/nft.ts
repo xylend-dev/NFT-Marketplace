@@ -12,14 +12,21 @@ export function useWalletNftList(walletPublicKey: PublicKey | null) {
     return data;
   }
 
-  const undefinedNftFamily = data.filter((nft) => nft.collection === undefined);
-  undefinedNftFamily.sort((nft1, nft2) => nft1.name.localeCompare(nft2.name));
+  const undefinedNftFamily = data.filter(
+    (nft) => nft.metadata.collection === undefined
+  );
+  undefinedNftFamily.sort((nft1, nft2) =>
+    nft1.metadata.name.localeCompare(nft2.metadata.name)
+  );
 
-  const definedNftFamily = data.filter((nft) => nft.collection !== undefined);
+  const definedNftFamily = data.filter(
+    (nft) => nft.metadata.collection !== undefined
+  );
   definedNftFamily.sort(
     (nft1, nft2) =>
-      nft1.collection!.family.localeCompare(nft2.collection!.family) ||
-      nft1.name.localeCompare(nft2.name)
+      nft1.metadata.collection!.family.localeCompare(
+        nft2.metadata.collection!.family
+      ) || nft1.metadata.name.localeCompare(nft2.metadata.name)
   );
 
   return [...definedNftFamily, ...undefinedNftFamily];

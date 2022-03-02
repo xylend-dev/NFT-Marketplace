@@ -18,7 +18,10 @@ export const getWalletNftList = async (walletPublicKey: PublicKey | null) => {
   const walletNftMetadata = await Promise.all(
     walletNft.map(async (nft) => {
       const nftMetadata = await getNftMetadata(nft.data.uri);
-      return nftMetadata;
+      return {
+        mint: nft.mint,
+        metadata: nftMetadata
+      };
     })
   );
 

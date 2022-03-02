@@ -8,7 +8,7 @@ import WalletNotConnected from "../WalletNotConnected";
 
 export default function ListNFT() {
   const { publicKey } = useWallet();
-  const data = useWalletNftList(publicKey);
+  const nfts = useWalletNftList(publicKey);
   const skeletonArray = Array(4).fill("");
 
   if (!publicKey) {
@@ -17,8 +17,8 @@ export default function ListNFT() {
 
   return (
     <>
-      {publicKey && data?.length === 0 && <NotFoundNFT />}
-      {publicKey && data?.length !== 0 && (
+      {publicKey && nfts?.length === 0 && <NotFoundNFT />}
+      {publicKey && nfts?.length !== 0 && (
         <>
           <Typography
             color="primary"
@@ -35,7 +35,7 @@ export default function ListNFT() {
           </Typography>
           <Box sx={{ display: "flex" }}>
             <Grid container spacing={3}>
-              {!data &&
+              {!nfts &&
                 skeletonArray.map((_, index) => (
                   <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                     <>
@@ -67,14 +67,14 @@ export default function ListNFT() {
                     </>
                   </Grid>
                 ))}
-              {data &&
-                data.map((nft, index) => (
+              {nfts &&
+                nfts.map((nft, index) => (
                   <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                     <GalleryCard
-                      mint={`8Vujaia92NYTcm62T2JZ17LmraAFHuevuJvTkPmNWwb8`}
-                      image={nft.image}
-                      name={nft.name}
-                      description={nft.description}
+                      mint={nft.mint}
+                      image={nft.metadata.image}
+                      name={nft.metadata.name}
+                      description={nft.metadata.description}
                       isNftListed={index % 2 === 0}
                     />
                   </Grid>
