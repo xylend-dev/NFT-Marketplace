@@ -71,6 +71,7 @@ export default function ListNFT() {
                 data.map((nft, index) => (
                   <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                     <GalleryCard
+                      mint={`8Vujaia92NYTcm62T2JZ17LmraAFHuevuJvTkPmNWwb8`}
                       image={nft.image}
                       name={nft.name}
                       description={nft.description}

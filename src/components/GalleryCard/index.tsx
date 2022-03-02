@@ -9,8 +9,10 @@ import Typography from "@mui/material/Typography";
 import BlockIcon from "@mui/icons-material/Block";
 import InfoIcon from "@mui/icons-material/Info";
 import SellIcon from "@mui/icons-material/Sell";
+import { Link } from "react-router-dom";
 
 export interface NftGalleryCardProps {
+  mint: string;
   image: string;
   name: string;
   description: string;
@@ -57,7 +59,11 @@ export default function GalleryCard(props: NftGalleryCardProps) {
           justifyContent: "space-between",
         }}
       >
-        <Button disabled startIcon={<InfoIcon />}>
+        <Button
+          component={Link}
+          to={`/gallery/${props.mint}`}
+          startIcon={<InfoIcon />}
+        >
           Detalhes
         </Button>
         {!props.isNftListed && (

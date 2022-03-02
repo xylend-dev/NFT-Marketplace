@@ -51,6 +51,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Navbar() {
   const navbarMinimumHeight = 64;
   const location = useLocation();
+  let currentTab = "/" + location.pathname.split("/")[1];
+  if (!["/", "/create", "/gallery", "/about"].includes(currentTab)) {
+    currentTab = "/";
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -84,8 +88,8 @@ export default function Navbar() {
             </Typography>
           </Button>
           <Tabs
-            value={location.pathname}
-            aria-label="nav tabs example"
+            value={currentTab}
+            aria-label={`Navigation tab (${currentTab})`}
             sx={{
               minHeight: navbarMinimumHeight,
               display: "flex",
