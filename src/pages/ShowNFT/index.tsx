@@ -13,16 +13,33 @@ import {
 import SolanaLogo from "../../assets/img/solana-logo.svg";
 import ArweaveLogo from "../../assets/img/arweave-logo.svg";
 
-export interface CustomIconProps {
+export interface ShowNFTButtonProps {
+  href: string;
+  text: string;
   icon: string;
   alt: string;
 }
 
-const CustomIcon = (props: CustomIconProps) => {
+const ShowNFTButton = (props: ShowNFTButtonProps) => {
   return (
-    <Icon>
-      <img height={20} width={20} alt={props.alt} src={props.icon} />
-    </Icon>
+    <Button
+      component={Link}
+      href={props.href}
+      target="_blank"
+      rel="noreferrer noopener"
+      startIcon={
+        <Icon>
+          <img height={20} width={20} alt={props.alt} src={props.icon} />
+        </Icon>
+      }
+      variant="outlined"
+      fullWidth
+      sx={{
+        textAlign: "center",
+      }}
+    >
+      {props.text}
+    </Button>
   );
 };
 
@@ -47,40 +64,20 @@ export default function ListNFT() {
             <CardActions>
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
-                  <Button
-                    component={Link}
+                  <ShowNFTButton
+                    text="Visualizar imagem"
                     href="https://arweave.net:443/zUbm91h7mvX-thD1J-V0h-4TXRLHtnDkCdiw-7aKQSs"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    startIcon={
-                      <CustomIcon alt="Solana icon" icon={ArweaveLogo} />
-                    }
-                    variant="outlined"
-                    fullWidth
-                    sx={{
-                      textAlign: "center",
-                    }}
-                  >
-                    Visualizar imagem
-                  </Button>
+                    alt="Arweave icon"
+                    icon={ArweaveLogo}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Button
-                    component={Link}
+                  <ShowNFTButton
+                    text="Visualizar token"
                     href="https://solscan.io/token/8Vujaia92NYTcm62T2JZ17LmraAFHuevuJvTkPmNWwb8/?cluster=devnet"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    startIcon={
-                      <CustomIcon alt="Solana icon" icon={SolanaLogo} />
-                    }
-                    variant="outlined"
-                    fullWidth
-                    sx={{
-                      textAlign: "center",
-                    }}
-                  >
-                    Visualizar token
-                  </Button>
+                    alt="Arweave icon"
+                    icon={SolanaLogo}
+                  />
                 </Grid>
               </Grid>
             </CardActions>
