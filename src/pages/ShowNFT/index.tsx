@@ -11,6 +11,11 @@ import {
   Grid,
   Icon,
   Link,
+  styled,
+  Table,
+  TableCell,
+  TableContainer,
+  TableRow,
   Typography,
 } from "@mui/material";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
@@ -46,6 +51,19 @@ const ShowNFTButton = (props: ShowNFTButtonProps) => {
     </Button>
   );
 };
+
+const TableCellName = styled(TableCell)(({ theme }) => ({
+  borderBottom: "none",
+  width: "150px",
+  padding: 0,
+  paddingBottom: "1rem",
+}));
+
+const TableCellValue = styled(TableCell)(({ theme }) => ({
+  borderBottom: "none",
+  padding: 0,
+  paddingBottom: "1rem",
+}));
 
 export default function ListNFT() {
   const { mint } = useParams<{ mint: string }>();
@@ -125,7 +143,7 @@ export default function ListNFT() {
                 maxWidth="170px"
                 width="100%"
               >
-                <Typography variant="h5" sx={{fontWeight: 500}}>
+                <Typography variant="h5" sx={{ fontWeight: 500 }}>
                   Preço:
                 </Typography>
                 <Typography variant="h5">0,23 SOL</Typography>
@@ -137,6 +155,92 @@ export default function ListNFT() {
                 Comprar
               </Button>
             </Box>
+          </Card>
+          <Card sx={{ padding: 3, marginTop: 4 }}>
+            <Typography
+              color="primary"
+              variant="h4"
+              component="h3"
+              gutterBottom
+              sx={{
+                fontWeight: 500,
+              }}
+            >
+              Detalhes do NFT
+            </Typography>
+            <Box sx={{ marginTop: 3 }}>
+              <TableContainer>
+                <Table>
+                  <TableRow>
+                    <TableCellName>
+                      <Typography variant="h5" sx={{ fontWeight: 500 }}>
+                        Token
+                      </Typography>
+                    </TableCellName>
+                    <TableCellValue>
+                      <Typography variant="h6" sx={{ fontWeight: 300 }}>
+                        129839ESDB981G27EHNAD
+                      </Typography>
+                    </TableCellValue>
+                  </TableRow>
+                  <TableRow>
+                    <TableCellName>
+                      <Typography variant="h5" sx={{ fontWeight: 500 }}>
+                        Dono
+                      </Typography>
+                    </TableCellName>
+                    <TableCellValue>
+                      <Typography variant="h6" sx={{ fontWeight: 300 }}>
+                        129839ESDB981G27EHNAD
+                      </Typography>
+                    </TableCellValue>
+                  </TableRow>
+                  <TableRow>
+                    <TableCellName>
+                      <Typography variant="h5" sx={{ fontWeight: 500 }}>
+                        Artista(s)
+                      </Typography>
+                    </TableCellName>
+                    <TableCellValue>
+                      <Typography variant="h6" sx={{ fontWeight: 300 }}>
+                        129839ESDB981G27EHNAD
+                      </Typography>
+                    </TableCellValue>
+                  </TableRow>
+                  <TableRow>
+                    <TableCellName>
+                      <Typography variant="h5" sx={{ fontWeight: 500 }}>
+                        Royaties
+                      </Typography>
+                    </TableCellName>
+                    <TableCellValue>
+                      <Typography variant="h6" sx={{ fontWeight: 300 }}>
+                        10%
+                      </Typography>
+                    </TableCellValue>
+                  </TableRow>
+                </Table>
+              </TableContainer>
+            </Box>
+            <Grid container>
+              <Grid item>
+                <Box
+                  sx={{
+                    border: (theme) =>
+                      `2px solid ${theme.palette.primary.main}`,
+                    borderRadius: 1,
+                    padding: 1,
+                  }}
+                >
+                  <Typography variant="h6" color="#023047">
+                    Cor
+                  </Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 300 }}>
+                    Azul Marinho
+                  </Typography>
+                </Box>
+              </Grid>
+            </Grid>
           </Card>
         </Grid>
       </Grid>
