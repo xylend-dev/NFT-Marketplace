@@ -11,6 +11,7 @@ import {
   Grid,
   Icon,
   Link,
+  Skeleton,
   styled,
   Table,
   TableBody,
@@ -78,10 +79,13 @@ export default function ListNFT() {
   return (
     <>
       <Title title="Explorar NFT" />
-      {data && (
-        <Grid container spacing={6}>
-          <Grid item key="image" xs={12} md={6}>
-            <Card>
+      <Grid container spacing={6}>
+        <Grid item key="image" xs={12} md={6}>
+          {data === undefined && (
+            <Skeleton variant="rectangular" height="70vh" width="100%" />
+          )}
+          {data && (
+            <Card sx={{ position: "sticky", top: 0 }}>
               <CardMedia
                 component="img"
                 alt={`${data.metadata.name} (NFT)`}
@@ -116,10 +120,74 @@ export default function ListNFT() {
                 </Grid>
               </CardActions>
             </Card>
-          </Grid>
-          <Grid item key="data" xs={12} md={6}>
-            <Card>
-              <Box padding={3}>
+          )}
+        </Grid>
+        <Grid item key="data" xs={12} md={6}>
+          {data === undefined && (
+            <>
+              <Skeleton variant="rectangular" height="33vh" width="100%" />
+              <Skeleton variant="rectangular" height="33vh" width="100%" sx={{marginTop: '4vh'}}/>
+            </>
+          )}
+          {data && (
+            <>
+              <Card>
+                <Box padding={3}>
+                  <Typography
+                    color="primary"
+                    variant="h4"
+                    component="h3"
+                    gutterBottom
+                    sx={{
+                      fontWeight: 500,
+                    }}
+                  >
+                    {data.metadata.name}{" "}
+                    {data.metadata.symbol && `(${data.metadata.symbol})`}
+                  </Typography>
+                  {data.metadata.description && (
+                    <Typography
+                      variant="h6"
+                      sx={{ fontWeight: 300, marginBottom: 2 }}
+                    >
+                      {data.metadata.description}
+                    </Typography>
+                  )}
+                  {data.metadata.external_url && (
+                    <Link
+                      variant="h6"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      href={data.metadata.external_url}
+                    >
+                      {data.metadata.external_url}
+                    </Link>
+                  )}
+                </Box>
+                <Divider />
+                <Box display="flex" justifyContent="space-between" padding={3}>
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="flex-end"
+                    maxWidth="170px"
+                    width="100%"
+                  >
+                    <Typography variant="h5" sx={{ fontWeight: 500 }}>
+                      Preço:
+                    </Typography>
+                    <Typography variant="h5">------ SOL</Typography>
+                  </Box>
+                  <Button
+                    disabled
+                    variant="contained"
+                    startIcon={<AccountBalanceWalletIcon />}
+                  >
+                    Comprar
+                  </Button>
+                </Box>
+              </Card>
+              <Card sx={{ padding: 3, marginTop: 4 }}>
                 <Typography
                   color="primary"
                   variant="h4"
@@ -129,164 +197,113 @@ export default function ListNFT() {
                     fontWeight: 500,
                   }}
                 >
-                  {data.metadata.name}{" "}
-                  {data.metadata.symbol && `(${data.metadata.symbol})`}
+                  Detalhes do NFT
                 </Typography>
-                {data.metadata.description && (
-                  <Typography
-                    variant="h6"
-                    sx={{ fontWeight: 300, marginBottom: 2 }}
-                  >
-                    {data.metadata.description}
-                  </Typography>
-                )}
-                {data.metadata.external_url && (
-                  <Link
-                    variant="h6"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    href={data.metadata.external_url}
-                  >
-                    {data.metadata.external_url}
-                  </Link>
-                )}
-              </Box>
-              <Divider />
-              <Box display="flex" justifyContent="space-between" padding={3}>
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="flex-end"
-                  maxWidth="170px"
-                  width="100%"
-                >
-                  <Typography variant="h5" sx={{ fontWeight: 500 }}>
-                    Preço:
-                  </Typography>
-                  <Typography variant="h5">____ SOL</Typography>
-                </Box>
-                <Button
-                  disabled
-                  variant="contained"
-                  startIcon={<AccountBalanceWalletIcon />}
-                >
-                  Comprar
-                </Button>
-              </Box>
-            </Card>
-            <Card sx={{ padding: 3, marginTop: 4 }}>
-              <Typography
-                color="primary"
-                variant="h4"
-                component="h3"
-                gutterBottom
-                sx={{
-                  fontWeight: 500,
-                }}
-              >
-                Detalhes do NFT
-              </Typography>
-              <Box sx={{ marginTop: 3 }}>
-                <TableContainer>
-                  <Table sx={{ tableLayout: "fixed" }}>
-                    <TableBody>
-                      <TableRow>
-                        <TableCellName>
-                          <Typography variant="h5" sx={{ fontWeight: 500 }}>
-                            Token
-                          </Typography>
-                        </TableCellName>
-                        <TableCellValue>
-                          <Typography
-                            noWrap
-                            variant="h6"
-                            sx={{ fontWeight: 300 }}
-                          >
-                            {data.nft.mint}
-                          </Typography>
-                        </TableCellValue>
-                      </TableRow>
-                      <TableRow>
-                        <TableCellName>
-                          <Typography variant="h5" sx={{ fontWeight: 500 }}>
-                            Dono
-                          </Typography>
-                        </TableCellName>
-                        <TableCellValue>
-                          <Typography
-                            noWrap
-                            variant="h6"
-                            sx={{ fontWeight: 300, width: "100%" }}
-                          >
-                            {data.nft.updateAuthority}
-                          </Typography>
-                        </TableCellValue>
-                      </TableRow>
-                      {data.metadata.properties.creators &&
-                        data.metadata.properties.creators !== [] && (
+                <Box sx={{ marginTop: 3 }}>
+                  <TableContainer>
+                    <Table sx={{ tableLayout: "fixed" }}>
+                      <TableBody>
+                        <TableRow>
+                          <TableCellName>
+                            <Typography variant="h5" sx={{ fontWeight: 500 }}>
+                              Token
+                            </Typography>
+                          </TableCellName>
+                          <TableCellValue>
+                            <Typography
+                              noWrap
+                              variant="h6"
+                              sx={{ fontWeight: 300 }}
+                            >
+                              {data.nft.mint}
+                            </Typography>
+                          </TableCellValue>
+                        </TableRow>
+                        <TableRow>
+                          <TableCellName>
+                            <Typography variant="h5" sx={{ fontWeight: 500 }}>
+                              Dono
+                            </Typography>
+                          </TableCellName>
+                          <TableCellValue>
+                            <Typography
+                              noWrap
+                              variant="h6"
+                              sx={{ fontWeight: 300, width: "100%" }}
+                            >
+                              {data.nft.updateAuthority}
+                            </Typography>
+                          </TableCellValue>
+                        </TableRow>
+                        {data.metadata.properties.creators &&
+                          data.metadata.properties.creators !== [] && (
+                            <TableRow>
+                              <TableCellName>
+                                <Typography
+                                  variant="h5"
+                                  sx={{ fontWeight: 500 }}
+                                >
+                                  Artista(s)
+                                </Typography>
+                              </TableCellName>
+                              <TableCellValue>
+                                <Typography
+                                  noWrap
+                                  component="div"
+                                  variant="h6"
+                                  sx={{ fontWeight: 300 }}
+                                >
+                                  {data.metadata.properties.creators[0].address}
+                                </Typography>
+                              </TableCellValue>
+                            </TableRow>
+                          )}
+                        {data.metadata.seller_fee_basis_points && (
                           <TableRow>
                             <TableCellName>
                               <Typography variant="h5" sx={{ fontWeight: 500 }}>
-                                Artista(s)
+                                Royaties
                               </Typography>
                             </TableCellName>
                             <TableCellValue>
-                              <Typography
-                                noWrap
-                                component="div"
-                                variant="h6"
-                                sx={{ fontWeight: 300 }}
-                              >
-                                {data.metadata.properties.creators[0].address}
+                              <Typography variant="h6" sx={{ fontWeight: 300 }}>
+                                {data.metadata.seller_fee_basis_points / 100} %
                               </Typography>
                             </TableCellValue>
                           </TableRow>
                         )}
-                      {data.metadata.seller_fee_basis_points && (
-                        <TableRow>
-                          <TableCellName>
-                            <Typography variant="h5" sx={{ fontWeight: 500 }}>
-                              Royaties
-                            </Typography>
-                          </TableCellName>
-                          <TableCellValue>
-                            <Typography variant="h6" sx={{ fontWeight: 300 }}>
-                              {data.metadata.seller_fee_basis_points / 100} %
-                            </Typography>
-                          </TableCellValue>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Box>
-              {data.metadata.attributes && data.metadata.attributes !== [] && (
-                <Grid container spacing={1}>
-                  {data.metadata.attributes.map((attribute, index) => (
-                    <Grid item xs={6} sm={4}>
-                      <Box
-                        sx={{
-                          border: (theme) =>
-                            `2px solid ${theme.palette.primary.main}`,
-                          borderRadius: 4,
-                          padding: 2,
-                        }}
-                      >
-                        <Typography variant="body1" color="#023047">
-                          {attribute.trait_type}
-                        </Typography>
-                        <Typography variant="body1">
-                          {attribute.value}
-                        </Typography>
-                      </Box>
-                    </Grid>
-                  ))}
-                </Grid>
-              )}
-            </Card>
-          </Grid>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Box>
+                {data.metadata.attributes && data.metadata.attributes !== [] && (
+                  <Grid container spacing={1}>
+                    {data.metadata.attributes.map((attribute, index) => (
+                      <Grid item xs={6} sm={4}>
+                        <Box
+                          sx={{
+                            border: (theme) =>
+                              `2px solid ${theme.palette.primary.main}`,
+                            borderRadius: 4,
+                            padding: 2,
+                          }}
+                        >
+                          <Typography variant="body1" color="#023047">
+                            {attribute.trait_type}
+                          </Typography>
+                          <Typography variant="body1">
+                            {attribute.value}
+                          </Typography>
+                        </Box>
+                      </Grid>
+                    ))}
+                  </Grid>
+                )}
+              </Card>
+            </>
+          )}
         </Grid>
-      )}
+      </Grid>
     </>
   );
 }
