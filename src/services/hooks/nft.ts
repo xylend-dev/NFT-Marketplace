@@ -1,6 +1,6 @@
 import { PublicKey } from "@solana/web3.js";
 import useSWR from "swr";
-import { getWalletNftList } from "../fetchers/nft";
+import { getMetadataByMint, getWalletNftList } from "../fetchers/nft";
 
 export function useWalletNftList(walletPublicKey: PublicKey | null) {
   const { data } = useSWR(
@@ -30,4 +30,15 @@ export function useWalletNftList(walletPublicKey: PublicKey | null) {
   );
 
   return [...definedNftFamily, ...undefinedNftFamily];
+}
+
+export function useNft(mint: string) {
+  const { data, error } = useSWR(
+    ["nft", mint],
+    async () => await getMetadataByMint(mint)
+  );
+
+  console.log(data);
+
+  return { data, error };
 }
