@@ -18,7 +18,9 @@ export default function ListNFT() {
 
   return (
     <>
-      {publicKey && nfts?.length === 0 && <NotFoundNFT />}
+      {publicKey && nfts?.length === 0 && (
+        <NotFoundNFT message="Nenhum NFT encontrado para esta carteira" />
+      )}
       {publicKey && nfts?.length !== 0 && (
         <>
           <Title title="Meus colecionáveis" />

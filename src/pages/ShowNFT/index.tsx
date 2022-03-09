@@ -26,6 +26,7 @@ import SolanaLogo from "../../assets/img/solana-logo.svg";
 import ArweaveLogo from "../../assets/img/arweave-logo.svg";
 import { network } from "../../config/solanaNetwork";
 import { useNft } from "../../services/hooks/nft";
+import NotFoundNFT from "../NotFoundNFT";
 
 export interface ShowNFTButtonProps {
   href?: string;
@@ -78,10 +79,11 @@ export default function ListNFT() {
 
   return (
     <>
-      <Title title="Explorar NFT" />
+      {error !== undefined && <NotFoundNFT message="NFT não encontrado" />}
+      {error === undefined && <Title title="Explorar NFT" />}
       <Grid container spacing={6}>
         <Grid item key="image" xs={12} md={6}>
-          {data === undefined && (
+          {data === undefined && error === undefined && (
             <Skeleton variant="rectangular" height="70vh" width="100%" />
           )}
           {data && (
@@ -123,10 +125,15 @@ export default function ListNFT() {
           )}
         </Grid>
         <Grid item key="data" xs={12} md={6}>
-          {data === undefined && (
+          {data === undefined && error === undefined && (
             <>
               <Skeleton variant="rectangular" height="33vh" width="100%" />
-              <Skeleton variant="rectangular" height="33vh" width="100%" sx={{marginTop: '4vh'}}/>
+              <Skeleton
+                variant="rectangular"
+                height="33vh"
+                width="100%"
+                sx={{ marginTop: "4vh" }}
+              />
             </>
           )}
           {data && (

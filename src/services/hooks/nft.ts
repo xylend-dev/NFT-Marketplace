@@ -38,7 +38,5 @@ export function useNft(mint: string) {
     async () => await getMetadataByMint(mint)
   );
 
-  console.log(data);
-
   return { data, error };
 }
