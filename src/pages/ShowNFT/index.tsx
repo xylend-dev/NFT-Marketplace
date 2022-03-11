@@ -27,6 +27,7 @@ import ArweaveLogo from "../../assets/img/arweave-logo.svg";
 import { network } from "../../config/solanaNetwork";
 import { useNft } from "../../services/hooks/nft";
 import NotFoundNFT from "../NotFoundNFT";
+import { useSnackbar } from "notistack";
 
 export interface ShowNFTButtonProps {
   href?: string;
@@ -76,6 +77,15 @@ const TableCellValue = styled(TableCell)(({ theme }) => ({
 export default function ListNFT() {
   const { mint } = useParams<{ mint: string }>();
   const { data, error } = useNft(mint);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const copyToClipboard = (value: string) => {
+    console.log(value);
+    navigator.clipboard.writeText(value);
+    enqueueSnackbar("Valor copiado para a área de transferência", {
+      variant: "success",
+    });
+  };
 
   return (
     <>
@@ -220,7 +230,8 @@ export default function ListNFT() {
                             <Typography
                               noWrap
                               variant="h6"
-                              sx={{ fontWeight: 300 }}
+                              sx={{ fontWeight: 300, cursor: "pointer" }}
+                              onClick={() => copyToClipboard(data.nft.mint)}
                             >
                               {data.nft.mint}
                             </Typography>
@@ -236,7 +247,10 @@ export default function ListNFT() {
                             <Typography
                               noWrap
                               variant="h6"
-                              sx={{ fontWeight: 300, width: "100%" }}
+                              sx={{ fontWeight: 300, cursor: "pointer" }}
+                              onClick={() =>
+                                copyToClipboard(data.nft.updateAuthority)
+                              }
                             >
                               {data.nft.updateAuthority}
                             </Typography>
@@ -258,9 +272,17 @@ export default function ListNFT() {
                                   noWrap
                                   component="div"
                                   variant="h6"
-                                  sx={{ fontWeight: 300 }}
+                                  sx={{ fontWeight: 300, cursor: "pointer" }}
+                                  onClick={() =>
+                                    copyToClipboard(
+                                      data.metadata.properties.creators
+                                        .map((creator) => creator.address)
+                                        .join(" ")
+                                    )
+                                  }
                                 >
                                   {data.metadata.properties.creators[0].address}
+                                  ({data.metadata.properties.creators.length})
                                 </Typography>
                               </TableCellValue>
                             </TableRow>
