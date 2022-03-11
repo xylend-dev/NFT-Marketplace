@@ -43,7 +43,7 @@ export default function WalletNotConnected() {
           marginTop: (theme) => theme.spacing(4),
         }}
       >
-        Conecte-se a sua carteira de criptomoedas para visualizar os seus NFTs
+        Conecte-se a sua carteira digital para visualizar os seus NFTs
       </Typography>
       <Button
         component={Link}
