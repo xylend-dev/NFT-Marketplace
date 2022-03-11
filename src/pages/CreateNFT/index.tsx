@@ -301,6 +301,7 @@ export default function CreateNFT() {
           form="nft-create"
           type="submit"
           tooltipText="Conecte-se a sua carteira digital"
+          disabled={!publicKey || isUploadingNFT ? true : false}
           variant="contained"
           startIcon={<Add />}
           size="large"

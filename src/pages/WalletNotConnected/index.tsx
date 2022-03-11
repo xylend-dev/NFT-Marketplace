@@ -39,7 +39,7 @@ export default function WalletNotConnected() {
         gutterBottom
         align="center"
         sx={{
-          maxWidth: "500px",
+          maxWidth: "400px",
           marginTop: (theme) => theme.spacing(4),
         }}
       >
