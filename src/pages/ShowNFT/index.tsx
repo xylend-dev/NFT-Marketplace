@@ -9,13 +9,10 @@ import {
   CardMedia,
   Divider,
   Grid,
-  Icon,
   Link,
   Skeleton,
-  styled,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableRow,
   Typography,
@@ -28,51 +25,8 @@ import { network } from "../../config/solanaNetwork";
 import { useNft } from "../../services/hooks/nft";
 import NotFoundNFT from "../NotFoundNFT";
 import { useSnackbar } from "notistack";
-
-export interface ShowNFTButtonProps {
-  href?: string;
-  text: string;
-  icon: string;
-  alt: string;
-}
-
-const ShowNFTButton = (props: ShowNFTButtonProps) => {
-  return (
-    <Button
-      component={Link}
-      disabled={props.href ? false : true}
-      href={props.href}
-      target="_blank"
-      rel="noreferrer noopener"
-      startIcon={
-        <Icon>
-          <img height={20} width={20} alt={props.alt} src={props.icon} />
-        </Icon>
-      }
-      variant="outlined"
-      fullWidth
-      sx={{
-        textAlign: "center",
-      }}
-    >
-      {props.text}
-    </Button>
-  );
-};
-
-const TableCellName = styled(TableCell)(({ theme }) => ({
-  borderBottom: "none",
-  padding: 0,
-  paddingBottom: "1rem",
-  width: "120px",
-}));
-
-const TableCellValue = styled(TableCell)(({ theme }) => ({
-  borderBottom: "none",
-  padding: 0,
-  paddingBottom: "1rem",
-  paddingLeft: "1rem",
-}));
+import LinkButton from "../../components/LinkButton";
+import { TableCellName, TableCellValue } from "./styles";
 
 export default function ListNFT() {
   const { mint } = useParams<{ mint: string }>();
@@ -80,7 +34,6 @@ export default function ListNFT() {
   const { enqueueSnackbar } = useSnackbar();
 
   const copyToClipboard = (value: string) => {
-    console.log(value);
     navigator.clipboard.writeText(value);
     enqueueSnackbar("Valor copiado para a área de transferência", {
       variant: "success",
@@ -110,7 +63,7 @@ export default function ListNFT() {
               <CardActions sx={{ padding: 2 }}>
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={6}>
-                    <ShowNFTButton
+                    <LinkButton
                       text="Visualizar imagem"
                       href={data.metadata.image}
                       alt="Arweave icon"
@@ -118,7 +71,7 @@ export default function ListNFT() {
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <ShowNFTButton
+                    <LinkButton
                       text="Visualizar token"
                       href={`https://solscan.io/token/${data.nft.mint}/${
                         network === WalletAdapterNetwork.Devnet
