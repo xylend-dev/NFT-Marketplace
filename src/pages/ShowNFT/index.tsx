@@ -179,7 +179,7 @@ export default function ListNFT() {
                               Token
                             </Typography>
                           </TableCellName>
-                          <TableCellValue>
+                          <TableCellValue title="Clique para copiar">
                             <Typography
                               noWrap
                               variant="h6"
@@ -196,7 +196,7 @@ export default function ListNFT() {
                               Dono
                             </Typography>
                           </TableCellName>
-                          <TableCellValue>
+                          <TableCellValue title="Clique para copiar">
                             <Typography
                               noWrap
                               variant="h6"
@@ -220,10 +220,9 @@ export default function ListNFT() {
                                   Artista(s)
                                 </Typography>
                               </TableCellName>
-                              <TableCellValue>
+                              <TableCellValue title="Clique para copiar">
                                 <Typography
                                   noWrap
-                                  component="div"
                                   variant="h6"
                                   sx={{ fontWeight: 300, cursor: "pointer" }}
                                   onClick={() =>
