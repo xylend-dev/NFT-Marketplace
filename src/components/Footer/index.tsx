@@ -7,15 +7,22 @@ export default function Footer() {
   return (
     <Box
       sx={{
-        position: "absolute",
-        bottom: 0,
+        position: "relative",
+        marginTop: "auto",
         backgroundSize: "cover",
-        width: "100vw",
+        width: "100%",
         height: "50vh",
         backgroundImage: `url(${FooterBackground})`,
       }}
     >
-      <Box sx={{ position: "absolute", bottom: "5vh", left: "5vw" }}>
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: "8vh",
+          left: "5vw",
+          paddingRight: "5vw",
+        }}
+      >
         <Box sx={{ display: "flex", alignItems: "flex-end" }}>
           <img
             src={WhiteLogo}
@@ -28,10 +35,7 @@ export default function Footer() {
             noWrap
             component="div"
             color="white"
-            sx={{
-              marginLeft: 2,
-              textTransform: "uppercase",
-            }}
+            sx={{ marginLeft: 2, textTransform: "uppercase" }}
           >
             Solrigami
           </Typography>
@@ -41,10 +45,7 @@ export default function Footer() {
           href="https://github.com/solrigami/app"
           variant="h6"
           color="white"
-          sx={{
-            marginTop: 1,
-            textDecoration: "none",
-          }}
+          sx={{ marginTop: 1, textDecoration: "none" }}
         >
           Contribua com a aplicação Solrigami no GitHub
         </Typography>
