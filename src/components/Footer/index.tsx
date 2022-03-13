@@ -3,7 +3,7 @@ import { Box, Link, Typography } from "@mui/material";
 import FooterBackground from "../../assets/img/footer.svg";
 import WhiteLogo from "../../assets/img/white-logo.svg";
 
-export default function Marketplace() {
+export default function Footer() {
   return (
     <Box
       sx={{
@@ -15,13 +15,6 @@ export default function Marketplace() {
         backgroundImage: `url(${FooterBackground})`,
       }}
     >
-      {/* <img
-        style={{ position: "absolute", bottom: 0, objectFit: 'cover' }}
-        width="100%"
-        height="auto"
-        src={FooterBackground}
-        alt="Rodapé da aplicação Solrigami"
-      /> */}
       <Box sx={{ position: "absolute", bottom: "5vh", left: "5vw" }}>
         <Box sx={{ display: "flex", alignItems: "flex-end" }}>
           <img

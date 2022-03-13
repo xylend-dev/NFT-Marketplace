@@ -20,6 +20,8 @@ import Routes from "./routes";
 import CssBaseline from "@mui/material/CssBaseline";
 import { network, endpoint } from "./config/solanaNetwork";
 import { Container } from "@mui/material";
+import Footer from "./components/Footer";
+import { useLocation } from "react-router-dom";
 
 const theme = createTheme({
   palette: {
@@ -31,6 +33,8 @@ const theme = createTheme({
 });
 
 export default function App() {
+  const location = useLocation();
+
   const wallets = useMemo(
     () => [
       getPhantomWallet(),
@@ -57,10 +61,14 @@ export default function App() {
               <Container
                 component="main"
                 maxWidth="xl"
-                sx={{ padding: (theme) => `${theme.spacing(5)} !important` }}
+                sx={{
+                  overflowX: "hidden",
+                  padding: (theme) => `${theme.spacing(5)} !important`,
+                }}
               >
                 <Routes />
               </Container>
+              {location.pathname === "/" && <Footer />}
             </SnackbarProvider>
           </WalletDialogProvider>
         </WalletProvider>
