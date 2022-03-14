@@ -54,7 +54,7 @@ export default function Marketplace() {
         sx={{
           paddingTop: {
             xs: 6,
-            sm: 0,
+            md: 0,
           },
           backgroundPosition: "left top, right bottom",
           backgroundSize: "90%, 90%",
