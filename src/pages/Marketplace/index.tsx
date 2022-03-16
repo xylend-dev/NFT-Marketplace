@@ -1,11 +1,16 @@
 import React from "react";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Skeleton, Typography } from "@mui/material";
 import GradientBackground from "../../assets/img/gradient-background.svg";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MarketplaceCard from "../../components/MarketplaceCard";
 import { Info } from "@mui/icons-material";
+import { useNft } from "../../services/hooks/nft";
 
 export default function Marketplace() {
+  const { data: landingNft } = useNft(
+    "BPzbAczFfwEfpnjLVMCmnZKQQ3epjjX7KxCr9rX3fP5W"
+  );
+
   return (
     <>
       <Grid
@@ -69,14 +74,32 @@ export default function Marketplace() {
             backgroundImage: `url(${GradientBackground}), url(${GradientBackground})`,
           }}
         >
-          <MarketplaceCard
-            name="Nome da arte #01"
-            likes={0}
-            authority="EuxRDrekBF8yL7N6MophU3RFhTAyqT4Dc73ai3RspVRa"
-            mint="BPzbAczFfwEfpnjLVMCmnZKQQ3epjjX7KxCr9rX3fP5W"
-            // image="https://arweave.net/zUbm91h7mvX-thD1J-V0h-4TXRLHtnDkCdiw-7aKQSs"
-            image="https://arweave.net/avj0ZtqaH2lq6wbYakxXgpeEbWvogN-_jbwAaBn10pU"
-          />
+          {landingNft === undefined && (
+            <Box>
+              <Skeleton variant="rectangular" height="350px" width="350px" />
+              <Skeleton
+                variant="rectangular"
+                height="5vh"
+                width="350px"
+                sx={{ marginTop: "8px" }}
+              />
+              <Skeleton
+                variant="rectangular"
+                height="5vh"
+                width="350px"
+                sx={{ marginTop: "8px" }}
+              />
+            </Box>
+          )}
+          {landingNft && (
+            <MarketplaceCard
+              name={landingNft.metadata.name}
+              likes={landingNft.likes}
+              authority={landingNft.nft.updateAuthority}
+              mint={landingNft.nft.mint}
+              image={landingNft.metadata.image}
+            />
+          )}
         </Grid>
       </Grid>
       <Box

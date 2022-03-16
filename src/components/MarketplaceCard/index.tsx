@@ -14,7 +14,7 @@ export interface MarketplaceCardProps {
   name: string;
   image: string;
   authority: string;
-  likes: number;
+  likes?: number;
 }
 
 export default function MarketplaceCard(props: MarketplaceCardProps) {
@@ -34,6 +34,8 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
         <CardMedia
           component="img"
           sx={{
+            minHeight: "350px",
+            backgroundColor: (theme) => `${theme.palette.primary.main}33`,
             borderBottom: (theme) =>
               `2px solid ${theme.palette.primary.main}33`,
           }}
@@ -46,7 +48,7 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Typography noWrap gutterBottom variant="h5" component="div">
+            <Typography noWrap gutterBottom variant="h5">
               {props.name}
             </Typography>
             <Box component={Link} to={`/gallery/${props.mint}`}>
@@ -78,7 +80,7 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
             </Box>
             <Box display="flex">
               <Typography noWrap variant="subtitle1">
-                {props.likes}
+                {props.likes || 0}
               </Typography>
               <Favorite color="success" sx={{ marginLeft: 1 }} />
             </Box>
