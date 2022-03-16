@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
@@ -18,8 +18,11 @@ export interface MarketplaceCardProps {
 }
 
 export default function MarketplaceCard(props: MarketplaceCardProps) {
+  const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
+
   return (
     <Card
+      style={isImageLoaded ? {} : {display: 'none'}}
       sx={{
         display: "flex",
         height: "100%",
@@ -35,6 +38,7 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
           height="350"
           image={props.image}
           alt={`NFT image - ${props.name}`}
+          onLoad={() => setIsImageLoaded(true)}
           sx={{
             objectFit: "contain",
             borderBottom: (theme) =>
