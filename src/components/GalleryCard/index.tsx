@@ -43,10 +43,13 @@ export default function GalleryCard(props: NftGalleryCardProps) {
           height="260"
           image={props.image}
           alt={`NFT image - ${props.name}`}
+          sx={{
+            objectFit: "contain",
+          }}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {abbreviateText(props.name, 50)}
+          <Typography noWrap gutterBottom variant="h5" component="div">
+            {props.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {abbreviateText(props.description, 100)}

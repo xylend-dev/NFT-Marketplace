@@ -58,7 +58,13 @@ export default function Navbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar
+        position="static"
+        sx={{
+          boxShadow: (theme) =>
+            `${theme.palette.primary.light}33 0px 1px 3px, ${theme.palette.primary.light}33 0px 1px 2px`,
+        }}
+      >
         <Toolbar sx={{ backgroundColor: "white" }}>
           <Button
             disableFocusRipple

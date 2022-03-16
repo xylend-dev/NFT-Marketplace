@@ -1,6 +1,4 @@
-import {
-  Metadata,
-} from "@metaplex-foundation/mpl-token-metadata";
+import { Metadata } from "@metaplex-foundation/mpl-token-metadata";
 import { MetadataJson } from "@metaplex/js";
 import { connection } from "../../config/solanaNetwork";
 import api from "../api";
@@ -32,15 +30,31 @@ export const getWalletNftList = async (walletPublicKey: PublicKey | null) => {
 
 export const getMetadataByMint = async (
   mint: string,
+  queryExtraData: boolean = true
 ) => {
   const mintPublicKey = new PublicKey(mint);
   const pda = await Metadata.getPDA(mintPublicKey);
   const nft = (await Metadata.load(connection, pda)).data;
   const metadata = await getNftMetadata(nft.data.uri);
+  const likes = queryExtraData ? 0 : undefined;
 
   return {
     pda,
     nft,
     metadata,
+    likes,
   };
+};
+
+export const getLastNftCreated = async () => {
+  const mints = [
+    "8Vujaia92NYTcm62T2JZ17LmraAFHuevuJvTkPmNWwb8"
+  ];
+  const lastNftCreated = await Promise.all(
+    mints.map(async (mint) => {
+      return getMetadataByMint(mint);
+    })
+  );
+
+  return lastNftCreated;
 };
