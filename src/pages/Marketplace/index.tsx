@@ -71,6 +71,9 @@ export default function Marketplace() {
         >
           <MarketplaceCard
             name="Nome da arte #01"
+            likes={0}
+            authority="EuxRDrekBF8yL7N6MophU3RFhTAyqT4Dc73ai3RspVRa"
+            mint="BPzbAczFfwEfpnjLVMCmnZKQQ3epjjX7KxCr9rX3fP5W"
             // image="https://arweave.net/zUbm91h7mvX-thD1J-V0h-4TXRLHtnDkCdiw-7aKQSs"
             image="https://arweave.net/avj0ZtqaH2lq6wbYakxXgpeEbWvogN-_jbwAaBn10pU"
           />

@@ -8,7 +8,7 @@ export default function Footer() {
     <Box
       sx={{
         position: "relative",
-        marginTop: "auto",
+        marginTop: "20vh",
         backgroundSize: "cover",
         width: "100%",
         height: "50vh",

@@ -10,8 +10,11 @@ import { Avatar } from "@mui/material";
 import { Favorite } from "@mui/icons-material";
 
 export interface MarketplaceCardProps {
+  mint: string;
   name: string;
   image: string;
+  authority: string;
+  likes: number;
 }
 
 export default function MarketplaceCard(props: MarketplaceCardProps) {
@@ -22,7 +25,10 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
         flexDirection: "column",
         width: "350px",
         height: "auto",
+        textDecoration: "none",
       }}
+      component={Link}
+      to={`/gallery/${props.mint}`}
     >
       <Box>
         <CardMedia
@@ -43,10 +49,7 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
             <Typography noWrap gutterBottom variant="h5" component="div">
               {props.name}
             </Typography>
-            <Box
-              component={Link}
-              to={`/gallery/BPzbAczFfwEfpnjLVMCmnZKQQ3epjjX7KxCr9rX3fP5W`}
-            >
+            <Box component={Link} to={`/gallery/${props.mint}`}>
               <InfoIcon sx={{ color: "#023047" }} />
             </Box>
           </Box>
@@ -60,22 +63,22 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
           >
             <Box display="flex">
               <Avatar
-                alt="Criador da arte"
+                alt={`Dono do NFT - ${props.authority}`}
                 sx={{
                   backgroundColor: (theme) => theme.palette.primary.main,
                   height: "28px",
                   width: "28px",
                 }}
               >
-                A
+                {props.authority.length > 0 ? props.authority[0] : "."}
               </Avatar>
               <Typography noWrap variant="subtitle1" sx={{ marginLeft: 1 }}>
-                Solrigami Marketplace
+                {props.authority.substring(0, 20) + "..."}
               </Typography>
             </Box>
             <Box display="flex">
               <Typography noWrap variant="subtitle1">
-                153
+                {props.likes}
               </Typography>
               <Favorite color="success" sx={{ marginLeft: 1 }} />
             </Box>
