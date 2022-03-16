@@ -1,46 +1,29 @@
-# Getting Started with Create React App
+<p align="center">
+  <img src="./src/assets/img/logo.svg" alt="SOLRIGAMI" height="150px"/>
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Solrigami
 
-## Available Scripts
+[![Netlify Status](https://api.netlify.com/api/v1/badges/59548d5f-da99-4bd7-b4df-2f9cf7e0539a/deploy-status)](https://www.solrigami.com/)
 
-In the project directory, you can run:
+Solrigami is an open source web application for creating, viewing and trading digital arts in non-fungible token (NFT) form. The project uses the [Solana](https://solana.com/) and [Arweave](https://www.arweave.org/) blockchain networks to enable low-cost and fast transactions. The application is built based on [Metaplex protocol](https://github.com/metaplex-foundation/metaplex), which guides the standards adopted for handling NFTs.
 
-### `yarn start`
+## Run the application
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Proceed with the instructions:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1. Clone the repository;
+2. Access the project folder;
+3. Create a `.env` file according to the instructions in the `env-reference` file;
+4. Install the dependencies: `yarn install`;
+5. Start the application: `yarn start`.
 
-### `yarn test`
+The application will be available at `http://localhost:3000/`.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Contributing
 
-### `yarn build`
+If you would like to make suggestions, report issues or propose changes to the application, please feel free to open an [issue](https://github.com/solrigami/app/issues) or [pull request](https://github.com /solrigami/app/pulls).
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## License
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+The project adopts the license [GNU GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.html).
