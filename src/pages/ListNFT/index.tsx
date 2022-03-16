@@ -1,14 +1,15 @@
 import React from "react";
-import { Box, Button, Grid, Skeleton, Typography } from "@mui/material";
+import { Box, Button, Grid, Skeleton } from "@mui/material";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletNftList } from "../../services/hooks/nft";
 import GalleryCard from "../../components/GalleryCard";
 import NotFoundNFT from "../NotFoundNFT";
 import WalletNotConnected from "../WalletNotConnected";
+import Title from "../../components/Title";
 
 export default function ListNFT() {
   const { publicKey } = useWallet();
-  const data = useWalletNftList(publicKey);
+  const nfts = useWalletNftList(publicKey);
   const skeletonArray = Array(4).fill("");
 
   if (!publicKey) {
@@ -17,25 +18,15 @@ export default function ListNFT() {
 
   return (
     <>
-      {publicKey && data?.length === 0 && <NotFoundNFT />}
-      {publicKey && data?.length !== 0 && (
+      {publicKey && nfts?.length === 0 && (
+        <NotFoundNFT message="Nenhum NFT encontrado para esta carteira" />
+      )}
+      {publicKey && nfts?.length !== 0 && (
         <>
-          <Typography
-            color="primary"
-            variant="h4"
-            component="h2"
-            gutterBottom
-            sx={{
-              textTransform: "uppercase",
-              fontWeight: "500",
-              marginBottom: (theme) => theme.spacing(4),
-            }}
-          >
-            Meus Colecionáveis
-          </Typography>
+          <Title title="Meus colecionáveis" />
           <Box sx={{ display: "flex" }}>
             <Grid container spacing={3}>
-              {!data &&
+              {!nfts &&
                 skeletonArray.map((_, index) => (
                   <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                     <>
@@ -67,13 +58,14 @@ export default function ListNFT() {
                     </>
                   </Grid>
                 ))}
-              {data &&
-                data.map((nft, index) => (
+              {nfts &&
+                nfts.map((nft, index) => (
                   <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                     <GalleryCard
-                      image={nft.image}
-                      name={nft.name}
-                      description={nft.description}
+                      mint={nft.mint}
+                      image={nft.metadata.image}
+                      name={nft.metadata.name}
+                      description={nft.metadata.description}
                       isNftListed={index % 2 === 0}
                     />
                   </Grid>

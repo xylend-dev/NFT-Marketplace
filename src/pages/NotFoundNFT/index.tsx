@@ -7,7 +7,11 @@ import AddIcon from "@mui/icons-material/Add";
 import nftCardsAnimation from "../../assets/animation/nftCards.json";
 import searchNotFoundAnimation from "../../assets/animation/searchNotFound.json";
 
-export default function NotFoundNFT() {
+export interface NotFoundNFTProps {
+  message: string;
+}
+
+export default function NotFoundNFT(props: NotFoundNFTProps) {
   const defaultAnimationOptions = {
     loop: true,
     autoplay: true,
@@ -62,7 +66,7 @@ export default function NotFoundNFT() {
           marginTop: "370px",
         }}
       >
-        Nenhum NFT encontrado para esta carteira
+        {props.message}
       </Typography>
       <Box
         display="flex"
