@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Box, Button, Grid, Skeleton, Typography } from "@mui/material";
 import GradientBackground from "../../assets/img/gradient-background.svg";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -67,6 +68,8 @@ export default function Marketplace() {
           </Typography>
           <Box>
             <Button
+              component={Link}
+              to="/create"
               variant="contained"
               size="large"
               endIcon={<ChevronRightIcon />}
@@ -75,6 +78,7 @@ export default function Marketplace() {
               Criar NFT
             </Button>
             <Button
+              href="#created"
               variant="outlined"
               size="large"
               sx={{ minWidth: "150px", marginLeft: 3 }}
@@ -155,7 +159,7 @@ export default function Marketplace() {
           </Button>
         </Box>
       </Box>
-      <Box sx={{ marginTop: 6 }}>
+      <Box sx={{ marginTop: 6 }} id="created">
         <Title title="Criados recentemente" />
         <Grid container spacing={3}>
           {!lastCreatedNft &&

@@ -37,7 +37,6 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
           alt={`NFT image - ${props.name}`}
           sx={{
             objectFit: "contain",
-            backgroundColor: (theme) => `${theme.palette.primary.main}22`,
             borderBottom: (theme) =>
               `2px solid ${theme.palette.primary.main}33`,
           }}
@@ -74,8 +73,8 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
               >
                 {props.authority.length > 0 ? props.authority[0] : "."}
               </Avatar>
-              <Typography noWrap variant="body1" sx={{ marginLeft: 1 }}>
-                {props.authority.substring(0, 17) + '...'}
+              <Typography noWrap variant="body1" sx={{ marginLeft: 1, maxWidth: '180px' }}>
+                {props.authority}
               </Typography>
             </Box>
             <Box display="flex" alignItems="center">
