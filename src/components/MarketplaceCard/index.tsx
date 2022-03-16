@@ -22,9 +22,8 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
     <Card
       sx={{
         display: "flex",
+        height: "100%",
         flexDirection: "column",
-        width: "350px",
-        height: "auto",
         textDecoration: "none",
       }}
       component={Link}
@@ -33,14 +32,15 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
       <Box>
         <CardMedia
           component="img"
+          height="350"
+          image={props.image}
+          alt={`NFT image - ${props.name}`}
           sx={{
-            minHeight: "350px",
-            backgroundColor: (theme) => `${theme.palette.primary.main}33`,
+            objectFit: "contain",
+            backgroundColor: (theme) => `${theme.palette.primary.main}22`,
             borderBottom: (theme) =>
               `2px solid ${theme.palette.primary.main}33`,
           }}
-          image={props.image}
-          alt={`NFT image - ${props.name}`}
         />
         <CardContent>
           <Box

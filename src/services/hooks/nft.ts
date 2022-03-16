@@ -1,6 +1,10 @@
 import { PublicKey } from "@solana/web3.js";
 import useSWR from "swr";
-import { getMetadataByMint, getWalletNftList } from "../fetchers/nft";
+import {
+  getMetadataByMint,
+  getWalletNftList,
+  getLastNftCreated,
+} from "../fetchers/nft";
 
 export function useWalletNftList(walletPublicKey: PublicKey | null) {
   const { data } = useSWR(
@@ -39,4 +43,13 @@ export function useNft(mint: string) {
   );
 
   return { data, error };
+}
+
+export function useLastNftCreated() {
+  const { data } = useSWR(
+    ["useLastNft"],
+    async () => await getLastNftCreated()
+  );
+
+  return data;
 }

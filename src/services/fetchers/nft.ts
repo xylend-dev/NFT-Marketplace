@@ -45,3 +45,16 @@ export const getMetadataByMint = async (
     likes,
   };
 };
+
+export const getLastNftCreated = async () => {
+  const mints = [
+    "8Vujaia92NYTcm62T2JZ17LmraAFHuevuJvTkPmNWwb8"
+  ];
+  const lastNftCreated = await Promise.all(
+    mints.map(async (mint) => {
+      return getMetadataByMint(mint);
+    })
+  );
+
+  return lastNftCreated;
+};
