@@ -63,7 +63,7 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
               marginTop: 1,
             }}
           >
-            <Box display="flex">
+            <Box display="flex" alignItems="center">
               <Avatar
                 alt={`Dono do NFT - ${props.authority}`}
                 sx={{
@@ -74,12 +74,12 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
               >
                 {props.authority.length > 0 ? props.authority[0] : "."}
               </Avatar>
-              <Typography noWrap variant="subtitle1" sx={{ marginLeft: 1 }}>
-                {props.authority.substring(0, 20) + "..."}
+              <Typography noWrap variant="body1" sx={{ marginLeft: 1 }}>
+                {props.authority.substring(0, 17) + '...'}
               </Typography>
             </Box>
-            <Box display="flex">
-              <Typography noWrap variant="subtitle1">
+            <Box display="flex" alignItems="center">
+              <Typography noWrap variant="body1">
                 {props.likes || 0}
               </Typography>
               <Favorite color="success" sx={{ marginLeft: 1 }} />
