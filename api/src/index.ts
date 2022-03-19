@@ -4,6 +4,7 @@ import cors from "cors";
 import express from "express";
 import lusca from "lusca";
 import setBaseRouter from "./routes/base-router";
+import logger from "./utils/logger";
 
 const app = express();
 
@@ -26,5 +27,5 @@ setBaseRouter(app);
 
 const PORT = process.env["PORT"] || 8000;
 app.listen(PORT, () => {
-  console.log(`⚡️[server]: Server is running at https://localhost:${PORT}`);
+  logger.info(`⚡️[server]: Server is running at https://localhost:${PORT}`);
 });
