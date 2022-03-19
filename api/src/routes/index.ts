@@ -1,8 +1,8 @@
 import { Express } from "express";
-import likeRoutes from "./like-routes";
+import nftRoute from "./nftRoute";
 
 const setBaseRouter = (app: Express): void => {
-  app.use("/", [likeRoutes]);
+  app.use("/", [nftRoute]);
 };
 
 export default setBaseRouter;

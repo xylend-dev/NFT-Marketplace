@@ -6,7 +6,7 @@ import compression from "compression";
 import cors from "cors";
 import express from "express";
 import lusca from "lusca";
-import setBaseRouter from "./routes/base-router";
+import setBaseRouter from "./routes";
 import logger from "./utils/logger";
 
 const app = express();
