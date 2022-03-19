@@ -1,3 +1,6 @@
+import loadEnvs from "./utils/secrets";
+loadEnvs();
+
 import errorHandler from "errorhandler";
 import compression from "compression";
 import cors from "cors";
