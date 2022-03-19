@@ -34,7 +34,7 @@ function MarketplaceSkeletonCard() {
 
 export default function Marketplace() {
   const { data: landingNft } = useNft(
-    "BPzbAczFfwEfpnjLVMCmnZKQQ3epjjX7KxCr9rX3fP5W"
+    "8hFvkUTAazTXaTrvxAK33M3zoeoRP5piWTybj5KYFAni"
   );
   const lastCreatedNft = useLastNftCreated();
   const skeletonArray = Array(4).fill("");
