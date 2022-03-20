@@ -1,6 +1,6 @@
 import { checkSchema } from "express-validator";
 import Nft from "../models/Nft";
-import { validateWalletBalance } from "./solanaValidator";
+import { validateWalletBalance, validateMintSupply } from "./solanaValidator";
 
 export const validateNftLike = async (mint: string, walletAddress: string) => {
   const nft = await Nft.findOne({
@@ -19,6 +19,11 @@ export const postNftLikeValidator = checkSchema({
     isString: true,
     errorMessage: "Mint de NFT é um campo obrigatório",
     trim: true,
+    custom: {
+      options: async (value: string) => {
+        await validateMintSupply(value);
+      },
+    },
   },
   walletAddress: {
     in: ["body"],
