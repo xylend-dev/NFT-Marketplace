@@ -10,6 +10,26 @@ export const getNftService = async (mint: string) => {
   };
 };
 
+export const getNftLikeService = async (limit: number) => {
+  const mostLikedNft = await Nft.aggregate([
+    {
+      $project: {
+        _id: 0,
+        numberLikes: { $size: { $ifNull: ["$likeWallet", []] } },
+        mint: 1,
+      },
+    },
+    {
+      $sort: { numberLikes: -1 },
+    },
+    {
+      $limit: limit,
+    },
+  ]);
+
+  return mostLikedNft;
+};
+
 export const postNftLikeService = async (
   mint: string,
   walletAddress: string

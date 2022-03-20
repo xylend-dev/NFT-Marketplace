@@ -4,6 +4,7 @@ import {
   getMetadataByMint,
   getWalletNftList,
   getLastNftCreated,
+  getPopularNfts,
 } from "../fetchers/nft";
 
 export function useWalletNftList(walletPublicKey: PublicKey | null) {
@@ -43,6 +44,23 @@ export function useNft(mint: string) {
   );
 
   return { data, error };
+}
+
+export function usePopularNfts() {
+  const { data, error } = useSWR(
+    ["usePopularNfts"],
+    async () => await getPopularNfts()
+  );
+
+  let popularNfts = data;
+  if (data) {
+    popularNfts = data.sort(
+      (nft1, nft2) =>
+        (nft1.extraData?.numberLikes || 0) - (nft2.extraData?.numberLikes || 0)
+    );
+  }
+
+  return { popularNfts, error };
 }
 
 export function useLastNftCreated() {

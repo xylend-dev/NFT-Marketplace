@@ -5,6 +5,7 @@ import api from "../api";
 import { PublicKey } from "@solana/web3.js";
 import { isBackendEnabled } from "../../config/api";
 import { NftExtraData } from "../../types/types";
+import { removeUndefined } from "../../utils/general";
 
 export const getNftMetadata = async (arweaveUri: string) => {
   const nftMetadata = await api.get<MetadataJson>(arweaveUri);
@@ -37,7 +38,7 @@ export const getMetadataByMint = async (mint: string) => {
   const metadata = await getNftMetadata(nft.data.uri);
 
   const extraData: NftExtraData | undefined = isBackendEnabled
-    ? (await api.get(`/nft/${mint}`)).data
+    ? (await api.get(`/nft/token/${mint}`)).data
     : undefined;
 
   return {
@@ -46,6 +47,28 @@ export const getMetadataByMint = async (mint: string) => {
     metadata,
     extraData,
   };
+};
+
+export const getPopularNfts = async () => {
+  if (!isBackendEnabled) {
+    throw new Error("Habilite a API para visualizar as obras mais curtidas");
+  }
+
+  const popularNfts = (await api.get<Array<NftExtraData>>("/nft/like")).data;
+  const popularNftsData = (
+    await Promise.all(
+      popularNfts.map(async (popularNft) => {
+        try {
+          const nftData = await getMetadataByMint(popularNft.mint);
+          return nftData;
+        } catch {
+          console.log(`NFT ${popularNft.mint} não encontrado`);
+        }
+      })
+    )
+  ).filter(removeUndefined);
+
+  return popularNftsData;
 };
 
 export const getLastNftCreated = async () => {

@@ -5,7 +5,11 @@ import GradientBackground from "../../assets/img/gradient-background.svg";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MarketplaceCard from "../../components/MarketplaceCard";
 import { Info } from "@mui/icons-material";
-import { useLastNftCreated, useNft } from "../../services/hooks/nft";
+import {
+  useLastNftCreated,
+  usePopularNfts,
+  useNft,
+} from "../../services/hooks/nft";
 import Title from "../../components/Title";
 
 function MarketplaceSkeletonCard() {
@@ -37,6 +41,7 @@ export default function Marketplace() {
     "8hFvkUTAazTXaTrvxAK33M3zoeoRP5piWTybj5KYFAni"
   );
   const lastCreatedNft = useLastNftCreated();
+  const { popularNfts, error: errorPopularNfts } = usePopularNfts();
   const skeletonArray = Array(4).fill("");
 
   return (
@@ -182,29 +187,31 @@ export default function Marketplace() {
             ))}
         </Grid>
       </Box>
-      <Box sx={{ marginTop: 6 }}>
-        <Title title="Colecionáveis populares" />
-        <Grid container spacing={3}>
-          {!lastCreatedNft &&
-            skeletonArray.map((_, index) => (
-              <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                <MarketplaceSkeletonCard />
-              </Grid>
-            ))}
-          {lastCreatedNft &&
-            lastCreatedNft.map((nft, index) => (
-              <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                <MarketplaceCard
-                  name={nft.metadata.name}
-                  likes={nft.extraData?.numberLikes}
-                  authority={nft.nft.updateAuthority}
-                  mint={nft.nft.mint}
-                  image={nft.metadata.image}
-                />
-              </Grid>
-            ))}
-        </Grid>
-      </Box>
+      {errorPopularNfts === undefined && (
+        <Box sx={{ marginTop: 6 }}>
+          <Title title="Colecionáveis populares" />
+          <Grid container spacing={3}>
+            {!popularNfts &&
+              skeletonArray.map((_, index) => (
+                <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                  <MarketplaceSkeletonCard />
+                </Grid>
+              ))}
+            {popularNfts &&
+              popularNfts.map((nft, index) => (
+                <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                  <MarketplaceCard
+                    name={nft.metadata.name}
+                    likes={nft.extraData?.numberLikes}
+                    authority={nft.nft.updateAuthority}
+                    mint={nft.nft.mint}
+                    image={nft.metadata.image}
+                  />
+                </Grid>
+              ))}
+          </Grid>
+        </Box>
+      )}
       <Box sx={{ marginTop: 6 }}>
         <Title title="Listados recentemente" />
         <Grid container spacing={3}>
