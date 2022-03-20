@@ -9,6 +9,10 @@ import { validate } from "../validators";
 const nftRoute = Router();
 
 nftRoute.get("/nft/:mint", getNftController);
-nftRoute.post("/nft/like", validate(postNftLikeValidator), postNftLikeController);
+nftRoute.post(
+  "/nft/like",
+  validate(postNftLikeValidator),
+  postNftLikeController
+);
 
 export default nftRoute;
