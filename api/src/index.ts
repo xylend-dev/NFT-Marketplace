@@ -8,6 +8,7 @@ import express from "express";
 import lusca from "lusca";
 import setBaseRouter from "./routes";
 import logger from "./utils/logger";
+import { databaseConnect } from "./config/database";
 
 const app = express();
 
@@ -27,6 +28,8 @@ if (process.env.NODE_ENV === "production") {
 }
 
 setBaseRouter(app);
+
+databaseConnect();
 
 const PORT = process.env["PORT"] || 8000;
 app.listen(PORT, () => {
