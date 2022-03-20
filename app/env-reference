@@ -3,6 +3,8 @@ REACT_APP_ENV=development
 
 # It's possible to set a back-end API to cache data and perform actions
 # that does not need to run on blockchain
+# Option to enable backend functionalities (false or true)
+REACT_APP_USE_BACKEND=false
 REACT_APP_API_BASE_URL=your api url
 
 # Arweave Wallet Key is used to upload image and metadata of the NFT.

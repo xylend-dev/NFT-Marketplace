@@ -109,7 +109,7 @@ export default function Marketplace() {
           {landingNft && (
             <MarketplaceCard
               name={landingNft.metadata.name}
-              likes={landingNft.likes}
+              likes={landingNft.extraData?.numberLikes}
               authority={landingNft.nft.updateAuthority}
               mint={landingNft.nft.mint}
               image={landingNft.metadata.image}
@@ -173,7 +173,7 @@ export default function Marketplace() {
               <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                 <MarketplaceCard
                   name={nft.metadata.name}
-                  likes={nft.likes}
+                  likes={nft.extraData?.numberLikes}
                   authority={nft.nft.updateAuthority}
                   mint={nft.nft.mint}
                   image={nft.metadata.image}
@@ -196,7 +196,7 @@ export default function Marketplace() {
               <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                 <MarketplaceCard
                   name={nft.metadata.name}
-                  likes={nft.likes}
+                  likes={nft.extraData?.numberLikes}
                   authority={nft.nft.updateAuthority}
                   mint={nft.nft.mint}
                   image={nft.metadata.image}
@@ -219,7 +219,7 @@ export default function Marketplace() {
               <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                 <MarketplaceCard
                   name={nft.metadata.name}
-                  likes={nft.likes}
+                  likes={nft.extraData?.numberLikes}
                   authority={nft.nft.updateAuthority}
                   mint={nft.nft.mint}
                   image={nft.metadata.image}

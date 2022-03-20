@@ -1,8 +1,8 @@
 import axios from "axios";
+import { endpoint } from "../config/api";
 
-/* API is not used yet */
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || "http://localhost:5000",
+  baseURL: endpoint,
 });
 
 export default api;

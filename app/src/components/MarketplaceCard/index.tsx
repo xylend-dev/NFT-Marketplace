@@ -22,7 +22,7 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
 
   return (
     <Card
-      style={isImageLoaded ? {} : {display: 'none'}}
+      style={isImageLoaded ? {} : { display: "none" }}
       sx={{
         display: "flex",
         height: "100%",
@@ -77,16 +77,22 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
               >
                 {props.authority.length > 0 ? props.authority[0] : "."}
               </Avatar>
-              <Typography noWrap variant="body1" sx={{ marginLeft: 1, maxWidth: '180px' }}>
+              <Typography
+                noWrap
+                variant="body1"
+                sx={{ marginLeft: 1, maxWidth: "180px" }}
+              >
                 {props.authority}
               </Typography>
             </Box>
-            <Box display="flex" alignItems="center">
-              <Typography noWrap variant="body1">
-                {props.likes || 0}
-              </Typography>
-              <Favorite color="success" sx={{ marginLeft: 1 }} />
-            </Box>
+            {props.likes !== undefined && (
+              <Box display="flex" alignItems="center">
+                <Typography noWrap variant="body1">
+                  {props.likes}
+                </Typography>
+                <Favorite color="success" sx={{ marginLeft: 1 }} />
+              </Box>
+            )}
           </Box>
         </CardContent>
       </Box>
