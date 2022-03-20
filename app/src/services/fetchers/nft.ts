@@ -12,6 +12,16 @@ export const getNftMetadata = async (arweaveUri: string) => {
   return nftMetadata.data;
 };
 
+export const getWalletBalance = async (walletPublicKey: PublicKey | null) => {
+  if (!walletPublicKey) {
+    throw new Error("Carteira não carregada");
+  }
+  const walletBalanceLamports = await connection.getBalance(walletPublicKey);
+  const walletBalanceSol = walletBalanceLamports / 1e9;
+
+  return walletBalanceSol;
+};
+
 export const getWalletNftList = async (walletPublicKey: PublicKey | null) => {
   if (!walletPublicKey) {
     return [];

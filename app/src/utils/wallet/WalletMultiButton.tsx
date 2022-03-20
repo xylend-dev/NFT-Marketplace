@@ -1,8 +1,10 @@
+import React, { FC, useMemo, useState } from "react";
 import {
   Button,
   ButtonProps,
   Collapse,
   Fade,
+  Icon,
   ListItemIcon,
   Menu,
   MenuItem,
@@ -11,11 +13,12 @@ import CopyIcon from "@mui/icons-material/FileCopy";
 import DisconnectIcon from "@mui/icons-material/LinkOff";
 import SwitchIcon from "@mui/icons-material/SwapHoriz";
 import { useWallet } from "@solana/wallet-adapter-react";
-import React, { FC, useMemo, useState } from "react";
+import SolanaLogo from "../../assets/img/solana-logo.svg";
 import { useWalletDialog } from "./useWalletDialog";
 import { WalletConnectButton } from "./WalletConnectButton";
 import { WalletDialogButton } from "./WalletDialogButton";
 import { WalletIcon } from "./WalletIcon";
+import { useWalletBalance } from "../../services/hooks/nft";
 
 export const WalletMultiButton: FC<ButtonProps> = ({
   color = "primary",
@@ -26,6 +29,8 @@ export const WalletMultiButton: FC<ButtonProps> = ({
   const { publicKey, wallet, disconnect } = useWallet();
   const { setOpen } = useWalletDialog();
   const [anchor, setAnchor] = useState<HTMLElement>();
+  const { data: walletBalance, error: walletBalanceError } =
+    useWalletBalance(publicKey);
 
   const base58 = useMemo(() => publicKey?.toBase58(), [publicKey]);
   const content = useMemo(() => {
@@ -80,6 +85,21 @@ export const WalletMultiButton: FC<ButtonProps> = ({
         }}
       >
         <Collapse in={!!anchor}>
+          {walletBalanceError === undefined && (
+            <MenuItem sx={{ cursor: "default" }}>
+              <ListItemIcon>
+                <Icon>
+                  <img
+                    height={24}
+                    width={24}
+                    alt="Solana logo"
+                    src={SolanaLogo}
+                  />
+                </Icon>
+              </ListItemIcon>
+              {walletBalance} SOL
+            </MenuItem>
+          )}
           <MenuItem
             onClick={async () => {
               setAnchor(undefined);
