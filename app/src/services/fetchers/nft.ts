@@ -40,8 +40,6 @@ export const getMetadataByMint = async (mint: string) => {
     ? (await api.get(`/nft/${mint}`)).data
     : undefined;
 
-  console.log(extraData);
-
   return {
     pda,
     nft,

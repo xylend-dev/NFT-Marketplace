@@ -19,6 +19,10 @@ export const postNftLikeService = async (
     { $addToSet: { likeWallet: walletAddress } },
     { upsert: true, returnDocument: "after" }
   ).exec();
+  const numberLikes = (nft && nft.likeWallet.length) || 0;
 
-  return nft;
+  return {
+    mint: mint,
+    numberLikes: numberLikes,
+  };
 };

@@ -6,7 +6,11 @@ export const getNftController = async (req: Request, res: Response) => {
     const response = await getNftService(req.params.mint);
     return res.status(200).json(response);
   } catch (error) {
-    return res.status(400).json([{ error: error.message }]);
+    return res
+      .status(400)
+      .json([
+        { errors: [{ msg: "Não foi possível recuperar detalhes do NFT" }] },
+      ]);
   }
 };
 
@@ -18,9 +22,8 @@ export const postNftLikeController = async (req: Request, res: Response) => {
     );
     return res.status(201).json(response);
   } catch (error) {
-    console.log(error);
-    return res
-      .status(400)
-      .json({ errors: ["Error inexperado ao adicionar a curtida do NFT"] });
+    return res.status(400).json({
+      errors: [{ msg: "Error inesperado ao adicionar a curtida do NFT" }],
+    });
   }
 };

@@ -1,6 +1,7 @@
 import React from "react";
 import Title from "../../components/Title";
 import { useParams } from "react-router-dom";
+import { useWallet } from "@solana/wallet-adapter-react";
 import {
   Box,
   Button,
@@ -17,6 +18,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import SolanaLogo from "../../assets/img/solana-logo.svg";
@@ -27,8 +29,13 @@ import NotFoundNFT from "../NotFoundNFT";
 import { useSnackbar } from "notistack";
 import LinkButton from "../../components/LinkButton";
 import { TableCellName, TableCellValue } from "./styles";
+import { isBackendEnabled } from "../../config/api";
+import { PublicKey } from "@solana/web3.js";
+import api from "../../services/api";
+import { ErrorsResponse, NftExtraData } from "../../types/types";
 
-export default function ListNFT() {
+export default function ShowNft() {
+  const { publicKey } = useWallet();
   const { mint } = useParams<{ mint: string }>();
   const { data, error } = useNft(mint);
   const { enqueueSnackbar } = useSnackbar();
@@ -38,6 +45,45 @@ export default function ListNFT() {
     enqueueSnackbar("Valor copiado para a área de transferência", {
       variant: "success",
     });
+  };
+
+  const addNftLike = async () => {
+    if (!publicKey) {
+      enqueueSnackbar("Conecte-se a sua carteira antes de curtir o NFT", {
+        variant: "info",
+      });
+      return;
+    }
+    try {
+      new PublicKey(mint);
+    } catch (error) {
+      enqueueSnackbar("NFT inválido", { variant: "error" });
+      return;
+    }
+    await api
+      .post<NftExtraData>("/nft/like", {
+        mint: mint,
+        walletAddress: publicKey,
+      })
+      .then(() => {
+        enqueueSnackbar("Curtida adicionada", { variant: "success" });
+      })
+      .catch((error) => {
+        if (error.response && "errors" in error.response.data) {
+          const errorData = error.response.data as ErrorsResponse;
+          const errorMessage = errorData.errors
+            .map((errorResponse) => errorResponse.msg)
+            .join(" ");
+
+          enqueueSnackbar(errorMessage, {
+            variant: "error",
+          });
+        } else {
+          enqueueSnackbar("Erro inesperado", {
+            variant: "error",
+          });
+        }
+      });
   };
 
   return (
@@ -51,15 +97,41 @@ export default function ListNFT() {
           )}
           {data && (
             <Card sx={{ position: "sticky", top: 0 }}>
-              <CardMedia
-                component="img"
-                alt={`${data.metadata.name} (NFT)`}
-                sx={{
-                  height: "auto",
-                  maxWidth: "100%",
-                }}
-                image={data.metadata.image}
-              />
+              <Box position="relative">
+                {isBackendEnabled && (
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    sx={{
+                      position: "absolute",
+                      top: 10,
+                      right: 10,
+                      backgroundColor: "white",
+                      borderRadius: 4,
+                      padding: 1,
+                      cursor: "pointer",
+                    }}
+                    onClick={addNftLike}
+                  >
+                    <Typography noWrap variant="body1">
+                      {data.extraData?.numberLikes || 0}
+                    </Typography>
+                    <FavoriteBorderIcon
+                      color="success"
+                      sx={{ marginLeft: 0.5 }}
+                    />
+                  </Box>
+                )}
+                <CardMedia
+                  component="img"
+                  alt={`${data.metadata.name} (NFT)`}
+                  sx={{
+                    height: "auto",
+                    maxWidth: "100%",
+                  }}
+                  image={data.metadata.image}
+                />
+              </Box>
               <CardActions sx={{ padding: 2 }}>
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={6}>
