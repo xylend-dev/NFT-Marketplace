@@ -1,0 +1,8 @@
+# Node enviroment (development or production)
+NODE_ENV=development
+
+# Authorized Hosts to make requests to solrigami application
+ALLOWED_HOSTS=*
+
+# API service port (default 8000).
+PORT=8000
