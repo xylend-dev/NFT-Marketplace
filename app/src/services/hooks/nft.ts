@@ -5,6 +5,7 @@ import {
   getWalletNftList,
   getLastNftCreated,
   getPopularNfts,
+  getWalletBalance,
 } from "../fetchers/nft";
 
 export function useWalletNftList(walletPublicKey: PublicKey | null) {
@@ -46,9 +47,18 @@ export function useNft(mint: string) {
   return { data, error };
 }
 
+export function useWalletBalance(walletPublicKey: PublicKey | null) {
+  const { data, error } = useSWR(
+    walletPublicKey ? ["walletBalance", walletPublicKey] : null,
+    async () => await getWalletBalance(walletPublicKey)
+  );
+
+  return { data, error };
+}
+
 export function usePopularNfts() {
   const { data, error } = useSWR(
-    ["usePopularNfts"],
+    ["popularNfts"],
     async () => await getPopularNfts()
   );
 
@@ -65,7 +75,7 @@ export function usePopularNfts() {
 
 export function useLastNftCreated() {
   const { data } = useSWR(
-    ["useLastNft"],
+    ["lastNftCreated"],
     async () => await getLastNftCreated()
   );
 
