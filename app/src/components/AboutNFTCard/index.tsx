@@ -12,11 +12,10 @@ export default function AboutNFTCard(props: AboutNFTCardProps) {
   return (
     <Card
       sx={{
-        height: "100%",
         display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
+        height: "100%",
         maxWidth: "350px",
+        margin: "auto"
       }}
     >
       <CardContent>
