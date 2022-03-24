@@ -1,13 +1,17 @@
 import React from "react";
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import AboutPropertyIcon from "../../assets/img/about-property-icon.svg";
 import AboutChainIcon from "../../assets/img/about-chain-icon.svg";
 import AboutSellIcon from "../../assets/img/about-sell-icon.svg";
+import AboutApplicationWalletIcon from "../../assets/img/about-application-wallet-icon.svg";
+import AboutApplicationMintIcon from "../../assets/img/about-application-mint-icon.svg";
+import AboutApplicationSellIcon from "../../assets/img/about-application-sell-icon.svg";
 import NFTImage from "../../assets/img/nft-image.png";
 import PersonifyImage from "../../assets/img/personify-image.png";
 import InevitableImage from "../../assets/img/inevitable-image.png";
 import AboutNFTCard from "../../components/AboutNFTCard";
 import AboutNFTGradientCard from "../../components/AboutNFTGradientCard";
+import AboutApplicationCard from "../../components/AboutApplicationCard";
 
 const NFT_INFOS = [
   {
@@ -60,34 +64,122 @@ const NFT_REFERENCES = [
   },
 ];
 
+const SOLRIGAMI_WALKTHROUGH = [
+  {
+    href: "https://phantom.app/",
+    buttonLabel: "Criar carteira",
+    icon: AboutApplicationWalletIcon,
+    alt: "Ícone de carteira de criptoativos",
+    title: "Conecte a sua carteira",
+    description:
+      "Para começar a utilizar a plataforma, crie uma carteira digital para custodiar os seus criptoativos",
+  },
+  {
+    href: "/create",
+    buttonLabel: "Criar NFT",
+    icon: AboutApplicationMintIcon,
+    alt: "Ícone com um sinal de mais de criação de NFT",
+    title: "Crie um NFT",
+    description:
+      "Utilize a moeda SOL da sua carteira de criptoativos para criar um novo NFT na plataforma Solrigami",
+  },
+  {
+    href: "/",
+    buttonLabel: "Marketplace",
+    icon: AboutApplicationSellIcon,
+    alt: "Ícone com a representação de uma venda",
+    title: "Compre e venda NFT",
+    description: "Compre e venda artes digitais na forma de NFT de artista do mundo inteiro sem taxas de terceiros",
+  },
+];
+
 export default function About() {
   return (
     <>
-      <Grid container spacing={3}>
-        {NFT_INFOS.map((nft_info, index) => (
-          <Grid key={index} item xs={12} sm={6} md={4}>
-            <AboutNFTCard
-              icon={nft_info.icon}
-              description={nft_info.description}
-              title={nft_info.title}
-              alt={nft_info.alt}
-            />
+      <Box
+        maxWidth="xl"
+        display="flex"
+        justifyContent="space-between"
+        margin="auto"
+        sx={{
+          padding: (theme) => `${theme.spacing(5)} !important`,
+        }}
+      >
+        <Grid container spacing={3}>
+          {NFT_INFOS.map((nft_info, index) => (
+            <Grid key={index} item xs={12} sm={6} md={4}>
+              <AboutNFTCard
+                icon={nft_info.icon}
+                description={nft_info.description}
+                title={nft_info.title}
+                alt={nft_info.alt}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+      <Box sx={{ backgroundColor: "#023047" }}>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          maxWidth="xl"
+          margin="auto"
+        >
+          <Grid
+            container
+            sx={{
+              padding: 2,
+              paddingTop: 12,
+              paddingBottom: 12,
+            }}
+            spacing={6}
+          >
+            {SOLRIGAMI_WALKTHROUGH.map((walkthrough, index) => (
+              <Grid
+                display="flex"
+                justifyContent="center"
+                key={index}
+                item
+                xs={12}
+                sm={6}
+                md={4}
+              >
+                <AboutApplicationCard
+                  href={walkthrough.href}
+                  buttonLabel={walkthrough.buttonLabel}
+                  description={walkthrough.description}
+                  title={walkthrough.title}
+                  icon={walkthrough.icon}
+                  alt={walkthrough.alt}
+                />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
-      <Grid container spacing={3}>
-        {NFT_REFERENCES.map((nft_info, index) => (
-          <Grid key={index} item xs={12} sm={6} md={4}>
-            <AboutNFTGradientCard
-              href={nft_info.href}
-              image={nft_info.image}
-              description={nft_info.description}
-              title={nft_info.title}
-              alt={nft_info.alt}
-            />
-          </Grid>
-        ))}
-      </Grid>
+        </Box>
+      </Box>
+      <Box
+        maxWidth="xl"
+        display="flex"
+        justifyContent="space-between"
+        margin="auto"
+        sx={{
+          padding: (theme) => `${theme.spacing(5)} !important`,
+        }}
+      >
+        <Grid container spacing={3}>
+          {NFT_REFERENCES.map((nft_info, index) => (
+            <Grid key={index} item xs={12} sm={6} md={4}>
+              <AboutNFTGradientCard
+                href={nft_info.href}
+                image={nft_info.image}
+                description={nft_info.description}
+                title={nft_info.title}
+                alt={nft_info.alt}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
     </>
   );
 }

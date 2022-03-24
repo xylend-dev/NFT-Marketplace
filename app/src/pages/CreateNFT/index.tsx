@@ -9,6 +9,7 @@ import {
 import {
   Box,
   Button,
+  Container,
   FormHelperText,
   Grid,
   TextField,
@@ -294,7 +295,14 @@ export default function CreateNFT() {
   };
 
   return (
-    <>
+    <Container
+      component="main"
+      maxWidth="xl"
+      sx={{
+        overflowX: "hidden",
+        padding: (theme) => `${theme.spacing(5)} !important`,
+      }}
+    >
       <Grid container display="flex" justifyContent="space-between">
         <Title title="Criar NFT" />
         <ButtonWithTooltip
@@ -570,6 +578,6 @@ export default function CreateNFT() {
           </Grid>
         </form>
       )}
-    </>
+    </Container>
   );
 }

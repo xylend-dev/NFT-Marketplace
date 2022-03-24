@@ -19,7 +19,6 @@ import Navbar from "./components/Navbar";
 import Routes from "./routes";
 import CssBaseline from "@mui/material/CssBaseline";
 import { network, endpoint } from "./config/solanaNetwork";
-import { Container } from "@mui/material";
 import Footer from "./components/Footer";
 import { useLocation } from "react-router-dom";
 
@@ -58,17 +57,10 @@ export default function App() {
             <SnackbarProvider>
               <CssBaseline />
               <Navbar />
-              <Container
-                component="main"
-                maxWidth="xl"
-                sx={{
-                  overflowX: "hidden",
-                  padding: (theme) => `${theme.spacing(5)} !important`,
-                }}
-              >
-                <Routes />
-              </Container>
-              {location.pathname === "/" && <Footer />}
+              <Routes />
+              {(location.pathname === "/" || location.pathname === "/about") && (
+                <Footer />
+              )}
             </SnackbarProvider>
           </WalletDialogProvider>
         </WalletProvider>

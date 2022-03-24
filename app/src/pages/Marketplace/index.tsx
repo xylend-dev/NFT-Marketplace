@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Box, Button, Grid, Skeleton, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, Skeleton, Typography } from "@mui/material";
 import GradientBackground from "../../assets/img/gradient-background.svg";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MarketplaceCard from "../../components/MarketplaceCard";
@@ -45,7 +45,14 @@ export default function Marketplace() {
   const skeletonArray = Array(4).fill("");
 
   return (
-    <>
+    <Container
+      component="main"
+      maxWidth="xl"
+      sx={{
+        overflowX: "hidden",
+        padding: (theme) => `${theme.spacing(5)} !important`,
+      }}
+    >
       <Grid
         container
         display="flex"
@@ -235,6 +242,6 @@ export default function Marketplace() {
             ))}
         </Grid>
       </Box>
-    </>
+    </Container>
   );
 }

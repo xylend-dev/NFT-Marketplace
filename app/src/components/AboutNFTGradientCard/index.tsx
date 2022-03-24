@@ -14,8 +14,7 @@ export default function AboutNFTGradientCard(props: AboutNFTCardProps) {
     <Card
       sx={{
         display: "flex",
-        height: "100%",
-        minHeight: "400px",
+        height: "500px",
         backgroundSize: "100% 150px, cover",
         backgroundPosition: "bottom, center",
         backgroundRepeat: "no-repeat, no-repeat",
