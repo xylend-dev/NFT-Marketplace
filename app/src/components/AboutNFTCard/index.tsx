@@ -34,7 +34,7 @@ export default function AboutNFTCard(props: AboutNFTCardProps) {
         >
           {props.title}
         </Typography>
-        <Typography variant="body1">{props.description}</Typography>
+        <Typography variant="body1" textAlign="justify">{props.description}</Typography>
       </CardContent>
     </Card>
   );
