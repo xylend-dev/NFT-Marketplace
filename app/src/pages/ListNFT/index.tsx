@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Grid, Skeleton } from "@mui/material";
+import { Box, Button, Container, Grid, Skeleton } from "@mui/material";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletNftList } from "../../services/hooks/nft";
 import GalleryCard from "../../components/GalleryCard";
@@ -17,7 +17,14 @@ export default function ListNFT() {
   }
 
   return (
-    <>
+    <Container
+      component="main"
+      maxWidth="xl"
+      sx={{
+        overflowX: "hidden",
+        padding: (theme) => `${theme.spacing(5)} !important`,
+      }}
+    >
       {publicKey && nfts?.length === 0 && (
         <NotFoundNFT message="Nenhum NFT encontrado para esta carteira" />
       )}
@@ -74,6 +81,6 @@ export default function ListNFT() {
           </Box>
         </>
       )}
-    </>
+    </Container>
   );
 }

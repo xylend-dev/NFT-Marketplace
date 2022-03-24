@@ -8,6 +8,7 @@ import {
   Card,
   CardActions,
   CardMedia,
+  Container,
   Divider,
   Grid,
   Link,
@@ -87,7 +88,14 @@ export default function ShowNft() {
   };
 
   return (
-    <>
+    <Container
+      component="main"
+      maxWidth="xl"
+      sx={{
+        overflowX: "hidden",
+        padding: (theme) => `${theme.spacing(5)} !important`,
+      }}
+    >
       {error !== undefined && <NotFoundNFT message="NFT não encontrado" />}
       {error === undefined && <Title title="Explorar NFT" />}
       <Grid container spacing={6}>
@@ -357,6 +365,6 @@ export default function ShowNft() {
           )}
         </Grid>
       </Grid>
-    </>
+    </Container>
   );
 }

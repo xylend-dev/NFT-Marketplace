@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Box, Button, Grid, Skeleton, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, Skeleton, Typography } from "@mui/material";
 import GradientBackground from "../../assets/img/gradient-background.svg";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MarketplaceCard from "../../components/MarketplaceCard";
@@ -45,7 +45,14 @@ export default function Marketplace() {
   const skeletonArray = Array(4).fill("");
 
   return (
-    <>
+    <Container
+      component="main"
+      maxWidth="xl"
+      sx={{
+        overflowX: "hidden",
+        padding: (theme) => `${theme.spacing(5)} !important`,
+      }}
+    >
       <Grid
         container
         display="flex"
@@ -139,9 +146,7 @@ export default function Marketplace() {
         <Box display="flex" alignItems="center" sx={{ padding: 1 }}>
           <Info />
           <Typography variant="h5" sx={{ marginLeft: 4 }}>
-            Um NFT é uma representação única de um ativo em meio digital que
-            possibilita a propriedade, a rastreabilidade e a comerciabilidade
-            através do uso da tecnologia Blockchain.
+          A sigla NFT remete a tokens não fungíveis, ativos únicos digitalmente transferíveis
           </Typography>
         </Box>
         <Box
@@ -151,6 +156,8 @@ export default function Marketplace() {
           }}
         >
           <Button
+            component={Link}
+            to="/about"
             size="large"
             endIcon={<ChevronRightIcon />}
             sx={{
@@ -235,6 +242,6 @@ export default function Marketplace() {
             ))}
         </Grid>
       </Box>
-    </>
+    </Container>
   );
 }
