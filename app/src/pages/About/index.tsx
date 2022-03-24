@@ -33,8 +33,8 @@ const NFT_INFOS = [
   },
   {
     icon: AboutSellIcon,
-    alt: "Ícone da característica comerciabilidade do NFT",
-    title: "Comerciabilidade",
+    alt: "Ícone da característica de comercialização de NFT",
+    title: "Comércio",
     description:
       "Um NFT é a representação de um ativo único em ambiente virtual. Logo, através dos contratos inteligentes, é possível comprar ou vender esses bens de forma automatizada e sem intermediários.",
   },
@@ -63,7 +63,7 @@ const NFT_REFERENCES = [
     alt: "Imagem de uma obra abstrata com fluxos de diferentes tintas",
     title: "Inevitable Media",
     description:
-      "Mantenha-se atualizado com as últimas notícias e novidades do mercado NFT",
+      "Mantenha-se atualizado com as últimas notícias e novidades do mercado de NFTs",
   },
 ];
 
@@ -121,7 +121,7 @@ export default function About() {
             <Title title="Sobre os NFTs" />
             <Typography variant="h5" textAlign="justify">
               Solrigami é um marketplace de artes digitais na forma de NFT. A
-              sigla NFT diz respeito a tokens não fungíveis, registros únicos
+              sigla NFT diz respeito a tokens não fungíveis, ativos únicos
               digitalmente transferíveis. Os NFTs utilizam a tecnologia
               blockchain, um banco de dados descentralizado e distribuído que
               permite reconhecer a propriedade, verificar a proveniência e
@@ -182,7 +182,7 @@ export default function About() {
                 Já imaginou conseguir revender a um terceiro uma música comprada
                 em um formato puramente digital? Ou vender uma arte digital com
                 cobrança de royalty automática e sem intermediário? Ou até mesmo
-                ter sobre sua propriedade parte de um imóvel? Tudo isso é
+                ter em sua propriedade parte de um imóvel? Tudo isso é
                 possível por meio dos NFTs.
               </Typography>
             </Box>

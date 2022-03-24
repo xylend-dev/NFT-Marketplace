@@ -146,9 +146,7 @@ export default function Marketplace() {
         <Box display="flex" alignItems="center" sx={{ padding: 1 }}>
           <Info />
           <Typography variant="h5" sx={{ marginLeft: 4 }}>
-            Um NFT é uma representação única de um ativo em meio digital que
-            possibilita a propriedade, a rastreabilidade e a comerciabilidade
-            através do uso da tecnologia Blockchain.
+          A sigla NFT remete a tokens não fungíveis, ativos únicos digitalmente transferíveis
           </Typography>
         </Box>
         <Box
@@ -158,6 +156,8 @@ export default function Marketplace() {
           }}
         >
           <Button
+            component={Link}
+            to="/about"
             size="large"
             endIcon={<ChevronRightIcon />}
             sx={{
