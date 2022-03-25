@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  solrigami_api:
+    container_name: solrigami_api
+    depends_on:
+      - solrigami_db
+    build:
+      context: ./api
+    ports:
+      - 8000:8000
+    volumes:
+      - ./api:/api
+      - /api/node_modules
+
+  solrigami_db:
+    container_name: solrigami_db
+    image: mongo:5.0.6
+    ports:
+      - 27017:27017
+
+  solrigami_app:
+    container_name: solrigami_app
+    build:
+      context: ./app
+    stdin_open: true
+    ports:
+      - 3000:3000
+    volumes:
+      - ./app:/app
+      - /app/node_modules
