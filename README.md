@@ -39,7 +39,7 @@ sudo docker-compose up --build
 
 ## Contributing
 
-If you would like to make suggestions, report issues or propose changes to the application, please feel free to open an [issue](https://github.com/solrigami/app/issues) or [pull request](https://github.com /solrigami/app/pulls).
+If you would like to make suggestions, report issues or propose changes to the application, please feel free to open an [issue](https://github.com/solrigami/app/issues) or [pull request](https://github.com/solrigami/app/pulls).
 
 ## License
 
