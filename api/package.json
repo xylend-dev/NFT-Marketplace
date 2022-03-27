@@ -4,8 +4,8 @@
   "description": "Optional API to use with Solrigami application",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./src/index.ts",
-    "build": "npm run build-ts && npm run lint",
+    "dev": "nodemon ./src/index.ts",
+    "start": "ts-node ./src/index.ts",
     "build-ts": "tsc --noEmit",
     "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
     "test": "echo \"Error: no test specified\" && exit 1"

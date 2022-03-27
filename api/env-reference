@@ -6,3 +6,6 @@ ALLOWED_HOSTS=*
 
 # API service port (default 8000).
 PORT=8000
+
+# API database to store data outside blockchain
+MONGODB_URI=mongodb://solrigami_db:27017/solrigamiDB
