@@ -1,52 +1,15 @@
 import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import InputBase from "@mui/material/InputBase";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { Link } from "react-router-dom";
-import SearchIcon from "@mui/icons-material/Search";
 import { NavLink, useLocation } from "react-router-dom";
 import LogoImage from "../../assets/img/logo.svg";
 import { WalletMultiButton } from "../../utils/wallet/WalletMultiButton";
-
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  color: theme.palette.primary.main,
-  backgroundColor: alpha(theme.palette.primary.main, 0.1),
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  width: "100%",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-  },
-}));
 
 export default function Navbar() {
   const navbarMinimumHeight = 64;
@@ -105,6 +68,7 @@ export default function Navbar() {
                 borderTopLeftRadius: 8,
                 borderTopRightRadius: 8,
               },
+              flexGrow: 1,
             }}
           >
             <Tab
@@ -148,17 +112,6 @@ export default function Navbar() {
               }}
             />
           </Tabs>
-          <Box sx={{ flexGrow: 1 }}>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Procurar arte"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </Search>
-          </Box>
           <WalletMultiButton />
         </Toolbar>
       </AppBar>
