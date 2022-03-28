@@ -226,7 +226,10 @@ export default function ShowNft() {
                     <Typography variant="h5" sx={{ fontWeight: 500 }}>
                       Preço:
                     </Typography>
-                    <Typography variant="h5">------ SOL</Typography>
+                    <Typography variant="h5">
+                      {" "}
+                      &nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp; SOL
+                    </Typography>
                   </Box>
                   <Button
                     disabled

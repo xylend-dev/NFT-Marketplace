@@ -6,7 +6,6 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import BlockIcon from "@mui/icons-material/Block";
 import InfoIcon from "@mui/icons-material/Info";
 import SellIcon from "@mui/icons-material/Sell";
 import { Link } from "react-router-dom";
@@ -44,7 +43,7 @@ export default function GalleryCard(props: NftGalleryCardProps) {
           image={props.image}
           alt={`NFT image - ${props.name}`}
           sx={{
-            objectFit: "contain",
+            objectFit: "cover",
           }}
         />
         <CardContent>
@@ -69,16 +68,9 @@ export default function GalleryCard(props: NftGalleryCardProps) {
         >
           Detalhes
         </Button>
-        {!props.isNftListed && (
-          <Button disabled startIcon={<SellIcon />}>
-            Vender
-          </Button>
-        )}
-        {props.isNftListed && (
-          <Button disabled startIcon={<BlockIcon />}>
-            Parar venda
-          </Button>
-        )}
+        <Button disabled startIcon={<SellIcon />}>
+          Vender
+        </Button>
       </CardActions>
     </Card>
   );

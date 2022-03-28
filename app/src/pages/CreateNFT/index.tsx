@@ -32,6 +32,8 @@ import { uploadData } from "../../utils/arweave/uploadData";
 import { cacheCreatedNft } from "../../utils/cache";
 import { defaultNftMetadata } from "../../utils/nft";
 import { validateNftAttributes } from "../../utils/validation";
+import api from "../../services/api";
+import { NftCreatedData } from "../../types/types";
 
 const MAX_ATTRIBUTE_FIELDS = 15;
 const royaltiesMarks = [
@@ -243,6 +245,19 @@ export default function CreateNFT() {
       setIsUploadingNFT(false);
       return;
     }
+
+    await api
+      .post<NftCreatedData>("/nft/create", {
+        mint: nft.mint.toBase58(),
+      })
+      .then(() => {
+        console.log("NFT adicionado a lista de NFTs recém-criados");
+      })
+      .catch(() => {
+        console.log(
+          "Não foi possível salvar o NFT na lista de NFTs recém-criados"
+        );
+      });
 
     setIsUploadingNFT(false);
     cacheCreatedNft(metadataTransactionUri, nft.mint.toString());
