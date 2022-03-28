@@ -13,3 +13,8 @@ export interface NftExtraData {
   mint: string;
   numberLikes: number;
 }
+
+export interface NftCreatedData {
+  mint: string;
+  createdAt: string;
+}
