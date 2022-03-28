@@ -39,7 +39,7 @@ export const postNftLikeController = async (req: Request, res: Response) => {
     return res.status(201).json(response);
   } catch (error) {
     return res.status(400).json({
-      errors: [{ msg: "Error inesperado ao adicionar a curtida do NFT" }],
+      errors: [{ msg: "Erro inesperado ao adicionar a curtida do NFT" }],
     });
   }
 };
