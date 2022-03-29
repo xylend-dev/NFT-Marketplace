@@ -82,7 +82,7 @@ export const getPopularNfts = async () => {
 export const getLastNftsCreated = async () => {
   validateIsBackendEnabled();
 
-  const lastNftsCreated = (await api.get<Array<NftCreatedData>>("/nft/like")).data;
+  const lastNftsCreated = (await api.get<Array<NftCreatedData>>("/nft/create")).data;
   const lastNftsCreatedData = (await Promise.all(
     lastNftsCreated.map(async (lastNftCreated) => {
       try {

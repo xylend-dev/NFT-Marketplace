@@ -31,7 +31,7 @@ export function useWalletNftList(walletPublicKey: PublicKey | null) {
   definedNftFamily.sort(
     (nft1, nft2) =>
       (nft1.metadata.collection?.family || "").localeCompare(
-        (nft2.metadata.collection?.family || "")
+        nft2.metadata.collection?.family || ""
       ) || nft1.metadata.name.localeCompare(nft2.metadata.name)
   );
 

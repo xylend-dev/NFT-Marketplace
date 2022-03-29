@@ -18,6 +18,8 @@ import {
   useNft,
 } from "../../services/hooks/nft";
 import Title from "../../components/Title";
+import { network } from "../../config/solanaNetwork";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 
 function MarketplaceSkeletonCard() {
   return (
@@ -128,8 +130,8 @@ export default function Marketplace() {
           <MarketplaceCard
             name="Personification #0178"
             likes={landingNft && landingNft.extraData?.numberLikes}
-            authority="AswSd6Z3NnSkyVCVHhHCLNj5YSWJ7DtEAJYWmB7d98cD"
-            mint="8hFvkUTAazTXaTrvxAK33M3zoeoRP5piWTybj5KYFAni"
+            authority={network === WalletAdapterNetwork.Mainnet ? "AswSd6Z3NnSkyVCVHhHCLNj5YSWJ7DtEAJYWmB7d98cD" : "EuxRDrekBF8yL7N6MophU3RFhTAyqT4Dc73ai3RspVRa"}
+            mint={network === WalletAdapterNetwork.Mainnet ? "8hFvkUTAazTXaTrvxAK33M3zoeoRP5piWTybj5KYFAni" : "4AD1DK5osPcWzico65TToHXjqLZE951ZG3BsAfv8GDBk"}
             image="https://ipfs.io/ipfs/QmYBL7wRUn6BxEpMqRrVq7xYFFYqcCpiqoNBKs1nNVSKve"
           />
         </Grid>
@@ -180,7 +182,7 @@ export default function Marketplace() {
       {errorLastNftsCreated === undefined && (
         <Box sx={{ marginTop: 6 }}>
           {lastNftsCreated && lastNftsCreated.length !== 0 && (
-            <Title title="Colecionáveis populares" />
+            <Title title="Criados recentemente" />
           )}
           <Grid container spacing={3}>
             {!lastNftsCreated &&
