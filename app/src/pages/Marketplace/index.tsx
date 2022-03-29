@@ -1,16 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Box, Button, Container, Grid, Skeleton, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Skeleton,
+  Typography,
+} from "@mui/material";
 import GradientBackground from "../../assets/img/gradient-background.svg";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MarketplaceCard from "../../components/MarketplaceCard";
 import { Info } from "@mui/icons-material";
 import {
-  useLastNftCreated,
+  useLastNftsCreated,
   usePopularNfts,
   useNft,
 } from "../../services/hooks/nft";
 import Title from "../../components/Title";
+import { network } from "../../config/solanaNetwork";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 
 function MarketplaceSkeletonCard() {
   return (
@@ -40,8 +49,9 @@ export default function Marketplace() {
   const { data: landingNft } = useNft(
     "8hFvkUTAazTXaTrvxAK33M3zoeoRP5piWTybj5KYFAni"
   );
-  const lastCreatedNft = useLastNftCreated();
   const { popularNfts, error: errorPopularNfts } = usePopularNfts();
+  const { lastNftsCreated, error: errorLastNftsCreated } = useLastNftsCreated();
+
   const skeletonArray = Array(4).fill("");
 
   return (
@@ -117,16 +127,13 @@ export default function Marketplace() {
             backgroundImage: `url(${GradientBackground}), url(${GradientBackground})`,
           }}
         >
-          {landingNft === undefined && <MarketplaceSkeletonCard />}
-          {landingNft && (
-            <MarketplaceCard
-              name={landingNft.metadata.name}
-              likes={landingNft.extraData?.numberLikes}
-              authority={landingNft.nft.updateAuthority}
-              mint={landingNft.nft.mint}
-              image={landingNft.metadata.image}
-            />
-          )}
+          <MarketplaceCard
+            name="Personification #0178"
+            likes={landingNft && landingNft.extraData?.numberLikes}
+            authority={network === WalletAdapterNetwork.Mainnet ? "AswSd6Z3NnSkyVCVHhHCLNj5YSWJ7DtEAJYWmB7d98cD" : "EuxRDrekBF8yL7N6MophU3RFhTAyqT4Dc73ai3RspVRa"}
+            mint={network === WalletAdapterNetwork.Mainnet ? "8hFvkUTAazTXaTrvxAK33M3zoeoRP5piWTybj5KYFAni" : "4AD1DK5osPcWzico65TToHXjqLZE951ZG3BsAfv8GDBk"}
+            image="https://ipfs.io/ipfs/QmYBL7wRUn6BxEpMqRrVq7xYFFYqcCpiqoNBKs1nNVSKve"
+          />
         </Grid>
       </Grid>
       <Box
@@ -146,7 +153,8 @@ export default function Marketplace() {
         <Box display="flex" alignItems="center" sx={{ padding: 1 }}>
           <Info />
           <Typography variant="h5" sx={{ marginLeft: 4 }}>
-          A sigla NFT remete a tokens não fungíveis, ativos únicos digitalmente transferíveis
+            A sigla NFT remete a tokens não fungíveis, ativos únicos
+            digitalmente transferíveis
           </Typography>
         </Box>
         <Box
@@ -171,32 +179,38 @@ export default function Marketplace() {
           </Button>
         </Box>
       </Box>
-      <Box sx={{ marginTop: 6 }} id="created">
-        <Title title="Criados recentemente" />
-        <Grid container spacing={3}>
-          {!lastCreatedNft &&
-            skeletonArray.map((_, index) => (
-              <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                <MarketplaceSkeletonCard />
-              </Grid>
-            ))}
-          {lastCreatedNft &&
-            lastCreatedNft.map((nft, index) => (
-              <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                <MarketplaceCard
-                  name={nft.metadata.name}
-                  likes={nft.extraData?.numberLikes}
-                  authority={nft.nft.updateAuthority}
-                  mint={nft.nft.mint}
-                  image={nft.metadata.image}
-                />
-              </Grid>
-            ))}
-        </Grid>
-      </Box>
+      {errorLastNftsCreated === undefined && (
+        <Box sx={{ marginTop: 6 }}>
+          {lastNftsCreated && lastNftsCreated.length !== 0 && (
+            <Title title="Criados recentemente" />
+          )}
+          <Grid container spacing={3}>
+            {!lastNftsCreated &&
+              skeletonArray.map((_, index) => (
+                <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                  <MarketplaceSkeletonCard />
+                </Grid>
+              ))}
+            {lastNftsCreated &&
+              lastNftsCreated.map((nft, index) => (
+                <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                  <MarketplaceCard
+                    name={nft.metadata.name}
+                    likes={nft.extraData?.numberLikes}
+                    authority={nft.nft.updateAuthority}
+                    mint={nft.nft.mint}
+                    image={nft.metadata.image}
+                  />
+                </Grid>
+              ))}
+          </Grid>
+        </Box>
+      )}
       {errorPopularNfts === undefined && (
         <Box sx={{ marginTop: 6 }}>
-          <Title title="Colecionáveis populares" />
+          {popularNfts && popularNfts.length !== 0 && (
+            <Title title="Colecionáveis populares" />
+          )}
           <Grid container spacing={3}>
             {!popularNfts &&
               skeletonArray.map((_, index) => (
@@ -219,29 +233,6 @@ export default function Marketplace() {
           </Grid>
         </Box>
       )}
-      <Box sx={{ marginTop: 6 }}>
-        <Title title="Listados recentemente" />
-        <Grid container spacing={3}>
-          {!lastCreatedNft &&
-            skeletonArray.map((_, index) => (
-              <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                <MarketplaceSkeletonCard />
-              </Grid>
-            ))}
-          {lastCreatedNft &&
-            lastCreatedNft.map((nft, index) => (
-              <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                <MarketplaceCard
-                  name={nft.metadata.name}
-                  likes={nft.extraData?.numberLikes}
-                  authority={nft.nft.updateAuthority}
-                  mint={nft.nft.mint}
-                  image={nft.metadata.image}
-                />
-              </Grid>
-            ))}
-        </Grid>
-      </Box>
     </Container>
   );
 }

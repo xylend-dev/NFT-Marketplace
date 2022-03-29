@@ -20,7 +20,7 @@ export const getNftController = async (req: Request, res: Response) => {
 
 export const getNftLikeController = async (req: Request, res: Response) => {
   try {
-    const limit = req.query.limit ? Number(req.query.limit) : 4;
+    const limit = req.query.limit ? Number(req.query.limit) : 12;
     const response = await getNftLikeService(limit);
     return res.status(200).json(response);
   } catch (error) {
@@ -39,7 +39,7 @@ export const postNftLikeController = async (req: Request, res: Response) => {
     return res.status(201).json(response);
   } catch (error) {
     return res.status(400).json({
-      errors: [{ msg: "Error inesperado ao adicionar a curtida do NFT" }],
+      errors: [{ msg: "Erro inesperado ao adicionar a curtida do NFT" }],
     });
   }
 };

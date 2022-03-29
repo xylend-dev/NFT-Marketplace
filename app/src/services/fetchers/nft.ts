@@ -3,8 +3,8 @@ import { MetadataJson } from "@metaplex/js";
 import { connection } from "../../config/solanaNetwork";
 import api from "../api";
 import { PublicKey } from "@solana/web3.js";
-import { isBackendEnabled } from "../../config/api";
-import { NftExtraData } from "../../types/types";
+import { isBackendEnabled, validateIsBackendEnabled } from "../../config/api";
+import { NftCreatedData, NftExtraData } from "../../types/types";
 import { removeUndefined } from "../../utils/general";
 
 export const getNftMetadata = async (arweaveUri: string) => {
@@ -60,9 +60,7 @@ export const getMetadataByMint = async (mint: string) => {
 };
 
 export const getPopularNfts = async () => {
-  if (!isBackendEnabled) {
-    throw new Error("Habilite a API para visualizar as obras mais curtidas");
-  }
+  validateIsBackendEnabled();
 
   const popularNfts = (await api.get<Array<NftExtraData>>("/nft/like")).data;
   const popularNftsData = (
@@ -81,13 +79,20 @@ export const getPopularNfts = async () => {
   return popularNftsData;
 };
 
-export const getLastNftCreated = async () => {
-  const mints = ["8Vujaia92NYTcm62T2JZ17LmraAFHuevuJvTkPmNWwb8"];
-  const lastNftCreated = await Promise.all(
-    mints.map(async (mint) => {
-      return getMetadataByMint(mint);
-    })
-  );
+export const getLastNftsCreated = async () => {
+  validateIsBackendEnabled();
 
-  return lastNftCreated;
+  const lastNftsCreated = (await api.get<Array<NftCreatedData>>("/nft/create")).data;
+  const lastNftsCreatedData = (await Promise.all(
+    lastNftsCreated.map(async (lastNftCreated) => {
+      try {
+        const nftData = await getMetadataByMint(lastNftCreated.mint);
+        return nftData;
+      } catch {
+        console.log(`NFT ${lastNftCreated.mint} não encontrado`);
+      }
+    })
+  )).filter(removeUndefined);
+
+  return lastNftsCreatedData;
 };

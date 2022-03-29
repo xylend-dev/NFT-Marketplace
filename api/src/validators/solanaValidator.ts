@@ -1,17 +1,4 @@
-import { getWalletBalance, getMintSupply } from "../services/solanaService";
-
-export const validateWalletBalance = async (walletAddress: string) => {
-  let walletBalance = 0;
-  if (walletAddress) {
-    walletBalance = await getWalletBalance(walletAddress);
-  }
-
-  if (walletBalance < 10000000) {
-    throw new Error(
-      "Carteira com saldo inferior a 0,01 SOL não pode realizar essa operação"
-    );
-  }
-};
+import { getMintSupply } from "../services/solanaService";
 
 export const validateMintSupply = async (mint: string) => {
   const mintSupply = await getMintSupply(mint);

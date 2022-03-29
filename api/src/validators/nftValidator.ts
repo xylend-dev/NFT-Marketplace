@@ -1,6 +1,6 @@
 import { checkSchema } from "express-validator";
 import Nft from "../models/Nft";
-import { validateWalletBalance, validateMintSupply } from "./solanaValidator";
+import { validateMintSupply } from "./solanaValidator";
 
 export const validateNftLike = async (mint: string, walletAddress: string) => {
   const nft = await Nft.findOne({
@@ -32,7 +32,6 @@ export const postNftLikeValidator = checkSchema({
     trim: true,
     custom: {
       options: async (value: string, { req }) => {
-        await validateWalletBalance(value);
         await validateNftLike(req.body.mint, value);
       },
     },

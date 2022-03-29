@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
@@ -6,10 +6,10 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import BlockIcon from "@mui/icons-material/Block";
 import InfoIcon from "@mui/icons-material/Info";
 import SellIcon from "@mui/icons-material/Sell";
 import { Link } from "react-router-dom";
+import { Skeleton } from "@mui/material";
 
 export interface NftGalleryCardProps {
   mint: string;
@@ -28,6 +28,8 @@ const abbreviateText = (text: string, length: number) => {
 };
 
 export default function GalleryCard(props: NftGalleryCardProps) {
+  const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
+
   return (
     <Card
       sx={{
@@ -38,13 +40,21 @@ export default function GalleryCard(props: NftGalleryCardProps) {
       }}
     >
       <Box>
+        <Box style={isImageLoaded ? { display: "none" } : {}}>
+          <Skeleton
+            variant="rectangular"
+            width="100%" height={260}
+          />
+        </Box>
         <CardMedia
+          style={isImageLoaded ? {} : { display: "none" }}
           component="img"
           height="260"
+          onLoad={() => setIsImageLoaded(true)}
           image={props.image}
           alt={`NFT image - ${props.name}`}
           sx={{
-            objectFit: "contain",
+            objectFit: "cover",
           }}
         />
         <CardContent>
@@ -69,16 +79,9 @@ export default function GalleryCard(props: NftGalleryCardProps) {
         >
           Detalhes
         </Button>
-        {!props.isNftListed && (
-          <Button disabled startIcon={<SellIcon />}>
-            Vender
-          </Button>
-        )}
-        {props.isNftListed && (
-          <Button disabled startIcon={<BlockIcon />}>
-            Parar venda
-          </Button>
-        )}
+        <Button disabled startIcon={<SellIcon />}>
+          Vender
+        </Button>
       </CardActions>
     </Card>
   );
