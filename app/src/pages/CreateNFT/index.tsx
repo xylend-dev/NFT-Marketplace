@@ -357,11 +357,13 @@ export default function CreateNFT() {
             gutterBottom
             align="center"
             sx={{
-              maxWidth: "600px",
+              maxWidth: "800px",
             }}
           >
-            Carregando imagem e criando o NFT... Quando solicitado, aprove com a
-            sua carteira digital a criação do NFT.
+            Carregando imagem e criando o NFT...
+            <Box>
+              Quando solicitado, aprove a criação do NFT com a sua carteira digital.
+            </Box>
           </Typography>
         </Box>
       )}

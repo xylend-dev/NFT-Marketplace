@@ -1,4 +1,4 @@
-# Node enviroment (development or production)
+# Node enviroment (development, homologation or production)
 NODE_ENV=development
 
 # Authorized Hosts to make requests to solrigami application

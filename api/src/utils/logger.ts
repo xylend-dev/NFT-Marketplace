@@ -1,11 +1,13 @@
 import winston from "winston";
 
-const isProductionEnv = process.env.NODE_ENV === "production";
+const isRealEnvironment =
+  process.env.NODE_ENV === "production" ||
+  process.env.NODE_ENV === "homologation";
 
 const options: winston.LoggerOptions = {
   transports: [
     new winston.transports.Console({
-      level: isProductionEnv ? "error" : "debug",
+      level: isRealEnvironment ? "error" : "debug",
     }),
     new winston.transports.File({ filename: "debug.log", level: "debug" }),
   ],
@@ -13,7 +15,7 @@ const options: winston.LoggerOptions = {
 
 const logger = winston.createLogger(options);
 
-if (!isProductionEnv) {
+if (!isRealEnvironment) {
   logger.debug("Logging initialized at debug level");
 }
 

@@ -25,7 +25,7 @@ const arweaveJWKRaw = process.env.REACT_APP_ARWEAVE_KEY;
 let arweaveJWK: JWKInterface = JSON.parse(arweaveJWKRaw || "{}");
 
 let testWeave: TestWeave;
-if (environment !== "production") {
+if (environment === "development") {
   (async () => {
     const BLOCK_TIMER = 10000;
     testWeave = await TestWeave.init(arweave);
@@ -38,7 +38,7 @@ if (environment !== "production") {
 } else {
   if (Object.keys(arweaveJWK).length === 0) {
     throw Error(
-      "Running in production mode without arweave key configured. Check your .env file."
+      "Running in homologation/production mode without arweave key configured. Check your .env file."
     );
   }
 }
