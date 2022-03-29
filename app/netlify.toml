@@ -7,3 +7,11 @@
     REACT_APP_ENV = "homologation"
     REACT_APP_API_BASE_URL = "https://solrigami-api-dev.herokuapp.com/"
     REACT_APP_IS_BACKEND_ENABLED = "true"
+
+[context.deploy-preview.environment]
+    REACT_APP_ENV = "homologation"
+    REACT_APP_IS_BACKEND_ENABLED = "false"
+
+[context.branch-deploy.environment]
+    REACT_APP_ENV = "homologation"
+    REACT_APP_IS_BACKEND_ENABLED = "false"
