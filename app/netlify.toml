@@ -4,6 +4,6 @@
     status = 200
 
 [context.dev.environment]
-    REACT_APP_ENV=homologation
-    REACT_APP_API_BASE_URL=https://solrigami-api-dev.herokuapp.com/
-    REACT_APP_IS_BACKEND_ENABLED=true
+    REACT_APP_ENV = "homologation"
+    REACT_APP_API_BASE_URL = "https://solrigami-api-dev.herokuapp.com/"
+    REACT_APP_IS_BACKEND_ENABLED = "true"
