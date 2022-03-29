@@ -21,6 +21,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { network, endpoint } from "./config/solanaNetwork";
 import Footer from "./components/Footer";
 import { useLocation } from "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop";
 
 const theme = createTheme({
   palette: {
@@ -56,6 +57,7 @@ export default function App() {
           <WalletDialogProvider>
             <SnackbarProvider>
               <CssBaseline />
+              <ScrollToTop />
               <Navbar />
               <Routes />
               {(location.pathname === "/" || location.pathname === "/about") && (
