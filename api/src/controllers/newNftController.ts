@@ -3,7 +3,7 @@ import { getNewNftService, postNewNftService } from "../services/newNftService";
 
 export const getNewNftController = async (req: Request, res: Response) => {
   try {
-    const limit = req.query.limit ? Number(req.query.limit) : 20;
+    const limit = req.query.limit ? Number(req.query.limit) : 12;
     const response = await getNewNftService(limit);
     return res.status(200).json(response);
   } catch (error) {
