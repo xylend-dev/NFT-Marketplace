@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Title from "../../components/Title";
 import { useParams } from "react-router-dom";
 import { useWallet } from "@solana/wallet-adapter-react";
@@ -36,6 +36,7 @@ import api from "../../services/api";
 import { ErrorsResponse, NftExtraData } from "../../types/types";
 
 export default function ShowNft() {
+  const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
   const { publicKey } = useWallet();
   const { mint } = useParams<{ mint: string }>();
   const { data, error } = useNft(mint);
@@ -130,9 +131,14 @@ export default function ShowNft() {
                     />
                   </Box>
                 )}
+                <Box style={isImageLoaded ? { display: "none" } : {}}>
+                  <Skeleton variant="rectangular" sx={{height: "450px", maxWidth: "100%"}} />
+                </Box>
                 <CardMedia
+                  style={isImageLoaded ? {} : { display: "none" }}
                   component="img"
                   alt={`${data.metadata.name} (NFT)`}
+                  onLoad={() => setIsImageLoaded(true)}
                   sx={{
                     height: "auto",
                     maxWidth: "100%",
@@ -322,7 +328,8 @@ export default function ShowNft() {
                               </TableCellValue>
                             </TableRow>
                           )}
-                        {data.metadata.seller_fee_basis_points && (
+                        {data.metadata.seller_fee_basis_points !==
+                          undefined && (
                           <TableRow>
                             <TableCellName>
                               <Typography variant="h5" sx={{ fontWeight: 500 }}>

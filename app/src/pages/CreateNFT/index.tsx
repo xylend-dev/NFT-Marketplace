@@ -248,7 +248,7 @@ export default function CreateNFT() {
 
     await api
       .post<NftCreatedData>("/nft/create", {
-        mint: nft.mint.toBase58(),
+        mint: nft.mint.toString(),
       })
       .then(() => {
         console.log("NFT adicionado a lista de NFTs recém-criados");
@@ -360,7 +360,8 @@ export default function CreateNFT() {
               maxWidth: "600px",
             }}
           >
-            Carregando imagem e criando o NFT...
+            Carregando imagem e criando o NFT... Quando solicitado, aprove com a
+            sua carteira digital a criação do NFT.
           </Typography>
         </Box>
       )}

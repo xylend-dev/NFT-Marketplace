@@ -6,7 +6,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import InfoIcon from "@mui/icons-material/Info";
 import { Link } from "react-router-dom";
-import { Avatar } from "@mui/material";
+import { Avatar, Skeleton } from "@mui/material";
 import { Favorite } from "@mui/icons-material";
 
 export interface MarketplaceCardProps {
@@ -22,7 +22,6 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
 
   return (
     <Card
-      style={isImageLoaded ? {} : { display: "none" }}
       sx={{
         display: "flex",
         height: "100%",
@@ -33,18 +32,22 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
       to={`/gallery/${props.mint}`}
     >
       <Box>
-        <CardMedia
-          component="img"
-          height="350"
-          image={props.image}
-          alt={`NFT image - ${props.name}`}
-          onLoad={() => setIsImageLoaded(true)}
-          sx={{
-            objectFit: "contain",
-            borderBottom: (theme) =>
-              `2px solid ${theme.palette.primary.main}33`,
-          }}
-        />
+        <Box style={isImageLoaded ? { display: "none" } : {}}>
+          <Skeleton variant="rectangular" width="100%" height={350} />
+        </Box>
+          <CardMedia
+            style={isImageLoaded ? {} : { display: "none" }}
+            component="img"
+            height="350"
+            image={props.image}
+            alt={`NFT image - ${props.name}`}
+            onLoad={() => setIsImageLoaded(true)}
+            sx={{
+              objectFit: "cover",
+              borderBottom: (theme) =>
+                `2px solid ${theme.palette.primary.main}33`,
+            }}
+          />
         <CardContent>
           <Box
             display="flex"
