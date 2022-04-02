@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   Box,
@@ -51,6 +51,8 @@ export default function Marketplace() {
   );
   const { popularNfts, error: errorPopularNfts } = usePopularNfts();
   const { lastNftsCreated, error: errorLastNftsCreated } = useLastNftsCreated();
+  const marketplaceRef = useRef<HTMLDivElement>(null);
+  const scrollToMarketplace = () => marketplaceRef.current!.scrollIntoView();
 
   const skeletonArray = Array(4).fill("");
 
@@ -100,10 +102,10 @@ export default function Marketplace() {
               Criar NFT
             </Button>
             <Button
-              href="#created"
               variant="outlined"
               size="large"
               sx={{ minWidth: "150px", marginLeft: 3 }}
+              onClick={scrollToMarketplace}
             >
               Explorar
             </Button>
@@ -128,10 +130,18 @@ export default function Marketplace() {
           }}
         >
           <MarketplaceCard
-            name="Personification #0178"
+            name="Personification #179"
             likes={landingNft && landingNft.extraData?.numberLikes}
-            authority={network === WalletAdapterNetwork.Mainnet ? "AswSd6Z3NnSkyVCVHhHCLNj5YSWJ7DtEAJYWmB7d98cD" : "EuxRDrekBF8yL7N6MophU3RFhTAyqT4Dc73ai3RspVRa"}
-            mint={network === WalletAdapterNetwork.Mainnet ? "8hFvkUTAazTXaTrvxAK33M3zoeoRP5piWTybj5KYFAni" : "4AD1DK5osPcWzico65TToHXjqLZE951ZG3BsAfv8GDBk"}
+            authority={
+              network === WalletAdapterNetwork.Mainnet
+                ? "AswSd6Z3NnSkyVCVHhHCLNj5YSWJ7DtEAJYWmB7d98cD"
+                : "EuxRDrekBF8yL7N6MophU3RFhTAyqT4Dc73ai3RspVRa"
+            }
+            mint={
+              network === WalletAdapterNetwork.Mainnet
+                ? "8hFvkUTAazTXaTrvxAK33M3zoeoRP5piWTybj5KYFAni"
+                : "4AD1DK5osPcWzico65TToHXjqLZE951ZG3BsAfv8GDBk"
+            }
             image="https://ipfs.io/ipfs/QmYBL7wRUn6BxEpMqRrVq7xYFFYqcCpiqoNBKs1nNVSKve"
           />
         </Grid>
@@ -179,60 +189,62 @@ export default function Marketplace() {
           </Button>
         </Box>
       </Box>
-      {errorLastNftsCreated === undefined && (
-        <Box sx={{ marginTop: 6 }}>
-          {lastNftsCreated && lastNftsCreated.length !== 0 && (
-            <Title title="Criados recentemente" />
-          )}
-          <Grid container spacing={3}>
-            {!lastNftsCreated &&
-              skeletonArray.map((_, index) => (
-                <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                  <MarketplaceSkeletonCard />
-                </Grid>
-              ))}
-            {lastNftsCreated &&
-              lastNftsCreated.map((nft, index) => (
-                <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                  <MarketplaceCard
-                    name={nft.metadata.name}
-                    likes={nft.extraData?.numberLikes}
-                    authority={nft.nft.updateAuthority}
-                    mint={nft.nft.mint}
-                    image={nft.metadata.image}
-                  />
-                </Grid>
-              ))}
-          </Grid>
-        </Box>
-      )}
-      {errorPopularNfts === undefined && (
-        <Box sx={{ marginTop: 6 }}>
-          {popularNfts && popularNfts.length !== 0 && (
-            <Title title="Colecionáveis populares" />
-          )}
-          <Grid container spacing={3}>
-            {!popularNfts &&
-              skeletonArray.map((_, index) => (
-                <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                  <MarketplaceSkeletonCard />
-                </Grid>
-              ))}
-            {popularNfts &&
-              popularNfts.map((nft, index) => (
-                <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                  <MarketplaceCard
-                    name={nft.metadata.name}
-                    likes={nft.extraData?.numberLikes}
-                    authority={nft.nft.updateAuthority}
-                    mint={nft.nft.mint}
-                    image={nft.metadata.image}
-                  />
-                </Grid>
-              ))}
-          </Grid>
-        </Box>
-      )}
+      <Box ref={marketplaceRef}>
+        {errorLastNftsCreated === undefined && (
+          <Box sx={{ marginTop: 6 }}>
+            {lastNftsCreated && lastNftsCreated.length !== 0 && (
+              <Title title="Criados recentemente" />
+            )}
+            <Grid container spacing={3}>
+              {!lastNftsCreated &&
+                skeletonArray.map((_, index) => (
+                  <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                    <MarketplaceSkeletonCard />
+                  </Grid>
+                ))}
+              {lastNftsCreated &&
+                lastNftsCreated.map((nft, index) => (
+                  <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                    <MarketplaceCard
+                      name={nft.metadata.name}
+                      likes={nft.extraData?.numberLikes}
+                      authority={nft.nft.updateAuthority}
+                      mint={nft.nft.mint}
+                      image={nft.metadata.image}
+                    />
+                  </Grid>
+                ))}
+            </Grid>
+          </Box>
+        )}
+        {errorPopularNfts === undefined && (
+          <Box sx={{ marginTop: 6 }}>
+            {popularNfts && popularNfts.length !== 0 && (
+              <Title title="Colecionáveis populares" />
+            )}
+            <Grid container spacing={3}>
+              {!popularNfts &&
+                skeletonArray.map((_, index) => (
+                  <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                    <MarketplaceSkeletonCard />
+                  </Grid>
+                ))}
+              {popularNfts &&
+                popularNfts.map((nft, index) => (
+                  <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                    <MarketplaceCard
+                      name={nft.metadata.name}
+                      likes={nft.extraData?.numberLikes}
+                      authority={nft.nft.updateAuthority}
+                      mint={nft.nft.mint}
+                      image={nft.metadata.image}
+                    />
+                  </Grid>
+                ))}
+            </Grid>
+          </Box>
+        )}
+      </Box>
     </Container>
   );
 }
