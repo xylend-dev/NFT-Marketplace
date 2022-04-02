@@ -87,7 +87,7 @@ export default function Marketplace() {
             </Box>
           </Typography>
           <Typography variant="h5" sx={{ marginTop: 2, marginBottom: 6 }}>
-            Marketplace de tokens não fungíveis (NFTs). Crie, compre e venda
+            Marketplace de tokens não fungíveis (NFTs). Colecione, crie e venda
             artes digitais únicas na blockchain Solana.
           </Typography>
           <Box>
