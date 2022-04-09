@@ -67,7 +67,7 @@ export function usePopularNfts() {
   if (data) {
     popularNfts = data.sort(
       (nft1, nft2) =>
-        (nft1.extraData?.numberLikes || 0) - (nft2.extraData?.numberLikes || 0)
+        (nft2.extraData?.numberLikes || 0) - (nft1.extraData?.numberLikes || 0)
     );
   }
 
