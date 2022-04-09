@@ -19,13 +19,15 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { useSWRConfig } from "swr";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import SolanaLogo from "../../assets/img/solana-logo.svg";
 import ArweaveLogo from "../../assets/img/arweave-logo.svg";
 import { network } from "../../config/solanaNetwork";
-import { useNft } from "../../services/hooks/nft";
+import { useIsLikeAdded, useNft } from "../../services/hooks/nft";
 import NotFoundNFT from "../NotFoundNFT";
 import { useSnackbar } from "notistack";
 import LinkButton from "../../components/LinkButton";
@@ -40,10 +42,9 @@ export default function ShowNft() {
   const { publicKey } = useWallet();
   const { mint } = useParams<{ mint: string }>();
   const { data, error } = useNft(mint);
-  const [likes, setLikes] = useState<number>(
-    (data && data.extraData && data.extraData?.numberLikes) || 0
-  );
+  const { data: isLikeAdded } = useIsLikeAdded(mint, publicKey);
   const { enqueueSnackbar } = useSnackbar();
+  const { mutate } = useSWRConfig();
 
   const copyToClipboard = (value: string) => {
     navigator.clipboard.writeText(value);
@@ -71,8 +72,9 @@ export default function ShowNft() {
         walletAddress: publicKey,
       })
       .then(() => {
+        mutate(["nft", mint]);
+        mutate(["isLikeAdded", publicKey, mint]);
         enqueueSnackbar("Curtida adicionada", { variant: "success" });
-        setLikes(likes + 1);
       })
       .catch((error) => {
         if (error.response && "errors" in error.response.data) {
@@ -127,12 +129,16 @@ export default function ShowNft() {
                     onClick={addNftLike}
                   >
                     <Typography noWrap variant="body1">
-                      {likes}
+                      {data.extraData?.numberLikes || 0}
                     </Typography>
-                    <FavoriteBorderIcon
-                      color="success"
-                      sx={{ marginLeft: 0.5 }}
-                    />
+                    {isLikeAdded ? (
+                      <FavoriteIcon color="success" sx={{ marginLeft: 0.5 }} />
+                    ) : (
+                      <FavoriteBorderIcon
+                        color="success"
+                        sx={{ marginLeft: 0.5 }}
+                      />
+                    )}
                   </Box>
                 )}
                 <Box style={isImageLoaded ? { display: "none" } : {}}>

@@ -6,6 +6,7 @@ import {
   getLastNftsCreated,
   getPopularNfts,
   getWalletBalance,
+  getIsLikeAdded,
 } from "../fetchers/nft";
 
 export function useWalletNftList(walletPublicKey: PublicKey | null) {
@@ -82,4 +83,16 @@ export function useLastNftsCreated() {
   const lastNftsCreated = data;
 
   return { lastNftsCreated, error };
+}
+
+export function useIsLikeAdded(
+  mint: string,
+  walletPublicKey: PublicKey | null
+) {
+  const { data } = useSWR(
+    ["isLikeAdded", walletPublicKey, mint],
+    async () => await getIsLikeAdded(mint, walletPublicKey)
+  );
+
+  return { data };
 }

@@ -4,7 +4,7 @@ import { connection } from "../../config/solanaNetwork";
 import api from "../api";
 import { PublicKey } from "@solana/web3.js";
 import { isBackendEnabled, validateIsBackendEnabled } from "../../config/api";
-import { NftCreatedData, NftExtraData } from "../../types/types";
+import { IsLikeAdded, NftCreatedData, NftExtraData } from "../../types/types";
 import { removeUndefined } from "../../utils/general";
 
 export const getNftMetadata = async (arweaveUri: string) => {
@@ -59,6 +59,25 @@ export const getMetadataByMint = async (mint: string) => {
   };
 };
 
+export const getIsLikeAdded = async (
+  mint: string,
+  walletPublicKey: PublicKey | null
+) => {
+  validateIsBackendEnabled();
+
+  if (!walletPublicKey || !mint) {
+    return false;
+  }
+
+  const isLikeAdded = (
+    await api.get<IsLikeAdded>("/nft/like/check", {
+      params: { mint: mint, walletAddress: walletPublicKey.toBase58() },
+    })
+  ).data;
+
+  return isLikeAdded.isLikeAdded || false;
+};
+
 export const getPopularNfts = async () => {
   validateIsBackendEnabled();
 
@@ -82,17 +101,20 @@ export const getPopularNfts = async () => {
 export const getLastNftsCreated = async () => {
   validateIsBackendEnabled();
 
-  const lastNftsCreated = (await api.get<Array<NftCreatedData>>("/nft/create")).data;
-  const lastNftsCreatedData = (await Promise.all(
-    lastNftsCreated.map(async (lastNftCreated) => {
-      try {
-        const nftData = await getMetadataByMint(lastNftCreated.mint);
-        return nftData;
-      } catch {
-        console.log(`NFT ${lastNftCreated.mint} não encontrado`);
-      }
-    })
-  )).filter(removeUndefined);
+  const lastNftsCreated = (await api.get<Array<NftCreatedData>>("/nft/create"))
+    .data;
+  const lastNftsCreatedData = (
+    await Promise.all(
+      lastNftsCreated.map(async (lastNftCreated) => {
+        try {
+          const nftData = await getMetadataByMint(lastNftCreated.mint);
+          return nftData;
+        } catch {
+          console.log(`NFT ${lastNftCreated.mint} não encontrado`);
+        }
+      })
+    )
+  ).filter(removeUndefined);
 
   return lastNftsCreatedData;
 };
