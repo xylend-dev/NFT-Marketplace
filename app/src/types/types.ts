@@ -9,6 +9,12 @@ export interface ErrorsResponse {
   errors: Array<ErrorResponse>;
 }
 
+export interface IsLikeAdded {
+  mint: string,
+  walletAddress: string,
+  isLikeAdded: boolean,
+}
+
 export interface NftExtraData {
   mint: string;
   numberLikes: number;

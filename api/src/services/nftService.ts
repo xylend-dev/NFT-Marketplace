@@ -1,3 +1,4 @@
+import { validateNftLike } from "../validators/nftValidator";
 import Nft from "../models/Nft";
 
 export const getNftService = async (mint: string) => {
@@ -28,6 +29,22 @@ export const getNftLikeService = async (limit: number) => {
   ]);
 
   return mostLikedNft;
+};
+
+export const getNftLikeCheckService = async (
+  mint: string,
+  walletAddress: string
+) => {
+  const nft = await Nft.findOne({
+    mint: mint,
+    likeWallet: walletAddress,
+  }).exec();
+
+  return {
+    mint,
+    walletAddress,
+    isLikeAdded: nft ? true : false,
+  };
 };
 
 export const postNftLikeService = async (

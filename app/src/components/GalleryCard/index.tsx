@@ -41,22 +41,21 @@ export default function GalleryCard(props: NftGalleryCardProps) {
     >
       <Box>
         <Box style={isImageLoaded ? { display: "none" } : {}}>
-          <Skeleton
-            variant="rectangular"
-            width="100%" height={260}
+          <Skeleton variant="rectangular" width="100%" height={260} />
+        </Box>
+        <Box component={Link} to={`/gallery/${props.mint}`}>
+          <CardMedia
+            style={isImageLoaded ? {} : { display: "none" }}
+            component="img"
+            height="260"
+            onLoad={() => setIsImageLoaded(true)}
+            image={props.image}
+            alt={`NFT image - ${props.name}`}
+            sx={{
+              objectFit: "cover",
+            }}
           />
         </Box>
-        <CardMedia
-          style={isImageLoaded ? {} : { display: "none" }}
-          component="img"
-          height="260"
-          onLoad={() => setIsImageLoaded(true)}
-          image={props.image}
-          alt={`NFT image - ${props.name}`}
-          sx={{
-            objectFit: "cover",
-          }}
-        />
         <CardContent>
           <Typography noWrap gutterBottom variant="h5" component="div">
             {props.name}

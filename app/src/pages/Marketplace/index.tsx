@@ -142,7 +142,7 @@ export default function Marketplace() {
                 ? "8hFvkUTAazTXaTrvxAK33M3zoeoRP5piWTybj5KYFAni"
                 : "4AD1DK5osPcWzico65TToHXjqLZE951ZG3BsAfv8GDBk"
             }
-            image="https://ipfs.io/ipfs/QmYBL7wRUn6BxEpMqRrVq7xYFFYqcCpiqoNBKs1nNVSKve"
+            image="https://res.cloudinary.com/wallecloud/image/upload/v1649529671/solrigami/QmYBL7wRUn6BxEpMqRrVq7xYFFYqcCpiqoNBKs1nNVSKve_xim8fp.png"
           />
         </Grid>
       </Grid>
