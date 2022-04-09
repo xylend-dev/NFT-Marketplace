@@ -1,5 +1,12 @@
 import React from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Link, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
+import MuiAccordion, { AccordionProps } from "@mui/material/Accordion";
+import MuiAccordionSummary, {
+  AccordionSummaryProps,
+} from "@mui/material/AccordionSummary";
+import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import AboutExplainNFT from "../../assets/img/about-explain-nft.svg";
 import AboutSolrigamiIcons from "../../assets/img/about-solrigami-icons.svg";
 import AboutPropertyIcon from "../../assets/img/about-property-icon.svg";
@@ -97,7 +104,48 @@ const SOLRIGAMI_WALKTHROUGH = [
   },
 ];
 
+const Accordion = styled((props: AccordionProps) => (
+  <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => ({
+  paddingBottom: 6,
+  "&:not(:last-child)": {
+    borderBottom: 0,
+  },
+  "&:before": {
+    display: "none",
+  },
+}));
+
+const AccordionSummary = styled((props: AccordionSummaryProps) => (
+  <MuiAccordionSummary
+    expandIcon={
+      <ArrowForwardIosSharpIcon color="primary" sx={{ fontSize: "1.2rem" }} />
+    }
+    {...props}
+  />
+))(({ theme }) => ({
+  borderBottom: `1px solid ${theme.palette.primary.light}`,
+  flexDirection: "row-reverse",
+  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+    transform: "rotate(90deg)",
+  },
+  "& .MuiAccordionSummary-content": {
+    marginLeft: theme.spacing(1),
+  },
+}));
+
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+  padding: theme.spacing(2),
+}));
+
 export default function About() {
+  const [expanded, setExpanded] = React.useState<string | false>("panel1");
+
+  const handleChange =
+    (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+      setExpanded(newExpanded ? panel : false);
+    };
+
   return (
     <>
       <Box
@@ -182,8 +230,8 @@ export default function About() {
                 Já imaginou conseguir revender a um terceiro uma música comprada
                 em um formato puramente digital? Ou vender uma arte digital com
                 cobrança de royalty automática e sem intermediário? Ou até mesmo
-                ter em sua propriedade parte de um imóvel? Tudo isso é
-                possível por meio dos NFTs.
+                ter em sua propriedade parte de um imóvel? Tudo isso é possível
+                por meio dos NFTs.
               </Typography>
             </Box>
           </Grid>
@@ -276,6 +324,160 @@ export default function About() {
             </Grid>
           ))}
         </Grid>
+      </Box>
+      <Box
+        maxWidth="xl"
+        padding={6}
+        margin="auto"
+        sx={{ marginTop: 6, marginBottom: 6 }}
+      >
+        <Box sx={{ textAlign: "center", marginBottom: 6 }}>
+          <Title title="Perguntas Frequentes" />
+          <Accordion
+            expanded={expanded === "panel1"}
+            onChange={handleChange("panel1")}
+          >
+            <AccordionSummary
+              color="primary"
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+            >
+              <Typography color="primary" sx={{ fontSize: "2rem" }}>
+                O que é o site Solrigami?
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography align="left" variant="h6" fontWeight="normal">
+                A plataforma Solrigami é um site para a visualização, criação e
+                venda de artes digitais na forma de NFT (token não fungível). Na
+                aplicação Solrigami, são utilizadas as redes blockchains Arweave
+                (armazenamento de metadados e imagens) e Solana (tokenização e
+                contratos inteligentes). O código-fonte do projeto é livre e
+                encontra-se disponível no GitHub:{" "}
+                <Link
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  href="https://github.com/solrigami/app"
+                >
+                  https://github.com/solrigami/app
+                </Link>
+                .
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === "panel2"}
+            onChange={handleChange("panel2")}
+          >
+            <AccordionSummary
+              color="primary"
+              aria-controls="panel2d-content"
+              id="panel2d-header"
+            >
+              <Typography color="primary" sx={{ fontSize: "2rem" }}>
+                Quais os recursos disponíveis no site?
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography align="left" variant="h6" fontWeight="normal">
+                A aplicação Solrigami foi projetada para ser um marketplace de
+                NFTs. Nesse sentido, possibilita ao usuário: criar NFT de acordo
+                com os padrões adotados pela comunidade Metaplex; visualizar sua
+                galeria de artes digitais; ver detalhes de um NFT; e negociar
+                NFTs por meio da plataforma. Além disso, busca difundir o
+                conhecimento sobre NFT por meio dessa página sobre a aplicação.
+                Caso deseje, ainda é possível personalizar ou estender a
+                aplicação de acordo com as necessidades do seu projeto, visite o
+                código-fonte da aplicação:{" "}
+                <Link
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  href="https://github.com/solrigami/app"
+                >
+                  https://github.com/solrigami/app
+                </Link>
+                .
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === "panel3"}
+            onChange={handleChange("panel3")}
+          >
+            <AccordionSummary
+              color="primary"
+              aria-controls="panel3d-content"
+              id="panel3d-header"
+            >
+              <Typography color="primary" sx={{ fontSize: "2rem" }}>
+                Por onde começar na aplicação?
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography align="left" variant="h6" fontWeight="normal">
+                Para interagir com o site será necessário criar uma carteira
+                digital, recomendamos a utilização da Phantom:{" "}
+                <Link
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  href="https://phantom.app/"
+                >
+                  https://phantom.app/
+                </Link>
+                . Instalada a carteira, será possível criar NFTs na aba "Criar
+                NFT" (necessário um pequeno saldo em solana - SOL), visualizar
+                as artes digitais em custódia da sua carteira de criptoativos e
+                negociar os NFTs aqui ou em qualquer outro marketplace da rede
+                blockchain Solana.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === "panel4"}
+            onChange={handleChange("panel4")}
+          >
+            <AccordionSummary
+              color="primary"
+              aria-controls="panel4d-content"
+              id="panel4d-header"
+            >
+              <Typography color="primary" sx={{ fontSize: "2rem" }}>
+                O que são os royalties ao criar um NFT?
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography align="left" variant="h6" fontWeight="normal">
+                A taxa de royalties é uma porcentagem que é cobrada sobre cada
+                venda de um ativo e que se destina aos criadores do NFT. Na
+                aplicação Solrigami, o limite máximo da taxa de royalties é de
+                50% sobre a venda do ativo a fim de não incentivar a
+                comercialização de artes com taxas abusivas.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === "panel5"}
+            onChange={handleChange("panel5")}
+          >
+            <AccordionSummary
+              color="primary"
+              aria-controls="panel5d-content"
+              id="panel5d-header"
+            >
+              <Typography color="primary" sx={{ fontSize: "2rem" }}>
+                Posso negociar meus NFTs em outras plataformas?
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography align="left" variant="h6" fontWeight="normal">
+                Sim, o NFT pode ser negociado em qualquer site que implemente
+                suporte aos tokens da rede blockchain Solana. Após criar ou
+                adquirir um NFT, este estará em sua propriedade (e não na
+                custódia do site).
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+        </Box>
       </Box>
     </>
   );
