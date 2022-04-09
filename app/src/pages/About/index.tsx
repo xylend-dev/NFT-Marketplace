@@ -73,7 +73,7 @@ const SOLRIGAMI_WALKTHROUGH = [
     buttonLabel: "Criar carteira",
     icon: AboutApplicationWalletIcon,
     alt: "Ícone de carteira de criptoativos",
-    title: "Conecte a sua carteira",
+    title: "Crie uma carteira",
     description:
       "Para começar a utilizar a plataforma, crie uma carteira digital para custodiar os seus criptoativos",
   },
