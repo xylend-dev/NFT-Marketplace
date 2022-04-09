@@ -348,11 +348,11 @@ export default function About() {
             </AccordionSummary>
             <AccordionDetails>
               <Typography align="left" variant="h6" fontWeight="normal">
-                A plataforma Solrigami é um site para a visualização, criação e
-                venda de artes digitais na forma de NFT (token não fungível). Na
-                aplicação Solrigami, são utilizadas as redes blockchains Arweave
-                (armazenamento de metadados e imagens) e Solana (tokenização e
-                contratos inteligentes). O código-fonte do projeto é livre e
+                A plataforma Solrigami é um site para a criação, visualização e
+                comercialização de artes digitais na forma de NFT (token não
+                fungível). A Solrigami utiliza as redes blockchains Solana
+                (tokenização e contratos inteligentes) e Arweave (armazenamento
+                de metadados e imagens). O código-fonte do projeto é aberto e
                 encontra-se disponível no GitHub:{" "}
                 <Link
                   target="_blank"
@@ -410,7 +410,7 @@ export default function About() {
               id="panel3d-header"
             >
               <Typography color="primary" sx={{ fontSize: "2rem" }}>
-                Por onde começar na aplicação?
+                Por onde começar no site?
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
