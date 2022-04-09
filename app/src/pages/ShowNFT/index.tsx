@@ -40,6 +40,9 @@ export default function ShowNft() {
   const { publicKey } = useWallet();
   const { mint } = useParams<{ mint: string }>();
   const { data, error } = useNft(mint);
+  const [likes, setLikes] = useState<number>(
+    (data && data.extraData && data.extraData?.numberLikes) || 0
+  );
   const { enqueueSnackbar } = useSnackbar();
 
   const copyToClipboard = (value: string) => {
@@ -69,6 +72,7 @@ export default function ShowNft() {
       })
       .then(() => {
         enqueueSnackbar("Curtida adicionada", { variant: "success" });
+        setLikes(likes + 1);
       })
       .catch((error) => {
         if (error.response && "errors" in error.response.data) {
@@ -123,7 +127,7 @@ export default function ShowNft() {
                     onClick={addNftLike}
                   >
                     <Typography noWrap variant="body1">
-                      {data.extraData?.numberLikes || 0}
+                      {likes}
                     </Typography>
                     <FavoriteBorderIcon
                       color="success"
@@ -132,7 +136,10 @@ export default function ShowNft() {
                   </Box>
                 )}
                 <Box style={isImageLoaded ? { display: "none" } : {}}>
-                  <Skeleton variant="rectangular" sx={{height: "450px", maxWidth: "100%"}} />
+                  <Skeleton
+                    variant="rectangular"
+                    sx={{ height: "450px", maxWidth: "100%" }}
+                  />
                 </Box>
                 <CardMedia
                   style={isImageLoaded ? {} : { display: "none" }}
