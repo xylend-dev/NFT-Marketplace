@@ -233,7 +233,7 @@ export default function CreateNFT() {
           signAllTransactions,
         },
         uri: metadataTransactionUri,
-        maxSupply: 1,
+        maxSupply: 0,
       });
     } catch (e) {
       enqueueSnackbar(
