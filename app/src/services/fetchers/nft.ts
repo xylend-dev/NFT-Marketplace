@@ -12,6 +12,7 @@ import {
   SOLRIGAMI_STORE,
   validatehasSolrigamiStore,
 } from "../../config/solrigamiStore";
+import { StringPublicKey } from "@metaplex-foundation/mpl-core";
 
 export const getNftMetadata = async (arweaveUri: string) => {
   const nftMetadata = await api.get<MetadataJson>(arweaveUri);
@@ -173,7 +174,7 @@ export const getStoreNfts = async () => {
     }
   );
 
-  const auctionNFT = (
+  const storeNfts = (
     await Promise.all(
       auctionManagers.map((auctionManager) => getAuctionData(auctionManager))
     )
@@ -184,5 +185,13 @@ export const getStoreNfts = async () => {
     )
     .slice(0, 20);
 
-  return auctionNFT;
+  return storeNfts;
+};
+
+export const getNftAuction = async (mint: StringPublicKey) => {
+  const nftAuction = (await getStoreNfts()).filter(
+    (nft) => nft.nftData.nft.mint === mint
+  );
+
+  return nftAuction;
 };

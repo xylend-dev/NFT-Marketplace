@@ -9,14 +9,19 @@ import { Link } from "react-router-dom";
 import { Avatar, Skeleton } from "@mui/material";
 import { Favorite } from "@mui/icons-material";
 import SolanaLogo from "../../assets/img/solana-logo-original.svg";
+import { PublicKey } from "@solana/web3.js";
 
-export interface MarketplaceCardProps {
+export interface AuctionMetadataProps {
+  instantSalePrice?: number;
+  auctionPublicKey?: PublicKey;
+}
+
+export interface MarketplaceCardProps extends AuctionMetadataProps {
   mint: string;
   name: string;
   image: string;
   authority: string;
   likes?: number;
-  price?: number;
 }
 
 export default function MarketplaceCard(props: MarketplaceCardProps) {
@@ -98,10 +103,10 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
                 <Favorite color="success" sx={{ marginLeft: 1 }} />
               </Box>
             )}
-            {props.price !== undefined && (
+            {props.instantSalePrice !== undefined && (
               <Box display="flex" alignItems="center">
                 <Typography noWrap variant="body1" marginRight={0.5}>
-                  {Math.round((props.price / 1e9) * 100) / 100}
+                  {Math.round((props.instantSalePrice / 1e9) * 100) / 100}
                 </Typography>
                 <img
                   height={18}

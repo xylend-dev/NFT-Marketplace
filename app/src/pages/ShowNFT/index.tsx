@@ -27,7 +27,11 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import SolanaLogo from "../../assets/img/solana-logo.svg";
 import ArweaveLogo from "../../assets/img/arweave-logo.svg";
 import { network } from "../../config/solanaNetwork";
-import { useIsLikeAdded, useNft } from "../../services/hooks/nft";
+import {
+  useIsLikeAdded,
+  useNft,
+  useNftAuction,
+} from "../../services/hooks/nft";
 import NotFoundNFT from "../NotFoundNFT";
 import { useSnackbar } from "notistack";
 import LinkButton from "../../components/LinkButton";
@@ -41,6 +45,7 @@ export default function ShowNft() {
   const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
   const { publicKey } = useWallet();
   const { mint } = useParams<{ mint: string }>();
+  const { data: nftAuction, error: errorNftAuction } = useNftAuction(mint);
   const { data, error } = useNft(mint);
   const { data: isLikeAdded } = useIsLikeAdded(mint, publicKey);
   const { enqueueSnackbar } = useSnackbar();
@@ -234,30 +239,52 @@ export default function ShowNft() {
                   )}
                 </Box>
                 <Divider />
-                <Box display="flex" justifyContent="space-between" padding={3}>
-                  <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="flex-end"
-                    maxWidth="170px"
-                    width="100%"
-                  >
-                    <Typography variant="h5" sx={{ fontWeight: 500 }}>
-                      Preço:
-                    </Typography>
-                    <Typography variant="h5">
-                      {" "}
-                      &nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp; SOL
-                    </Typography>
-                  </Box>
-                  <Button
-                    disabled
-                    variant="contained"
-                    startIcon={<AccountBalanceWalletIcon />}
-                  >
-                    Comprar
-                  </Button>
-                </Box>
+                {errorNftAuction === undefined && (
+                  <>
+                    {nftAuction === undefined && (
+                      <Skeleton
+                        variant="rectangular"
+                        width="150"
+                        height={80}
+                      />
+                    )}
+                    {nftAuction &&
+                      nftAuction.length === 1 &&
+                      nftAuction[0].instantSalePrice &&
+                      nftAuction[0].auctionPublicKey && (
+                        <Box
+                          display="flex"
+                          justifyContent="space-between"
+                          padding={3}
+                        >
+                          <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="flex-end"
+                            maxWidth="170px"
+                            width="100%"
+                          >
+                            <Typography variant="h5" sx={{ fontWeight: 500 }}>
+                              Preço:
+                            </Typography>
+                            <Typography variant="h5">
+                              {Math.round(
+                                (nftAuction[0].instantSalePrice / 1e9) * 100
+                              ) / 100}{" "}
+                              SOL
+                            </Typography>
+                          </Box>
+                          <Button
+                            disabled={!nftAuction[0].auctionPublicKey || !publicKey}
+                            variant="contained"
+                            startIcon={<AccountBalanceWalletIcon />}
+                          >
+                            Comprar
+                          </Button>
+                        </Box>
+                      )}
+                  </>
+                )}
               </Card>
               <Card sx={{ padding: 3, marginTop: 4 }}>
                 <Typography

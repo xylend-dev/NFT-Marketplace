@@ -8,7 +8,9 @@ import {
   getWalletBalance,
   getIsLikeAdded,
   getStoreNfts,
+  getNftAuction,
 } from "../fetchers/nft";
+import { StringPublicKey } from "@metaplex-foundation/mpl-core";
 
 export function useWalletNftList(walletPublicKey: PublicKey | null) {
   const { data } = useSWR(
@@ -111,6 +113,15 @@ export function useStoreNfts() {
       )
     );
   }
+
+  return { data, error };
+}
+
+export function useNftAuction(mint: StringPublicKey) {
+  const { data, error } = useSWR(
+    ["nftAuction", mint],
+    async () => await getNftAuction(mint)
+  );
 
   return { data, error };
 }

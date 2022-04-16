@@ -213,7 +213,8 @@ export default function Marketplace() {
                       authority={nft.nftData.nft.updateAuthority}
                       mint={nft.nftData.nft.mint}
                       image={nft.nftData.metadata.image}
-                      price={nft.instantSalePrice}
+                      instantSalePrice={nft.instantSalePrice}
+                      auctionPublicKey={nft.auctionPublicKey}
                     />
                   </Grid>
                 ))}
