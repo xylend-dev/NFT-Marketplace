@@ -7,6 +7,7 @@ import {
   getPopularNfts,
   getWalletBalance,
   getIsLikeAdded,
+  getStoreNfts,
 } from "../fetchers/nft";
 
 export function useWalletNftList(walletPublicKey: PublicKey | null) {
@@ -95,4 +96,21 @@ export function useIsLikeAdded(
   );
 
   return { data };
+}
+
+export function useStoreNfts() {
+  const { data, error } = useSWR(
+    ["storeNfts"],
+    async () => await getStoreNfts()
+  );
+
+  if (data) {
+    data.sort((auction1, auction2) =>
+      auction1.nftData.metadata.name.localeCompare(
+        auction2.nftData.metadata.name
+      )
+    );
+  }
+
+  return { data, error };
 }
