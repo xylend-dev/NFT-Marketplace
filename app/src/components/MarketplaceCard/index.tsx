@@ -8,6 +8,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import { Link } from "react-router-dom";
 import { Avatar, Skeleton } from "@mui/material";
 import { Favorite } from "@mui/icons-material";
+import SolanaLogo from "../../assets/img/solana-logo-original.svg";
 
 export interface MarketplaceCardProps {
   mint: string;
@@ -15,6 +16,7 @@ export interface MarketplaceCardProps {
   image: string;
   authority: string;
   likes?: number;
+  price?: number;
 }
 
 export default function MarketplaceCard(props: MarketplaceCardProps) {
@@ -35,19 +37,19 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
         <Box style={isImageLoaded ? { display: "none" } : {}}>
           <Skeleton variant="rectangular" width="100%" height={350} />
         </Box>
-          <CardMedia
-            style={isImageLoaded ? {} : { display: "none" }}
-            component="img"
-            height="350"
-            image={props.image}
-            alt={`NFT image - ${props.name}`}
-            onLoad={() => setIsImageLoaded(true)}
-            sx={{
-              objectFit: "cover",
-              borderBottom: (theme) =>
-                `2px solid ${theme.palette.primary.main}33`,
-            }}
-          />
+        <CardMedia
+          style={isImageLoaded ? {} : { display: "none" }}
+          component="img"
+          height="350"
+          image={props.image}
+          alt={`NFT image - ${props.name}`}
+          onLoad={() => setIsImageLoaded(true)}
+          sx={{
+            objectFit: "cover",
+            borderBottom: (theme) =>
+              `2px solid ${theme.palette.primary.main}33`,
+          }}
+        />
         <CardContent>
           <Box
             display="flex"
@@ -94,6 +96,19 @@ export default function MarketplaceCard(props: MarketplaceCardProps) {
                   {props.likes}
                 </Typography>
                 <Favorite color="success" sx={{ marginLeft: 1 }} />
+              </Box>
+            )}
+            {props.price !== undefined && (
+              <Box display="flex" alignItems="center">
+                <Typography noWrap variant="body1" marginRight={0.5}>
+                  {Math.round((props.price / 1e9) * 100) / 100}
+                </Typography>
+                <img
+                  height={18}
+                  width={18}
+                  alt="Solana logo"
+                  src={SolanaLogo}
+                />
               </Box>
             )}
           </Box>
