@@ -133,7 +133,7 @@ export default function ShowNft() {
         auction: nftAuction[0].auctionPublicKey,
       });
     } catch (e) {
-      enqueueSnackbar("Erro inesperado ao comprar o NFT", {
+      enqueueSnackbar("Não foi possível comprar o NFT", {
         variant: "error",
       });
       setIsBuyingNFT(false);
