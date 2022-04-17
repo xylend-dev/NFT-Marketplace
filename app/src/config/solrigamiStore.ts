@@ -1,7 +1,7 @@
 const SOLRIGAMI_STORE = process.env.REACT_APP_SOLRIGAMI_STORE;
 
 const NO_STORE_MESSAGE =
-  "Chave pública do mercado de NFT em blockchain não encontrado";
+  "Chave pública do mercado de NFT em blockchain não encontrada";
 
 const validatehasSolrigamiStore = () => {
   if (!SOLRIGAMI_STORE) {
