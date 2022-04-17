@@ -7,7 +7,10 @@ import {
   getPopularNfts,
   getWalletBalance,
   getIsLikeAdded,
+  getStoreNfts,
+  getNftAuction,
 } from "../fetchers/nft";
+import { StringPublicKey } from "@metaplex-foundation/mpl-core";
 
 export function useWalletNftList(walletPublicKey: PublicKey | null) {
   const { data } = useSWR(
@@ -95,4 +98,30 @@ export function useIsLikeAdded(
   );
 
   return { data };
+}
+
+export function useStoreNfts() {
+  const { data, error } = useSWR(
+    ["storeNfts"],
+    async () => await getStoreNfts()
+  );
+
+  if (data) {
+    data.sort((auction1, auction2) =>
+      auction1.nftData.metadata.name.localeCompare(
+        auction2.nftData.metadata.name
+      )
+    );
+  }
+
+  return { data, error };
+}
+
+export function useNftAuction(mint: StringPublicKey) {
+  const { data, error } = useSWR(
+    ["nftAuction", mint],
+    async () => await getNftAuction(mint)
+  );
+
+  return { data, error };
 }

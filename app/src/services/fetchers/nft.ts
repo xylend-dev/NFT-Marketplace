@@ -1,11 +1,18 @@
 import { Metadata } from "@metaplex-foundation/mpl-token-metadata";
+import { AuctionExtended } from "@metaplex-foundation/mpl-auction";
 import { MetadataJson } from "@metaplex/js";
+import { programs } from "@metaplex/js";
 import { connection } from "../../config/solanaNetwork";
 import api from "../api";
 import { PublicKey } from "@solana/web3.js";
 import { isBackendEnabled, validateIsBackendEnabled } from "../../config/api";
 import { IsLikeAdded, NftCreatedData, NftExtraData } from "../../types/types";
 import { removeUndefined } from "../../utils/general";
+import {
+  SOLRIGAMI_STORE,
+  validatehasSolrigamiStore,
+} from "../../config/solrigamiStore";
+import { StringPublicKey } from "@metaplex-foundation/mpl-core";
 
 export const getNftMetadata = async (arweaveUri: string) => {
   const nftMetadata = await api.get<MetadataJson>(arweaveUri);
@@ -117,4 +124,74 @@ export const getLastNftsCreated = async () => {
   ).filter(removeUndefined);
 
   return lastNftsCreatedData;
+};
+
+export const getAuctionData = async (
+  auctionManager: programs.metaplex.AuctionManager
+) => {
+  const auction = await auctionManager.getAuction(connection);
+  const auctionExtendedKey = await AuctionExtended.getPDA(
+    auctionManager.data.vault
+  );
+  const auctionExtended = await AuctionExtended.load(
+    connection,
+    auctionExtendedKey
+  );
+  const vault = await programs.vault.Vault.load(
+    connection,
+    auctionManager.data.vault
+  );
+  const safetyDepositBoxes = await vault.getSafetyDepositBoxes(connection);
+
+  if (safetyDepositBoxes.length > 0) {
+    try {
+      const nftData = await getMetadataByMint(
+        safetyDepositBoxes[0].data.tokenMint
+      );
+
+      return {
+        auctionPublicKey: auction.pubkey,
+        nftData: nftData,
+        instantSalePrice:
+          auctionExtended.data.instantSalePrice?.toNumber() || 0,
+        state: auction.data.state,
+      };
+    } catch {
+      console.log(
+        `Marketplace NFT ${safetyDepositBoxes[0].data.tokenMint} não encontrado`
+      );
+    }
+  }
+};
+
+export const getStoreNfts = async () => {
+  validatehasSolrigamiStore();
+
+  const auctionManagers = await programs.metaplex.AuctionManager.findMany(
+    connection,
+    {
+      store: SOLRIGAMI_STORE,
+    }
+  );
+
+  const storeNfts = (
+    await Promise.all(
+      auctionManagers.map((auctionManager) => getAuctionData(auctionManager))
+    )
+  )
+    .filter(removeUndefined)
+    .filter(
+      (auction) => auction.state === programs.auction.AuctionState.Started
+    )
+    .slice(0, 20);
+
+  return storeNfts;
+};
+
+export const getNftAuction = async (mint: StringPublicKey) => {
+  const nftAuction = (await getStoreNfts()).filter(
+    (nft) => nft.nftData.nft.mint === mint
+  );
+
+  return nftAuction;
 };

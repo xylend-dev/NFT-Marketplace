@@ -1,5 +1,4 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import Lottie from "react-lottie";
 import {
   actions,
   MetadataJson,
@@ -23,17 +22,16 @@ import Title from "../../components/Title";
 import CreateNFTCard, {
   CreateNFTCardImageProps,
 } from "../../components/CreateNFTCard";
-import LoadingAnimation from "../../assets/animation/loading.json";
 import { arweaveEndpoint } from "../../config/arweaveNetwork";
 import { connection } from "../../config/solanaNetwork";
 import { PrettoSlider } from "./styles";
-import { defaultAnimationOptions } from "../../utils/lottie";
 import { uploadData } from "../../utils/arweave/uploadData";
 import { cacheCreatedNft } from "../../utils/cache";
 import { defaultNftMetadata } from "../../utils/nft";
 import { validateNftAttributes } from "../../utils/validation";
 import api from "../../services/api";
 import { NftCreatedData } from "../../types/types";
+import LoadingMessage from "../../components/LoadingMessage";
 
 const MAX_ATTRIBUTE_FIELDS = 15;
 const royaltiesMarks = [
@@ -233,7 +231,7 @@ export default function CreateNFT() {
           signAllTransactions,
         },
         uri: metadataTransactionUri,
-        maxSupply: 1,
+        maxSupply: 0,
       });
     } catch (e) {
       enqueueSnackbar(
@@ -333,39 +331,12 @@ export default function CreateNFT() {
         </ButtonWithTooltip>
       </Grid>
       {isUploadingNFT && (
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          sx={{
-            marginTop: "10vh",
-          }}
-        >
-          <Lottie
-            options={{
-              ...defaultAnimationOptions,
-              animationData: LoadingAnimation,
-            }}
-            height={200}
-            width={200}
-          />
-          <Typography
-            color="primary"
-            variant="h5"
-            component="h2"
-            gutterBottom
-            align="center"
-            sx={{
-              maxWidth: "800px",
-            }}
-          >
-            Carregando imagem e criando o NFT...
-            <Box>
-              Quando solicitado, aprove a criação do NFT com a sua carteira digital.
-            </Box>
-          </Typography>
-        </Box>
+        <LoadingMessage
+          messages={[
+            "Carregando imagem e criando o NFT...",
+            "Quando solicitado, aprove a criação do NFT com a sua carteira digital.",
+          ]}
+        />
       )}
       {!isUploadingNFT && (
         <form id="nft-create" autoComplete="off" onSubmit={handleSubmit}>

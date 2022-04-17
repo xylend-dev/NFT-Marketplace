@@ -6,13 +6,16 @@
 [context.deploy-preview.environment]
     REACT_APP_ENV = "homologation"
     REACT_APP_IS_BACKEND_ENABLED = "false"
+    REACT_APP_SOLRIGAMI_STORE = "HpVtjKEg6dqjvZdR4jQVUNjQ8TJzGSm3rkSSPBmX3bgy"
 
 [context.branch-deploy.environment]
     REACT_APP_ENV = "homologation"
     REACT_APP_IS_BACKEND_ENABLED = "false"
+    REACT_APP_SOLRIGAMI_STORE = "HpVtjKEg6dqjvZdR4jQVUNjQ8TJzGSm3rkSSPBmX3bgy"
 
 [context.dev.environment]
     REACT_APP_ENV = "homologation"
+    REACT_APP_SOLRIGAMI_STORE = "HpVtjKEg6dqjvZdR4jQVUNjQ8TJzGSm3rkSSPBmX3bgy"
     REACT_APP_API_BASE_URL = "https://solrigami-api-dev.herokuapp.com/"
     REACT_APP_IS_BACKEND_ENABLED = "true"
 

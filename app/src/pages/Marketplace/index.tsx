@@ -16,6 +16,7 @@ import {
   useLastNftsCreated,
   usePopularNfts,
   useNft,
+  useStoreNfts,
 } from "../../services/hooks/nft";
 import Title from "../../components/Title";
 import { network } from "../../config/solanaNetwork";
@@ -51,6 +52,7 @@ export default function Marketplace() {
   );
   const { popularNfts, error: errorPopularNfts } = usePopularNfts();
   const { lastNftsCreated, error: errorLastNftsCreated } = useLastNftsCreated();
+  const { data: storeNfts, error: errorStoreNfts } = useStoreNfts();
   const marketplaceRef = useRef<HTMLDivElement>(null);
   const scrollToMarketplace = () => marketplaceRef.current!.scrollIntoView();
 
@@ -190,6 +192,35 @@ export default function Marketplace() {
         </Box>
       </Box>
       <Box ref={marketplaceRef}>
+        {errorStoreNfts === undefined && (
+          <Box sx={{ marginTop: 6 }}>
+            {storeNfts && storeNfts.length !== 0 && (
+              <Title title="Listados recentemente" />
+            )}
+            <Grid container spacing={3}>
+              {!storeNfts &&
+                skeletonArray.map((_, index) => (
+                  <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                    <MarketplaceSkeletonCard />
+                  </Grid>
+                ))}
+              {storeNfts &&
+                storeNfts.map((nft, index) => (
+                  <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                    <MarketplaceCard
+                      name={nft.nftData.metadata.name}
+                      likes={nft.nftData.extraData?.numberLikes}
+                      authority={nft.nftData.nft.updateAuthority}
+                      mint={nft.nftData.nft.mint}
+                      image={nft.nftData.metadata.image}
+                      instantSalePrice={nft.instantSalePrice}
+                      auctionPublicKey={nft.auctionPublicKey}
+                    />
+                  </Grid>
+                ))}
+            </Grid>
+          </Box>
+        )}
         {errorLastNftsCreated === undefined && (
           <Box sx={{ marginTop: 6 }}>
             {lastNftsCreated && lastNftsCreated.length !== 0 && (
