@@ -132,7 +132,11 @@ export default function Marketplace() {
           }}
         >
           <MarketplaceCard
-            name="Personification #179"
+            name={
+              network === WalletAdapterNetwork.Mainnet
+                ? "Personification #0178"
+                : "Personification #179"
+            }
             likes={landingNft && landingNft.extraData?.numberLikes}
             authority={
               network === WalletAdapterNetwork.Mainnet
